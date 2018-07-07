@@ -21,7 +21,7 @@ Inspiration taken mainly from Cast Away, Lost, and Robinson Crusoe, as well as n
 
 This is just a playable demo. The full version will be much bigger and more in-depth (It will also have an ending; for now the main goal is to just explore and survive for as long as possible.)
 
-Currently, all music, art, and, with a few documented exceptions, programming have been done by me.
+Currently, all music, art, and, with a few documented exceptions, programming has been done by me.
 
 # About the code
 Writing low-level code like this isn't very common these days except for a few areas of Computer Science / Computer Engineering. I did this project for fun, and didnt really have in mind originally that I'd make the source available to the public. Because of this, the comments/code aren't the most stranger-friendly. Add to that that it's already written in an obscure, scary-looking language by today's standards. For anyone who's actually curious about / interested in reading through the code or trying to decipher it, I tried to make the variables file and the main skeleton file as detailed as possible, but work could still be done. Despite this, I think its still worth having this project be open source; not just in case I ever lose the data on my computer, but also to showcase something I've done. This is definitely by far the biggest project I've ever worked on, and if (hopefully when) it ever gets finished, I want anyone who might want to see it to be able to see it.
