@@ -1,0 +1,1226 @@
+DAY 1 - 8/19/2016
+	-Game officially comes off the drawing board
+	-Started initial plans for palettes, drew up a few basic tiles that can become sand, water, and grass
+	-Started drawing a sample screen
+	-No code yet
+	-Continue to think up ideas, draw the character on paper
+	-Sprite palettes will be needed for the player, his weapon, and any powerups received from enemies
+	-This only reserves one palette for enemies. So only one type of enemy palette can be in an event
+	-Try to meet creative people in classes that could possibly help with game
+
+DAY 2 - 8/30/2016
+	-Wrote psuedocode for how to display message boxes
+	-Drew simple message box tiles
+	-Progressed on the skeleton of the game engine
+	-Program first assembled successfully and ran in an emulator
+	-Started coding the message box system
+
+DAY 3 - 8/31/2016
+	-Completed a prototype of the message box system. Two types of boxes - A normal one, and then one with yes/no where a decision must be made
+	-For now it's an infinite loop. The status board is cleared tile by tile to black, a hard-coded message is written letter by letter, and then the message box is cleared. The code for erasing the board at the moment is almost identical to that for drawing it. Eventually, (once a more versatile VRAM buffer is coded), the status bar will be redrawn.
+
+DAY 4 - 9/1/2016
+	-Added pointers for messages so that's no longer hard-coded
+	-Made it so that if a message can be too big, it gets split up into multiple messages
+	-Started the status board (Hard-coded right now, no BCD for health, hunger, thirst, etc)
+	-Added player input! The message is now hard-coded to pop up whenever the B button is pressed
+	-Discovered old player mockups, tweaked them to make them look better. Added them to the CHR file
+
+DAY 5 - 9/2/2016
+	-Wrote a routine to draw the status board upon init (Again, hard-coded, so no BCD yet)
+
+DAY 6 - 9/3/2016
+	-Wrote some simple routines so the player can now move.
+	-Messed around with the game states so that (Hopefully, haven't tested yet) When a message is being drawn, objects will still be drawn but their code won't be run
+
+DAY 7 - 9/5/2016
+	-Wrote up some metasprite definitions for the player
+	-Only for standing though, so there's no animation yet for walking, but the player properly changes directions
+	-The Ent drawing routine is more diverse now since pointers and indirect addressing have been added, but there's still a bit of hard-coding
+	-(Added 9/23/2016) First noticed use of the word "Ent" to refer to game entities/objects. The name just stuck
+
+DAY 8 - 9/6/2016
+	-Wrote more metasprite definitions for player (walking)
+	-Added data for animation frames and length
+	-Wrote a routine that fetches animation length and frame count whenever an ent's state is changed
+
+DAY 9 - 9/7/2016
+	-Added metasprite definitions for Player weapon 0 (Knife)
+	-Made the main loop better so that the ent logic loop is different from the ent drawing loop, and made the main loop skeleton do more like a switch statement when going to substates
+	-Wrote code to make the player go into the attacking state when hitting the A button. The knife ent is initialized, but doesn't deactivate yet.
+	-putting the variable for the weapon ent deactivation timer in spare RAM (~700 or something) since it isn't general enough to be needed every frame
+	-Wrote metasprite definitions for the player when he's attacking
+
+DAY 10 - 9/8/2016
+	-Made a simple game over state
+	-Started brainstorming ideas for how to make the pause screen/inventory screen. Don't start coding this until we have a full and complete outline and concept for how we want it to play out in the game
+	-Added 8bit BCD (Celius's code, not mine) and a VRAM buffer (Tokumaru's code, not mine) so things are much more versatile. Changes in health, hunger and thirst are now visible
+	-Changed mapper to MMC1, moved a few things around
+	-2.5kb of code
+
+DAY 11 - 9/9/2016
+	-Wrote up some pseudocode for the inventory screen and coming to a body of water
+	-Made different timers for the depletion of health, hunger, and thirst (dependant on player status)
+	-Made the VRAM buffer system better by only setting the update flag at the end of the frame and if the buffer isn't empty. This way the game won't crash if there's slowdown
+	-Drew a sketch for a screen
+	-Added some WRAM variables for if items have been obtained or not (Shouldn't be shown in the inventory screen until they've been obtained)
+	-Implemented simple background collision subroutines that work for any ent. Planning on having a table of what action to perform for each collision type, so that the player will for example bump into water since it's a solid, but when pressing A can interact with it. Also a table for each type of metatile saying if it's solid, not solid, or danger
+	-3.3kb of code
+
+DAY 12 - 9/12/2016
+	-Re-implemented the message box system. There are no more "substates". All the message box states are now game states. Messages now have pointers to subroutines, where logic for each decision is.
+	-Translated the water logic pseudocode into ASM
+	-Drew up a simple cursor sprite
+
+DAY 13 - 9/15/2016
+	-Implemented a sample jar object that can be collected.
+	-Changed some button functions around so that B now uses the weapon and A interacts with the world. During a message box decision the player can press B to exit and not make a decision
+
+DAY 14 - 9/16/2016
+	-Fixed a bug in the Ent main loop jump handler that was using ent_index as the index for where to jump to, rather than ent_id,x
+	-Started animating snakes
+	-Learned how to actually use nesst
+	-Watched Cast Away for research
+
+DAY 15 - 9/17/2016
+	-Added more snake animation
+
+DAY 16 - 9/20/2016
+	-Started working on screen structures
+	-Added metatiles and attributes for a sample screen
+	-Split things up into the title state (caused game to crash)
+
+DAY 17 - 9/21/2016
+	-Figured out why program was crashing and fixed it. (Has something to do with changing $2000 to vertical mode (outside of Vblank, perhaps?) Removed this, and went back to working normally. Try and figure out why this is, and make sure it isn't a huge underlying issue.)
+	-Made it so that the buffer update flag will be set only if the game state has remained unchanged. This stopped the BCD values from still appearing in the game over state
+
+DAY 18 - 9/23/2016
+	-Split things up into different banks, organized code a little better. Game now officially uses bank-switching
+	-fixed a VERY IMPORTANT bug at the beginning of NMI, instead of being pha txa pha tya pha, it was pha tax pha tay pha
+	-Added a pause state (Different from what will be the inventory screen state)
+	-Made it so that snake ents can now be deactivated by colliding with the knife ent
+	-Added text to the title screen (And made it clear so that the background is black rather than all 0s)
+	-Made bulk drawing better by having a shadow $2001 variable
+	-Made it so that snakes can take away health from player when colliding with him
+
+DAY 19 - 9/28/2016
+	-Finally made more progress on the game after nearly a week of being busy with other (more important) schoolwork
+	-Changed bg collision to make it versatile with each ent, and now any type of collision can happen without having to do a million compares.
+		-This involves a pretty big overhead and therefore adds quite a bit more processing time, but I feel this would need to happen eventually
+	-Changed interaction with the world so now the water message will only come up when the player is actually next to the water
+	-Moved the Y position of all metasprites' sprites up 1 pixel to account for the PPU's sprite Y 1 pixel offset
+
+DAY 20 - 9/29/2016
+	-Implemented the random counter. At the end of each frame, after frame counter is incremented, it and buttons are added to random
+	-Added post-hit invincibility and ents now flicker when they get hit. Moved the code that clears animation frame and timer from the get animation routine to the ent init routine, but this caused graphical glitches when the player stops walking, so at the end of player code, if player was walking and no dpad buttons are pressed, anim frame and timer are cleared.
+	-Fixed a very aggravating glitch where the player would get stuck in the water after seemingly random events like interacting with it and stabbing while pressing down. As it turns out the wrong ent_index was being used because X was being clobbered somewhere in the interaction with the map code.
+	-Added "Press start to begin" to the title screen
+
+DAY 21 - 9/30/2016
+	-Added another thing to metatile definitions - whether ents should be behind them or not. Logic was also added to the drawing code (Which was moved to the fixed bank, since trampolining now needs to happen) to make this happen. This does add a lot more processing time, so see if there's a better way to do it, or otherwise be cautious about the number of active ents [Edit 7/12/17 - This was removed shortly after, but I think I forgot to put down when]
+	-Fixed a bug in the BG collision detection code that was reading the wrong variable and causing weird glitches
+	-Fixed a bug when the player uses his weapon that wasn't resetting the animation timer and frame so the game would crash if the player hit b while past the first frame of his walk cycle. I may just end up adding this code back to the original subroutine it was in since it seems to be a lot of trouble
+	-Made the sand look better IMO.
+	-Added palm tree metatiles
+	-Changed the palm tree graphics so that there isn't an attribute clash (made the leaves smaller)
+
+DAY 22 - 10/1/2016
+	-Added a jar object (Caused player to spaz out and seemingly hit invisible walls) (I'm drunk)
+
+DAY 23 - 10/2/2016
+	-Fixed an error I drunkenly made last night where I was accidentally using Y indexing instead of X indexing (X had the proper ent index loaded)
+	-Started on snake AI
+
+DAY 24 - 10/3/2016
+	-Added an absolute value macro
+	-Wrote up pseudocode for better snake AI
+
+DAY 25 - 10/4/2016
+	-Implemented new snake AI pseudocode
+
+DAY 26 - 10/5/2016
+	-Rewrote snake AI in the source
+	-Made a more cohesive outline of what to do when loading a new screen as a whole structure
+	-Drew up a coconut sprite
+	-Added more metatiles
+	-Drew sprites for the machete
+	-Added animation so that there's better indication that a snake got hit
+	-Moved the screen loading routine to the fixed bank
+	-added "old" variables for player health hunger and thirst so that they only need to be updated in VRAM when changed
+	-Moved a bunch of stuff into the LoadScreen routine
+	-7.5k code
+
+DAY 27-28 - 10/6-7/2016
+	-Wrote up a sample second screen
+	-Wrote code for screen transitions
+	-Right now only INCs the screen variable so after the second screen it'll start displaying garbage data as metatiles and attributes, and after about 4 screens will crash
+	-Added the sprite pallete for powerups
+
+Day 29 - 2/24/2017
+	-Damn, it's been a while, but I'm back to make at least a little more progress
+	-Added "STATUS" text to the status board (No string for player status yet though)
+	-Added states and skeleton code for the states for the inventory screen (There's going to be multiple layers, so they'll each need their own state)
+	-Added "old" variables for the indexes to the status and weapon strings, and a (commented for now) one for day
+	-sketched out an inventory screen
+	-changed a bit of the messagebox system code so that it'll only draw ents and return to the play state if we came from there. Otherwise, return to the inventory state if that's where we came from
+
+Day 30 - 2/25/2017
+	-Changed how I plan on implementing the inventory screen (the design of it), drew a mockup in nesst
+	-Added some more variables for the inventory system
+	-Wrote new pseudocode for what to do when initializing the inventory screen
+	-Organized the project better by putting the code for each game state in its own file, and putting all those files in a folder named "States". Skele file is finally not humongus (idk how to spell that word)
+	-Got rid of the jar_obtained variable, instead there's now an array of flags for whether or not each item has been obtained
+	-Wrote routines to set a specific flag to make an item obtained, and to check if a given item has been obtained or not
+	-Wrote code to initialize the inventory system. Nothing gets drawn yet, so it doesn't look like much, and also because the jar's the only item i've coded so far, but its a good start
+
+Day 31 - 2/26/2017
+	-Added a variable to keep track of how many items have currently been obtained. This divided by 16, + 1 gives us how many pages long the inventory screen will need to be
+	-Added the data for the text strings of all the items
+
+	-- MONTH 2 --
+
+Day 32 - 2/27/2017
+	-Added the data for the text strings of all the player statuses
+	-Cleaned up some old outdated comments in some files
+
+Day 33 - 2/28/2017
+	-Fixed some errors I'd made last night that resulted in bugs in the inventory system
+	-Added some more comments to make certain sections of the code more understandable
+	-Made the knife an item, which you have with you at the start of the game (So it can be selected later on if one so wishes)
+	-Obtained items are now displayed on the screen!
+	-Wrote the routine (In the init section of the play state) to reload the screen - metatiles and attributes - from ram. Returns to play state when the user pressed B
+
+Day 34 - 3/1/2017
+	-Added a table of flags in ROM for whether or not each item has a count to it. Each item has a 1-bit flag associated with it
+	-Wrote a routine similar to CheckIfItemObtained, that checks if a given item has a count to it or not
+	-Wrote a routine to get the count of a given object (0-15)
+	-Drew some sketches on paper for player dying animation frames
+	-Wrote down a todo list from memory. See if there's a todo list in this folder already, compare the two, see if anything needs to be added and if anything can be removed
+	-Got rid of some unnecessary text tiles in the background CHR file
+	-Added the drawing of item counts to the inventory system
+
+Day 35 - 3/2/2017
+	-Organized the ideas file more by splitting things up into their own sections better
+	-Came up with more ideas (Storyline, game progression, statuses, how statuses happen, bone weapon, etc)
+	-Added more constants to their immediate value counterparts to make code easier to read
+	-Added ent id constants
+	-Wrote code for the heart ent
+	-Added bone weapon graphics
+	-Added metasprite definitions for the heart and the meat ents
+	-Added some code to the snake routine to drop hearts (Right now hard-coded to do it, but once the meat ent has been coded make it a random chance)
+	-Added health, hunger and thirst depletions for all the current statuses
+	-Drew some sprites for the player dying animation (Need to add in-betweens)
+	-Watched a few episodes of Lost for inspiration
+	-~8.8k code and data
+
+Day 36 - 3/3/2017
+	-Wrote code for the meat ent
+	-Wrote a routine to add a given number to the count of a given item (Buggy, needs to be revised)
+	-Drew a mockup of the file select screen in nesst
+
+Day 37 - 3/4/2017
+	-Decided for now to move the whole "befriending man and defeating cavedweller" idea off to the side. Not completely out of the question, but seems to go against what I have in mind for the atmosphere, style, and feel of the game.
+	-Moved all the variables and constants into their own file
+	-Implemented 16-bit BCD routine (Tokumaru's code, not mine)
+	-Un-hardcodified days (currently thinking one day on the island is 15 minutes real time, but this is not set in stone)
+		-Added code to the erasingmbox (redrawing status board) state to process ten thousands and thousands
+		-Added code to the update stats portion of the play state
+
+Day 38 - 3/6/2017
+	-Wrote up pseudocode for saving/loading/deleting files
+	-Updated the iNES header so that SRAM is now saved
+	-Dedicated the second page of WRAM to be SRAM where files are saved
+	-Clear all used WRAM except for page 2 on RESET so that saved data doesn't get overwritten
+
+Day 39 - 3/7/2017
+	-Implemented the save and load routines
+	-Starting to consider switching to CHR RAM - Think about how to organize all the tiles
+
+Day 40 - 3/8/2017
+	-Implemented CHR RAM, wrote sample routines - one to load a full 8kb bank, and another to load a specific tile
+	-Started drawing a sample 5x5 screen mockup of the island in Tiled
+
+Day 41 - 3/14/2017
+	-Spent the last few days working on graphics, mainly the background, and the sample 5x5 screen island
+	-Made the forest graphics look better
+	-Added mountain/rock graphics
+	-Added some new palettes in the skele file
+	-Finished the sample map mockup. Just need to make a few more minor changes
+	-Wrote pseudocode for the fadeout state
+
+Day 42 - 3/15/2017
+	-Made the pseudocode for the screen loading routine more thorough
+	-Implemented the RLE version of the load metatile routine. Seems to work correctly
+	-Need to redefine all the metatiles since everything's been moved around
+	-Once all the new metatiles have been redefined, start adding the data for just metatiles and attributes for the 5x5 sample island
+
+Day 43 - 3/16/2017
+	-Correctly redefined all the currently implemented metatiles
+	-RLEd the second sample screen's metatile data
+	-Fixed the status boarder since its tiles had been moved around in the CHR file too
+	-Made screen changing happen differently then just INC screen. When going up and down, 5 is subtracted from or added to screen, respectively. This works for now because the sample island is only 5x5 screens
+
+Day 44 - 3/17/2017
+	-Changed the player's hitbox size to 15x15px; starts at the shoulders and ends at the feet. Had to change the collision types of a few metatiles but this'll make it easier to enter caves and whatnot
+	-Defined all the metatiles that are currently on the sample island mockup
+
+Day 45 - 3/20/2017
+	-Wrote another screen for the sample island
+
+Day 46 - 3/22/2017
+	-Wrote 3 more sample screens for the sample island. The metatile maps for the bottom 5 screens are finished
+	-Removed the sleeping variable since its purpose can be accomplished just as easily with frame_counter
+	-Moved where the player can leave the screen from the top and bottom, down by 8 pixels to account for the fact that his hitbox is now 8 pixels shorter
+
+Day 47 - 3/23/2017
+	-Changed player's hitbox back to what it originally was (16x24 pixels).
+	-Changed the player's hitbox for BACKGROUND COLLISION, however, to only be at his feet. This is done by adding the respective offset right before converting the player's coordinates to those for the collision map in RAM
+	-Also cleaned up the player's code a little to make it faster and smaller (Got rid of some unnecessary branching, removed some redundant calls)
+	-Touched up the trees a bit (Made them taller, added more palms to make the attribute grid less noticeable)
+
+Day 48 - 6/13/2017
+	-Goddamn it, almost three months of nothing
+	-Decided the attacking sprite I'd been drawing looked like shit
+	-Going to keep it the same for left and right, but change it when attacking downwards. (Make his legs visible to imply that he's moving forward, non-weapon arm extended backward.)
+	-Also added the arm extended backwards to left and right sprites. Maybe move the upper body one pixel forward to better justify the down sprite
+
+Day 49 - 6/20/2017
+	-After another week of doing nothing, I finally finished (hopefully) the tweaking of the player sprites. I also removed some unneeded sprites.
+	-I decided to just go with having the player's arm be normal when he attacks facing down. The legs won't have to be part of the hitbox, so that way the weapon can be spawned where the legs would normally be, and it'll look more natural (Like how stabbing is supposed to look)
+	-Wrote down flow chart of bee/hornet states (Guarding hive, foraging for food, returning to hive, attacking player)
+	-Added some simple bee sprites to the CHR file. Sprites subject to change
+	-Added the bee palette to the palettes file
+	-Started putting in the data for the hitbox width and height of each direction of each state of each ent
+	-Started redefining the player metasprites (Got as far as standing and walking left and right, need to finish walking and attacking up and down)
+
+Day 50 - 6/21/2017
+	-Fixed the metasprite definitions for the player walking and attacking up and down
+	-Added the hitbox size fetch to the LoadAnimLengthsAndFrames routine (Also optimized the storage of that data from yesterday)
+	-Tweaked the inventory screen mockup nametable in nesst (Made the boxes wider so the 8-tile status strings and whatnot could fit)
+	-Spellchecked/added a bit to some of the comments
+	-Changed/got rid of a few more sprites
+
+Day 51 - 6/22/2017
+	-Replaced the hard-coded values with ent_width and ent_height in the player's code
+	-Added more comments on how to handle the despawning and whatnot of weapon ents
+	-For some reason, the weapon is still spawning at its old spot when the player attacks down, even though the hitbox sizes are updating. I'll try and get to the bottom of this
+
+Day 52 - 6/25/2017
+	-Some family business took priority over development for a few days
+	-The reason the weapon wasnt being spawned in the right place was because width and height were being updated, but they weren't being used to update the coordinates of the hitbox
+	-Weapon now spawns where it should (Hard to see, maybe adjust player sprites more or make the weapon always be drawn first. Maybe use CHR RAM to load the correct leg (Based off the weapon) and have that leg drawn around the weapon), but now they aren't registering hits to the snakes, even though the snakes are registering hits to the player. A new bug, woohoo.
+
+Day 53 - 6/28/2017
+	-Spent the last few days being a dumbass and debugging and stepping through the game trying to find out why in the hell the weapon wasn't registering a hit on the snakes. Turns out all I needed to do was put in the hitbox data for the snakes, et voila!
+	-Still some hard-coded stuff in the snake's AI, so get rid of this.
+	-Added an LFSR to get better entropy when generating random numbers (Not my code - taken from codebase64.org)
+	-Added hitbox data for the rest of the ents
+	-Need to work on the snake's AI more to make it more "State machine" like, instead of a bunch of compares and branches
+	-May even change the behavior of the snake entirely
+	-Worked some more on attribute tables (The first screen now looks correct; added 3 more screens worth of data)
+	-Incorporated (for lack of a better word right now (it's 12:04 am right now)) num_active_ents into the ent system
+	-Fixed some ents' AI (mainly just weapon0 and i believe either jar or heart) that it wasn't calling DeactivateEnt when it should have
+	-Un-hardcodeified the player status string in the status board, so when he gets sick for example it says "sick"
+	-Tweaked the inventory screen so that the player can bress either B or START to exit it
+		-Gonna scrap this entire thing (a half hour of my life wasted essentially) it'll only ever need to get updated after a message when redrawing the status board, so it can go in that file/state. At least I know basically what to do now.
+
+Day 54 - 6/29/2017
+	-Added variable strings for the weapon to the message box system
+	-Also changed some stuff in it
+		-May try and optimize later, as I think there just might be a smaller and faster way to do it
+	-Changed the universal background color in the sand to $38 to help the player stand out better
+
+Day 55 - 7/1/2017
+	-Went to a concert and had to recuperate so didn't get anything done yesterday
+	-Finally completely un-hardcodified the weapon and status strings in the status board
+		-Realized I could optimize it a bunch by having a jump table, changing a bunch of jumps to branches, and getting rid of a bunch of redundant LDA (indirect),y statements by moving that code to a label and branching there.
+	-Added a table for the ent ID of each weapon (For some reason I feel like I may have already put this somewhere. Make sure there isn't a duplicate)
+	-Made a tiny optimization to the metatile loading routine (changed ANDing with %10000000 and beq to just bpl)
+	-Added to the init state of the inventory system. Added the "save" string, as well as drawing what page one's on as well as how many pages there are
+	-Added borders to each of the 16 items' info, but decided it didn't look good so I commented the code out
+
+Day 56 - 7/2/2017
+	-Added constant labels for all the current weapons (knife, stick, spear, big bone, machete)
+	-Read through the old ideas file again, expanded it a little
+	-Wrote the basis for a pitch of the game, what I'd say in the forum post about it
+	-Rewrote part of the snake's AI for how random items are dropped when it dies
+	-Made the knife's hitbox 7x15 when down. It still feels kinda wonky when attacking downwards, so maybe tweak this some more
+	-Made it so that "Save" only gets drawn in the inventory screen when all the monsters on the playfield have been killed, as well as it can only be selected then
+	-Turned the sprite cycling code into a macro, as well as saving and loading files (Since they're only gonna be called from one place, so there's no reason they need to be subroutines)
+	-Game successfully saves data!!!!
+
+Day 57 - 7/3/2017
+	-Made the down arrow work as it should in the inventory screen. Now just need to do the same to the rest of the D-pad
+
+Day 58 - 7/4/2017
+	-Made a CHR RAM animation demo that successfully works! Now that I'm looking at it in the emmy, the animation I'd done for the waves doesn't look very good, so I'm going to keep working on it
+	-Made the wave animation look more "wavey", but it still looks annoying (hard to describe why, but it is). Going to add some more frames. Perhaps one where theres no waves, and just water (Which we already have a tile for :) )
+	-Added some more wave frames, but still need to tweak the animation a bit more
+	-Worked a little bit more on the bee sprites. Added wing flapping frames
+
+Day 59 - 7/5/2017
+	-Added code for moving up in the inventory state. Works correctly!
+	-Added support for expansion controllers
+	-Added the developer/studio (Bona Fide Games) and year (2017) at the bottom of the title screen
+	-Left and right also work in the inventory state, but nothing happens when page is selected. Add page turning logic eventually
+
+Day 60 - 7/9/2017
+	-Took a break, but I'm trying to get back to this
+	-Added 2 new screens {(1,3),(3,3),(4,3)} with attributes
+	-Fixed a glitch in the player's code where it was storing in a wrong variable while pressing A and facing left, causing incorrect messages to come up like water when he's at sand.
+
+
+Day 61 - 7/10/2017
+	-Added the metatile definitions for (0,3) - The last two rows of screens are defined!!!!
+	-Moved the freshwater interaction logic to its respective freshwater place; added logic for salt water but for whatever reason when I tried to write it the game would break; but when I copied earlier code and removed the unneeded stuff, it worked fine even though I couldn't find out what I was doing differently. Oh well, it works and I can't see any red flags
+	-Added metatile and attribute definitions for (0,2)
+
+Day 62 - 7/11/2017
+	-Finally removed the hard-coded background palette and made it part of the screen structure!!! Background palettes change appropriately when a new screen is loaded
+	-Removed the attributes address table and made it part of the screen structure too. Looks much more like arrays-of-structures now
+	-Messed with the tree graphics in the CHR file a little bit to make them look better palette wise. Changed some browns to UBC to make it look better next to the sand
+	-Drew up sprites for a beehive
+	-Added a little more content to the bee AI flowchart
+	-As of 7:47 pm, screens 20-22 and 30-44 all have bgpal/metatile/attribute data! Over half of the map is defined!!!
+	-12.09k of code and data (including iNES header)
+
+	-- Month 3 --
+
+Day 63 - 7/12/2017
+	-Discovered a few bugs, fixed some but not all (See the bugs file on this date for more info)
+	-Finished 4 more screens - {(2,3),(2,4),(1,4),(1,3)}
+
+Day 64 - 7/13/2017
+	-Fixed a metatile loading bug
+	-Second row of screens is now finished. ONLY 5 LEFT!!!!!!!!!!
+
+Day 65 - 7/14/2017
+	-Added three more screens {(0,0),(1,0),(2,0)}
+	-TWO LEFT!!!!!!!!!!
+	-Thought of ideas for cave palettes and a palette for a rat enemy
+
+Day 66 - 7/15/2017
+	-Sample island is finally finished in terms of palettes, metatiles and attributes!!!!!!!!!
+	-Read up a bit on copyright and software license, and from what I understand anything you create is automatically copyrighted by law, and you can pick which license you give it (I'm currently thinking BSD, but as I read more about it I'm sure that'll change)
+	-I think I am gonna make the game open source, but I want there to be respect towards my "work"
+	-Added the copyright symbol and "All Rights Reserved" to the bottom of the title screen
+	-13.4k of code and data
+	-Added a "file select" state to the code
+	-Started a rough outline of file select state
+
+Day 67 - 7/16/2017
+	-Made a little progress on the file select state
+
+Day 68 - 7/18/2017
+	-Took a day off yesterday
+	-Worked more on the file select state. The three file "Frames" are drawn, but no actual file data is shown yet
+	-Added code to the file save and delete macros to respectively set and clear the file_contents flags
+	-Moved file_contents to SRAM as it was in regular RAM and wasn't getting saved
+	-Wrote code to display the saved file data to the screen but it's still buggy
+		-Only health gets displayed correctly, and the weapon and status strings are placed at incorrect spots on the screen
+		-Step through all the init code in the file select state tomorrow to figure out what the issue is. As far as tonight goes it's time to go to bed
+
+day 69 - 7/19/2017
+	-Fixed the bugs encountered yesterday in the file select state
+		-X was getting clobbered in the BCD subroutine, so I backed it up
+		-I was also forgetting to reset the low byte of soft_2006
+		-It now works correctly :)
+	-Init of file select pretty much done. There's very basic code in the main loop now to draw a cursor based off what file is currently selected.
+	-Added controller code to move the cursor
+	-The correct message based on whether or not the file has contents is drawn to the buffer
+	-Added logic for doing the right action based on the right file select substate
+	-After a shitton of frustrating errors and crashes, and a long time spent debugging, it finally works the way I want it to
+	-The game over screen now erases the data on the respective file
+
+Day 70 - 7/20/2017
+	-Started working more on the inventory state
+	-Planned out a structure for how inventory messages (Drawn immediately to the buffer rather than a character at a time) would work
+	-Started putting in the data
+	-Started adding code for drawing the right inventory message depending on the selected item cel
+		-For now I'm just making it so that it clears the status board on an empty cell
+		-Having trouble with this, so I'm gonna take a break for now
+
+Day 71 - 7/22/2017
+	-Took a mental break yesterday
+	-Fixed the little bug I encountered the last day of development (The PPU addresses were off). It works fine now
+	-Started working on what to do when selecting a message
+		-The message comes up (hell yeah!)
+		-Still need to draw the cursor at the right spot, make it run the logic, and implement what to do if its a jar
+
+Day 72 - 7/29/2017
+	-Took a week break to get my head refreshed, and to indulge in some of my other hobbies (Mainly playing NES, going camping with friends, working at my actual job, and watching Naruto since I'm a faggot)
+	-Came up with a simple optimization for calculating midpoints. I'd been using temp variables and basically subtracting the smaller value from the bigger one, dividing it by 2 with an LSR and adding it to the smaller value.
+		-Now what I'm doing is adding the two values together, and dividing by two with an ROR instead
+		-This gets the midpoint, and sets the sign bit accordingly if there was an overflow
+		-I didn't check the speed benefits (I know this runs faster though), but it basically cut the amount of bytes in half. And no temp is needed
+		-This is good because all the bg collision checks take a lot of time, especially when there's going to be a lot of enemies on the screen
+		-I'm sure this is trivial/obvious but I'm feeling smart for coming up with it myself :)
+	-Fixed an error in the CHR file where a pixel in the top-right sand tile was the wrong color
+
+Day 73 - 7/30/2017
+	-Thought of some more ideas, and added them to the ideas file
+	-Added screen area and screen difficulty variables to the varsandconsts file
+
+Day 74 - 8/4/2017
+	-I burned out a little bit on this project, but am trying to get back into it
+	-Looking again at this "Inventory message" System
+		-I think it would be a good idea to thoroughly review how the ogininal message system works, and try and structure this new one similarly
+	-Anyway, added the cursor positions for all the inventory messages
+
+Day 75 - 8/30/2017 (One year of being in development)
+	-Another big break since I had to start school again
+	-Finally (as far as I know it works, I just can't get a test prototype to work in C because I'm a dumbass) figured out a way to implement the system for keeping track of ents on previously visited screens
+	-Started translating some of the C functions I wrote into ASM routines
+	-Added the appropriate variables to the varsandconsts file
+	-Don't know when I'll be able to work on this again, but I haven't quit
+
+Day 76 - 9/6/2017
+	-Added a few more subroutines for the saved ent system
+
+Day 77 - 9/13/2017
+	-Added what to my knowledge is the last-needed routine for the saved ent system. Now it's time to start writing the code that'll actually call these routines
+
+Day 78 - 9/14/2017
+	-Started writing code to call all the routines I wrote
+		-Need to move the hard-coded ent init code, or get rid of it entirely
+		-Also need to actually test the game, but not everything is ready yet
+		-I'm almost positive there are going to be bugs of some sort, so be ready to step through a lot of code
+		-Need to add logic for not adding an ent to the saved list if it isn't an enemy
+
+Day 79 - 10/5/2017
+	-Finally started testing/steping through all the save ent system code
+	-Currently, ents seem to get saved okay (Need to test again for going to multiple new screens), but when reloading them, things glitch out
+		-Everything gets erased
+	-Im too burned out to keep debugging right now, but I'll get back into it
+
+Day 80 - 10/17/2017
+	-Finally got some free time again so gonna work on this more
+	-Noticed some small nasty bugs (i.e branching to wrong places, missing a DEY, etc) and fixed them
+	-Decided that it'd be better to save any ent that wasn't a player's weapon or an enemy's projectile (because there'll be non-enemy events like finding a stick on a tree that the player can use, but if he left and then immediately came back and it was gone that'd be shitty.) But I'll change something like that once I can actually get this whole thing to work properly.
+	-RETURNING TO THE FIRST SCREEN CAUSES SAVED ENTS TO BE RESPAWNED!!! (Killed two snakes on the first screen, left one alive, went to the second screen, came back, and the one was respawned where it had been when I left.)
+	-HOWEVER, there still seems to be logic issues, as when I killed some snakes on the second screen, went to the first screen, and came back, the three snakes all respawned in their starting positions.)
+	-[Completely separate from all this] Changed the player's movement code to check for leaving the screen as X/Y is being INCd/DECd.
+		-Managed to (from what it looks like at least) get rid of glitches when moving right, but it still occasionally happens when moving down and I'm not quite sure why, but it may have something to do with CMPing with #233, and branching based off the carry flag.
+	-After fixing a loop that turned out to be underflowing, Saving/loading across multiple screens seem to be working, except a few variables in main ent RAM seem to be getting corrupted.
+	-STILL SOME WEIRD GLITCHES
+		-Snakes will sometimes unexplainably die after a few seconds
+		-Snakes will sometimes stop being animated
+		-Snakes will sometimes have a wrong type/id/state (I could be mistaken about this one but look into it)
+		-Snakes will sometimes appear to not be touching the player, but still hurt/kill him
+	-Looking at the hex editor, the hitbox x/y positions are completely off from what they should be, which doesn't make any sense to me since they should get properly initialized in the InitEnt routine
+	-I've been working on this for long enough today though, so time for another (probably very long) break
+
+Day 81 - 10/19/2017
+	-Figured out the big culprit to all the strange bugs
+	-I'd originally been storing the saved ents in a different order (active, id, x, y; instead of x, y, id, active) and had written the swap routine to deal with the former arrangement - so when it was time to initialize the ent (assuming it was active and needed to be initialized), I'd written it so that whether or not the ent was active would be in the accumulator at the end, and could just branch past the ent initialization call if the ent wasn't active.
+		-BUT I forgot about this, (I changed this order so active could be checked first and save time not having to do the other shit if the ent wasn't active) (routine operates in reverse order), and so it was now treating the ent's X position as if it was its active variable, causing all the weird inconsistent bugs.
+		-After adding a simple LDA ent_active,x, everything finally started working as normal
+	-FUCKING GODDAMN FINALLY
+	-I'm still gonna do some more tests to make sure this actually for real completely 100% rock-solid works (And also as said in the previous entry I'm gonna tweak some things to include more ents than just enemies), but for now I'm really happy this is finally done
+	-Changed the player's spawn X and Y position so that he's not stuck between the sand/water at the start of the game.
+	-Made the player randomly get sick when he drinks unboiled water
+	-Added ent data for beehive and bee ents, and added metatile/animation data for the beehive (Still need to do it for the bees)
+	-Made it so that (at least it's supposed to) randomly spawn (based on the parity of the frame counter) either the three snakes or a beehive, but for some reason it seems to ALWAYS spawn the beehive.
+		-I'll look into this the next time I come back
+
+Day 82 - 10/20/2017
+	-I forgot to add AND #%00000001, so it was only branching based on whether or not the accumulator was 0, so it was a 1/256 chance instead of a 1/2 chance
+	-At first the game would glitch out graphically and crash when the player attacked a snake, but I fixed a few things in the animation data for the snake (Forget exactly what I did) and it started working okay again
+	-If this glitch happens again though, investigate further
+	-Still need to add metasprite/animation data for the bees
+	-Cleaned up the snake's code a bit. Removed some redundant load instructions, and added the fast midpoint trick
+	-Ent data isn't getting cleared correctly (I.e when going from a screen with 3 snakes to a screen with a beehive, there'll still be two snakes). Need to fix this.
+
+Day 83 - 10/23/2017
+	-Tweaked the ent overwrite routine to deactivate main RAM ents once they've been transferred to WRAM. This effectively solves the last issue in the previous entry
+	-Started reviewing the code for the inventory system, and picking up where I left off for how to approach dealing with the different choices that can be made with each item
+	-Added a variable that keeps track of which choice the player has currently selected for a given item
+	-Made a new note with ideas on how to do this, so that they'd be documented and saved somewhere for future reference
+	-Wrote code to display and move the cursor for decisions for each item
+		-Still need to implement logic for each item
+	-Added a LUT in the main bank for the area and difficuly (lo/hi nibble, respectively) of each screen, as well as code to fetch both of these
+	-Added an array in page 7 of RAM to keep track of the sprite palette index for the saved enemies
+		-as well as a variable keeping track of the current respective index for the current screen
+		-Still need to write code to work with these
+	-Drew an extremely shitty-looking placeholder crab sprite in the CHR file, and added a crab palette (subject to change) to the palette file and the skele
+	-Started laying down the foundation of the event structure
+	-The status board wasn't getting completely cleared when the inventory screen was first brought up.
+		-To try and remedy this, I added a call for ClearInventoryMessageToBuffer before it goes to the state's main loop
+		-Vblank-related graphic corruption ensued, almost certainly due to incorrectly tying up the VRAM buffer at the end
+			-The status board did however, through the corruption, appear to be correctly cleared
+		-It's time to be done for the night; come back with a pair of fresh eyes and fix it.
+	-16.22kb of code and data
+
+Day 84 - 10/24/2017
+	-Worked some more on the data in the event file
+		-Currently have 5 sample events: nothing, 1-3 snakes, and a beehive
+	-FINALLY FIGURED OUT HOW THE DMC CHANNEL WORKS!!!!!!!
+		-Wrote a simple test program that plays a looping shoddy-sounding sample (Try and figure out the best methods of getting the best sound quality)
+		-Never thought I'd hear myself calling me gay via an NES
+		-I'd never questioned that samples were huge in terms of ROM size, but I had no idea just HOW huge they were (My sample was like less than a second, and was over 3kb. However, the famitracker site had a list of various different samples used by various different companies. One of the samples used in the Japanese CV3 was really short but only like 65 bytes)
+			-Because of the thing with samples and bank switching, any samples I'd use would have to go in the fixed bank
+			-Therefore, I do want to use samples (Perhaps for drums / player weapon sound effects), but use them extremely sparingly and make sure they're as small as possible
+	-Came up with some concept ideas for the shore area music, and wrote them down
+		-Also started putting them into famitracker (As of 8:44 PM very good progress was made on the song)
+	-Discovered I'd started another song a while back that sounds very nice and evocative, but is just a loop (And I think it should be kept that way)
+		-I'm greatly considering using it in the file select state, but part of me is also thinking of just having the file select state be silent; as the music is fairly forward and happy-sounding rather than mysterious and ever-so-slightly foreboding like how I want the game to be
+	-Fixed some metatile collision errors in the map of (0,3) (Some tiles were solid when they shouldnt have been)
+	-I'd thought for a while that my powerpack had been broken, but it started working again somehow! I replayed some of the older versions (There were even a few from 2015 that I thought were gone forever, which made me cringe), and added today's build to the folder
+	-Fixed an attribute error on screen (3,1)
+
+Day 85 - 10/25/2017
+	-Finished up the shore song
+	-Tweaked it a bit more to make it sound better (Mainly just added more variety to the bassline, and also changed the volume envelope on the opening synths to make them fade in better)
+	-Ripped out the hardcoded spawning ents and wrote some code to fetch events based on the area and difficulty of the screen
+		-As I expected, the game crashed, so obviously something is wrong
+		-Fix this the next time working on the game
+	-Fixed the ^ issue. It was due to me forgetting to bankswitch back to the ents bank, and forgetting to back up Y
+	-Fixed the issue of ents being spawned on the first screen when starting a new game / booting up a saved file. All I had to do was get rid of a call to the SpawnEntsRoutine (Which for some reason (likely for testing) I'd put after it had checked to see if the file had just been booted up)
+	
+Day 86 - 10/26/2017
+	-Didn't do much today except think of some ideas for the jungle music
+	
+Day 87 - 10/27/2017
+	-Went back and looked at the "flowchart" for the inventory screen state, and revised it in a note on my phone
+		-Basically, it should show the status board initially, while the player can still select items with the d-pad, but it'll only bring up options if the user presses A. They can then press B to go back (and re-draw the status board to the VRAM buffer), or use the d-pad to select the options for what to do with the item. Pressing A will then perform whatever option was selected. A message will then be drawn, item counts will probably need to be updated, and then the status board will be re-drawn in the message style
+			-We'll now need another inventory sub-state
+			-We'll also need to revise the inventory code a bit.
+	-Started rewriting the inventory system code a bit. There isn't a routine to draw the status board all at once to a buffer (And the regular routine is really big so I don't wanna write it again), so the PPU has to be shut off for a frame or two when exiting back to the normal inventory substate
+	-I realized that the routine I had to draw the actions you can do with an item to the buffer only allowed for stuff to be drawn on one line
+		-I had to think about it for a while, but I think I finally figured out a way to draw multi-line strings on all 3 lines, without needing a clearing routine
+			-I wrote down the pseudocode and saved it in the workspace.
+			-It's friday and halloween weekend, and I also have to go to work in like 3 minutes, so I'll implement this another time
+			
+Day 88 - 11/7/2017
+	-Another long break from development, but had to do fun exciting college shit
+	-Discovered that the working title "I Was Marooned" is going to have to be changed, because I learned being "marooned" means being deliberately sent to an island by a person or group as punishment, and thats not what the game is about
+		-I did however find some good reference material on wikipedia about actual cases of marooning/castaway/shipwreck, which I'm going to read eventually
+	-Translated the pseudocode routine I wrote last time into ASM
+		-Tweaked the pseudocode ever-so-slightly to account for some retroactively-noticed bugs, as well as to clarify some ambiguities
+		-ASM routine is still buggy and causes the game to crash, but I've started getting to the bottom of this
+		- READ THIS -> - The next time you come back to work on this, thoroughly review the routine to make sure it still makes sense. Then step through the code carefully in the debugger (Already have the breakpoint set up)
+		-After class, I was able to figure out the issue after only a little bit of headache
+			-I was adding vram_buffer_pos to X (via TXA), which was unnecessary. I only needed to add 4 to X each time, and then store it in vram_buffer_pos, and transfer it back to X
+			-It now works as intended!!!
+	-Got rid of ClearInventoryMessageToBuffer, since we don't need it anymore
+	-Still some logic errors once an item has been selected (like for example, if you press down you can go to the save option, and the whole system basically degenerates until you press B)
+		-I'm pretty sure I just haven't written code for these sections yet. So I still need to polish up that, and I still need to implement what logic happens when the player selects a choice for what to do with an item
+	-Fixed the code so that now the player can select all the appropriate choices that come with each item. So the above problem is solved. :)
+	-Re-added an ampersand tile to the CHR file
+	-Added some more messages, and wrote some basic placeholder code for item choice logic
+	-It looks like we're gonna have to rip some shit out in order to make logic for each item choice happen
+		-In the inventory state main loop, it pushes at the beginning and pulls at the end the current PRG bank. We currently have it that the message would be drawn, and then the status board would be redrawn. But this isn't going to work since performing an action on an item can sometimes manipulate other items, so instead the whole screen will need to be redrawn (The state will need to be re-initialized)
+		-Thoroughly go over the code, and think long, hard, critically, rationally, and logically about what to do. Make sure the approach and solution isn't kludgy and won't break the game further on down the road.
+	-Tweaked the IRQ/Break code a bit so that it hardware-disabled NMIs via $2000, so that the screen will be tinted red completely, making it more obvious that the game crashed
+	
+Day 89 - 11/8/2017
+	-The new current working title is now "I Was Stranded"
+	-Replaced some more "magic numbers" with their appropriate corresponding labels
+	-Fixed yesterday's issue
+		-We didnt need subroutines for the logic. Instead we can just jump to them indirectly, and then jump back to Inventory_DrawCursor
+		-I had nested each item's logic further based on choice, so we had to read from an address table, and then use the choice to jump based on addresses in a jump table. I'd forgotten about this and was jumping to the first address instead of digging deeper like I should have
+		-Once I figured this out, the game went back to working like it should
+	-Added code so that the ents wouldn't be drawn in any of the mbox-related game states if we'd come from the inventory state
+	-As of 4:25 PM, I've gotten everything to work as it should. All that's left to do is get rid of the cursor sprite when the message is being drawn (which I doubt'll be very hard), and write the actual code for each item's choice (Can probably just write hard coded values, and then branch to a common place where it'll use that value as an index to load the appropriate message and JMP back to Inventory_DrawCursor)
+		-Maybe I'll take another small look at this when I get back from work
+	-(After work) Just needed to clear inventory_status and that got it to work as intended
+	-Started writing the message data and logic code for all the currently-implemented choices for all the currently-implemented items
+	
+Day 90 - 11/9/2017
+	-Designed some sound effects at 1:40 AM since I'm dumb and not tired and have class in 6 hours
+	-Moved any code in mbox response dealing with reading the Dpad / moving the cursor to the game state's main loop. This effectively saved some ROM space and made more sense.
+	-Fixed a bug in the player's code where I'd forgotten to change his BGcol hitbox when interacting with the world while facing up
+	-Ended up staying up all night (A very smart idea indeed) and eventually started working more on writing code / typing in message data for the various different item choices
+		-Fixed a bunch of tiny little insignificant bugs / cleaned up a bunch of small shit
+	-I think the routine I wrote to add to the count of an item has logic errors in it, but I'm too retarded right now to understand what I coded, so I'm gonna make a test ROM for the routine later (And then when/if I fixed the error, add a similar subtract routine)
+	-Wrote a test program and was able to figure out and fix the logic errors in the add to count routine
+	-Implemented a subtract from count routine, and got it to work as intended
+	-I realized that add/sub/check routines are still buggy since I forgot to account for different files
+		-For right now I commented out the calls for these routines, but there's still some strange things going on
+			-When the player eats raw meat, it'll display the message and then immediately (without waiting for the user to press anything) go onto the next message saying he got sick; and for the life of me I can't figure out why this is happening.
+			-The issue finally seemed to solve itself and I'm not 100% certain how. My best guess is that I'd put a .db by the routine to help find it in the ROM, but I'd accidentally put it in front of the routine's label rather than behind it causing the data to get executed as code
+		-TODO: Go back to the test suite, and make SELECT change the current file, incorporate the MultiplesOFThree LUT which I think should help in changing the item routines to work with the multiple files. It makes sense in my head that working with the bits (i.e obtaineds and has counts) would need 3 LSRs, but working with nibbles (i.e counts) would only need one
+	-Despite that one little issue, all the choices for the currently-implemented items have been implemented
+	-17.2kb of code and data (Not counting header or CHR data, or the interrupt vectors at the very end of the ROM) [only 13.44% of the 128kb of ROM is used so far]
+	-Started work on the sound engine (Got to tutorial 6, so the engine currently supports rests)
+		-Wrote a little 5 second jingle (Which is actually just the first 8 notes from the Solstice theme) to make sure it works
+		-Engine and data currently take up 640 bytes, so add that to the ROM total I guess (~17.75kb)
+		
+Day 91 - 11/11/2017
+	-Implemented volume envelopes in the sound engine (now sounds exactly identical to the first 8 notes of the Solstice theme)
+	
+	-- MONTH 4 --
+	
+Day 92 - 11/13/2017
+	-Worked on the title song in Famitracker
+	-Added opcodes to the sound engine, including finite and infinite loops
+	-Started putting the shore song into raw data (Finished the lead track (minus vibrato / slides) and started on the accompaniment track)
+	
+Day 93 - 11/14/2017
+	-Shore song is completely finished as game data except for the vibratos and portamentos on square 1 (Who's opcode routines still need to be coded in the sound engine)
+	-Music engine + its various data + data for sound 1 = almost 2k of sound engine bank filled (6 tiles are still empty so technically its 2048 - (6 * 16 = 96) = 1952 bytes / 1024 ~= 1.91Kb)
+	-19.9k of code and data (Not counting header, CHR data or vectors)
+		-I technically miscalculated last time I measured in that I considered the entire file, but wasn't counting CHR data. since currently one of the 7 switchable 16k banks is being used for CHR data (Since we're using CHR RAM), so technically the amount of PRG space we have is 112kb. Therefore, the ROM is currently about 17.76% full
+	-Got rid of the shore song being hard-coded to play at the title screen, and instead added a table in the main bank of which song to play based on the game area, and also added to LoadScreen to check for new areas (added an area_old variable, could probably just compare the area byte in the screen structure to whatever area is, but I only want the music to start playing after everything's been loaded, since the whole thing takes a few frames) and play a new song if the area changed
+	-Figured out how to pause the music (IDK how I'd go about playing a pause jingle, as I'd have to disable the main BGM channels, add a pause jingle playing state, and then actually disable the sound engine and go to the main pause state. Then when the player presses start actually call SoundInit again. Seems feasible I guess. Maybe I'll eventually do it, but for now I think it's fine as it is.)
+	-Discovered a bug which I added to the bugs file (How appropriate that this is on line 666)
+	
+Day 94 - 11/15/2017
+	-Fixed the bug I discovered last night. Turns out I was using regular temp variables instead of sound engine temp variables in one of the sound engine's subroutines, and it was corrupting the LoadScreen routine which uses the regular temp variables and takes several frames to complete.
+	-Made it so that items can be collected by stabbing them / colliding with player's weapon, but they seems to disappear immediately since the weapon is usually always on screen when the enemy is killed. Try and spawn the item away from the player, depending on his direction, and see if that makes it so that you can actually see the item before you collect it (See how Zelda does it)
+	-Turned out the code I'd written wasn't logically correct (For one it didn't check if the weapon was active or not, and I'm sure there were other things but I added a hard-coded heart to spawn with each screen and it immediately deactivated.)
+		-So what I did was add subroutines in the ent system for checking player and player weapon collision, and added these calls in all the appropriate ents' code.
+		-Although this'll make the code slightly slower because of the overhead for calling / returning from subroutines, it made it considerably smaller.
+		-Unfortunately, because of how snakes are currently coded, I had to leave in the code for player collision, as it contains the code for moving the snake. However, I was able to put in the call for the weapon collision check, so the snake code got reduced a bit
+		-TL;DR the player can now stab items/powerups and collect them
+	-Tried to make a sound effect play when a heart is collected, but it caused the game to glitch out (albeit not crash somehow)
+		-Might be an issue with the sfx header data, and/or the sound engine itself. Debug through the appropriate code and look at one of Metal Slime's example SFX
+	-I'm an actual dumbass and forgot to add the SFX's address to the table, as well as include the data in the skele file
+	-Fixed a few typos (resulting in incorrect notes) in the triangle track of the shore song
+	-Added a master volume variable, but haven't done anything with it yet
+	-Implemented the pause jingle
+	-According to the .lst file generated by ASM6, the source code is currently 10,328 LOC, but this is counting empty lines / lines with just comments. I still wanna make a python script to calculate how many actual lines of code/data there are. I highly doubt it would be that hard
+	-Discovered a bug where sometimes on sound effects the last note of the previous sound effect will play right before. I went through all of Metal Slime's code, whose examples don't have this problem, but mine seems identical. Anyway, I added it to the bugs folder. Right now I don't think it's a super huge deal tbh bc it only lasts for a frame
+	
+Day 95 - 11/16/2017
+	-Started trying to implement vibrato. It seems somewhat non-trivial, but I was able to get it to kinda work. I'm sure there are more special cases I haven't accounted for yet where the vibrato wouldn't work (aka play the wrong king of frequency entirely), but I'm not worrying about this for right now
+		-For some weird reason it seems to skip the note that comes right after it, and when I put it at the start of the shore song it caused the channel it was on (SQUARE 1) to go silent for a while (but eventually come back in out of sync with everything else, but nevertheless doing vibrato)
+		-Debug and look into it
+	-Added a stab sound effect (It sounds kinda weird with the beginning of the shore music (using the noise channel for the crashing of the tide) so maybe try and keep tweaking it a little)
+	-Added save sound effect
+	-Added file select sound effect
+	-Added general selection sound effect
+	-Added player damage sound effect
+	-Added new item acquisition sound effect
+	-Added player near death sound affect (Classic in games like Zelda, Metroid and many others; tho here it only happens once every ~4.25 seconds so it's not nearly as annoying IMO)
+	-Fixed it so that the music now goes silent when it's game over
+	-Started reading Robinson Crusoe for inspiration / reference
+	
+Day 96 - 11/20/2017
+	-Just added a DEY in the vibrato on / vibrato off opcode routines, since the sound engine was designed for opcodes with operands
+		-Vibrato now works how it should!!!
+	-Tweaked the ent drawing code ever-so-slightly to make ents in PHI flicker every 1/30 second instead of 1/60 second, so hopefully no ents'll disappear if the game is recorded or whatever
+	-Added portamento (Got rid of the destination variables and just have the flag that says whether pitch should increase or decrease. Currently both happen with a hard-coded dp/dt of 5 per frame)
+	-SHORE SONG IS FINALLY COMPLETELY FINISHED!!!
+	
+Day 97 - 11/23/2017
+	-It's been Thanksgiving weekend so I've been relaxing and not thinking too much about the game, but I wanted to just knock the inventory item count bug shit out of the way
+		-(It technically is the early morning of Thanksgiving, but I'm awake and will probably sleep better if I can figure this shit out, because once I do it'll be time for a new "arc", if you will, in development)
+	-I'd thought that the reason the routines for adding/subtracting from item counts weren't working was because I wasn't accounting for the 3 different files, but luckily that isn't the case since they get copied from file RAM into main RAM and can be worked with from there. I'd been dividing by 8 instead of 2 (thinking in terms of bits instead of nibbles); and the latter is correct because counts can be 0-15 and are packed 2 to a byte. I debugged these routines and they worked correctly in the game (same as the little test ROM I made)
+		-The routine for fetching the item count used 3 LSRs, so fixed this to only have one
+		-The code in the inventory state to draw the item counts first checks to see if the current item has a count, and if so call the routine to fetch it and then convert it to BCD and all that jazz. But the routine to check if it has a count clobbers the accumulator, whose value is needed as a parameter for the count fetch subroutine, and I wasn't accounting for this. Once I fixed the issue, it worked correctly! Yay.
+	-However, if you have 0 meat, and still select the "eat" option, it still shows the message saying you ate the meat.
+		-Turns out I'd commented out the code to do this when I'd been trying to pinpoint the bug. When I uncommented it it worked just fine. :)
+	-Feels great to finally be done with this shit. All that's left for the inventory screen now is to add page turning, but we'll cross that bridge when we actually have more than 16 items implemented
+	
+Day 98 - 11/26/2017
+	-Added some more pebbles to the mountain to spice up the look a bit
+	-Started un-hardcodifying the enemy sprite palette, and instead loading it from event data and saving it with the previous screen data
+	-Added the RAM variables for saving the metatiles/attributes of the 4 previously visited screens (After playing the game more, decide if these need to be saved or not) (Decided instead that these shouldn't be necessary)
+	-Wrote down some ideas I'd had in my head for a while in the ideas file
+	-Added address tables for the palettes for the enemies and weapons
+	-Made the player's health/hunger/thirst start at 100 when the game starts. The reason why is because (muh hyperrealism) if you were straanded on an island, you'd probably start out hungry, thirsty, and a bit beat up
+	-Made it so that when the plwyer's moving down he'll go to a new screen at the actual bottom of the screen, not the NTSC one. This is just in case people ever play in conditions where more than 224 scanlines would be shown (IDK enough about TVs / monitors to know if this could happen in screens that aren't PAL)
+	-Started watching Lost again (started over), and took some notes on the geography of the island
+		-also drew some crude sketches of shrubbery/grass
+	-Got rid of SpritePalette, and instead just have PlayerPalette and MiscPalette, which get loaded in PPU sprite palette slots 0 and 3 respectively
+		-When loading a file / starting a new game, the correct palette for whatever the player's weapon is gets drawn to the buffer
+	-Added a routine to shift previous screen's enemy sprite palettes down similar to what we'd been doing
+	-A beehive / hornet nest (Same difference really) gets spawned with the correct palette when entering a new screen, but goes back to the snake palette when re-entering; so something's still not right
+		-I've tried a bunch of different things but it's still buggy - The general theme seems to be that any previously-visited screen seems to take the palette of the most recently-visited screen
+		-Step through the entire SetUpEnemies part of the LoadScreen routine the next time this is worked on
+		
+Day 99 - 11/28/2017
+	-I was obviously tired last night, because I accidentally typed LDA instead of STA in a particularly important spot. Now that I've fixed that everything seems to be working the way it should
+		-One thing I've noticed (And I may have addressed this before), is that when going to a new screen, any enemies on the previous screen will be on the new screen for a for a frame. It's not a huge deal but it's noticeable. See if it's worth the effort of trying to fix.
+	-Made it so that enemies will only register hits on the player if he's still alive (Added a separate variable to keep track of the player being alive, because the ent still needs to be active so that he can be animated while dying, but not have his code be run, and so that enemies can't keep attacking the player if his health was at 0 (Otherwise it would roll under and keep changing, which looks glitchy and would confuse the player))
+		-Made a separate reminder note about this in TODOS to do this for each new ent
+		
+Day 100 - 11/29/2017
+	-Wrote some placeholder code to (hypothetically, as I haven't tested it yet at the time of writing this) move in a medusa-head sinewave pattern
+		-Added a trig table where 64 floogins = 90 degrees
+		-Ran the game and it didn't crash, but the RAM state of the music engine was in sprite OAM
+		-I don't understand how this happened (It looks like the game got stuck in the drawing loop because the blue tint wasn't there) but I'm hoping it'll fix itself once I actually add the bee metasprites. Lol
+		-Saved this glitched ROM because I thought it was both cooel and funney
+	-Added the bee metasprites
+	-The "medusa" movement turned out to be very glitchy albeit eratic
+		-Going to review the old trig movement code I wrote a long while back to bring some memory back to what I did
+	-Discovered that VRAM changes don't happen when going to a new screen. What I mean by this, is that if for example the player gets attacked right as he's exiting the screen, his health will still be the same until he gets attacked again, at which poing it'll jump to the correct value
+		-I changed the VRAM buffer tie-up code at the end of the main loop to always peform VRAM updates unless in the game over state, which I believe fixed the problem.
+		
+Day 101 - 11/30/2017
+	-Still haven't made much leeway in making the bee move in any interesting pattern
+		-Realized I'm gonna have to do 16-bit LSRs and stuff, but I still don't know if there'll need to be any signed 16-bit math
+		
+Day 102 - 12/7/2017
+	-Been studying for upcoming finals, so that's been more important
+	-Added some different simple AI for the bees
+		-Their X and Y position increase/decrease based on bit 0/1 of random, respectively
+	-It's apparent that we're going to need a different sprite cycling method, like drawing ents in a pseudorandom order instead of incrementing the OAM index by a prime number; since the bees can barely be seen when they're on/around the hive
+	
+Day 103 - 12/17/2017
+	-The semester is finally over, so I'm working on this some more
+	-The pseudorandom ent cycling idea I'd thought of has turned out to be trickier than I'd thought, since I'd want the player, his weapon, and then the next slot to all be drawn in that order, but have the rest of the ents be drawn pseudorandomly. I'd need a way to be able to quickly do MOD 13, and then add 3, which would be a bit of overhead. So for right now, this idea is on hold, and I'm sticking with my original sprite cycling method
+		-Although I may change it to cycle through ents instead of OAM, to see if this proves to be faster. It seems like adding any kind of priority is going to ultimately end up making ent drawing slower (due to more overhead.) I'll worry about this later
+	-Un-hardcodified SpawnWeaponEntBasedOnPlayer
+	
+Day 104 - 12/22/2017
+	-Been enjoying break (Also just beat Twilight Princess for probably the 25th time)
+	-Need to add enemy spawning coordinate tuples to each screen for each terrain, as well as the byte of flags saying which terrains each screen has
+		-Also added pseudocode comments in SpawnNewEnts since I have a new plan
+		
+Day 105 - 12/28/2017
+	-Started writing down what I wanted for the level editor
+	-Added some enemy spawn coordinates for screen (0,0)
+	
+Day 106 - 3/27/2018
+	-Another long procrastination break.
+	-Decided to abandon the level editor for right now. (And probably permanently. You never know though, I'll see how much of a pain in the ass it is to keep typing in screen data by hand, and if it would be worth the effort to make a tool)
+	-Added to and changed bee code, so bees can now be killed!
+	-Reading though the snake's code carefully again, it's very sloppy and hard to understand. I think it should eventually be re-written completely.
+	-Added a table in the fixed ROM that maps enemies to their terrains
+	
+Day 107 - 4/5/2018
+	-Had an idea to give the player a flintlock pistol and 30 rounds. He can do whatever he wants with it but once he runs out, they're gone
+	-Added variables for rounds the player has (needs to get set to 30 at the start of a new game), as well as more weapons string
+		-Also added the gun as an Item. We now have 16 items, so the next item we add, we'll need to add page flipping logic in the inventory screen
+	-Tweaked the message drawing code a bit to draw the # of rounds when the messagebox opcode is reached (A lazy way of doing it but nothing else will be happening so I don't think it's a huge deal)
+		-The inventory screen now draws garbage tiles, and when the gun item is selected, 2 blank tiles are drawn where the rounds BCD tiles should be drawn
+			-Debug and fix it
+			
+Day 108 - 4/7/2018
+	-Fixed the inventory screen bugs, not all the inventory screen item strings were defined.
+	-Fixed some inventory message logic, added a few more messages (and message logic)
+	-Fixed the gun rounds BCD issue (The code was in the writing MSG state logic. It should have gone in the DrawInventoryMessageToBuffer routine)
+		-Works fine now
+	-Added bullet sprites, set up all the ent data for the bullets, made a simple placeholder BulletRoutine that just RTS's at the moment
+		-The spawning positions for the up and left bullets are off, so those need to be fixed somehow
+		-The SpawnWeaponEntBasedOnPlayer may need to be more abstractified
+		
+Day 109 - 4/8/2018
+	-Played through the game and discovered that, when the jar and meat are collected, the inventory options cursor for the gun doesn't get displayed.
+		-Even though it does when those 2 items aren't collected
+		-Debug and fix
+		
+Day 110 - 4/10/2018
+	-Drew some gun explosion sprites and a gun sprite, and added a gun/bullet/explosion palette. Started separating the bullet ent from the gun ent. The gun should just get drawn and then deactivate once the player leaves the attacking state. It can go to the last ent slot.
+	-Started fixing the SpawnWeaponEntBasedOnPlayer, added comments for what to do. Remember to change player's attacking code as well.
+	
+Day 111 - 4/11/2018
+	-Changed the player's hitbox size from 15x23 to 9x23
+	-Fixed a few minor un-noteworthy issues
+	-Changed SpawnWeaponEntBasedOnPlayer
+		-A bit of a hard-coded nightmare, but they're all in tables so I guess it isn't too bad. The one real bitch of it is magic numbers have to be subtracted and added when it's the bullet, so the gun/explosion's in the right spot
+	-Game crashes when a snake dies. Fix this.
+	-Added gun metatile / animation / hitbox definitions.
+		-Spawn positions are off, and some of the individual sprites' flip bits are wrong, so fix these. Also make the explosion last 2-3 frames
+		-I'd forgotten how the PHI timer variable works. It's defined in ent data, but isn't used at all by the game. I added a separate variable, ent_phi_time, to keep track of this. I think it might be time to add init code for ents, since in the init code for bullets I'd set the timer to the time. BUT FOR RIGHT NOW I'm just gonna dec ent_phi_time, even though this shouldn't be altered.
+		
+Day 112 - 4/12/2018
+	-Fixed the issue with the snakes - Since I got rid of resetting direction on ent init, and only had one direction defined for the ent metasprite/animation data, garbage was getting loaded.
+	-Added more logic for when the player's attacking. Weapons with count now get decremented when they are used, with a specialization for the gun/bullets. However, the player goes into attacking for 1 frame and then goes back to normal, and this looks weird, so fix this.
+		-Also, I think it would be better if the gun was still spawned when it's out of bullets, but no explosion. Maybe play an "empty clip" sound effect too
+	-Fixed the bug from 4/8 with the cursor not showing up for the gun. When the item action selection cursor positions are being fetched, I needed another TYA for it to work as intended. Somehow it still appeared to be working for the rest of the items
+	-21.6kb of code and data
+	
+Day 113 - 4/13/2018
+	-Started working on a new Title song in famitracker. It still needs some work, the harmony in the second part I feel could be a little better.
+	-Added bullet movement code
+	-Made it so that the gun doesn't show the explosion if you're out of rounds
+	-Added HUD as floating sprites that let one know how many rounds you have left after shooting the gun
+	
+Day 114 - 4/14/2018
+	-Converted a gunshot sound effect to DMC
+	-Came up with an idea for having a bank dedicated to just DPCM samples, and loading whatever the current one is into WRAM (but as of typing this that might take way too long, since samples are several kilobytes long, and if samples are constantly changing, new ones would have to be constantly transferred, so I guess this won't work. Try and replicate gunshot with noise channel)
+	
+Day 115 - 4/15/2018
+	-Made it so that items you collect appear above your head briefly so you know what you got.
+		-When doing this, sometimes the game would glitch out (Looked like a vblank error, but it also would fuck up the sprites to the music) when you went to a new screen after collecting meat, but then it seemed to stop (The meat wasn't appearing over the player's head, but then it did, I can't remember if I changed any of the code, or if it was appearing and I didn't notice, so IDK for sure.) But Be aware of it, and if it happens again try and fix it.
+		
+Day 116 - 4/17/2018
+	-Changed the gunshot DMC sample
+	-Added an "empty clip" DMC sample
+	-Added the data to the game, in the $F000 bank
+		-We now only have about 1.25Kb of stuff left, but still about 4k free before it (in $C000 bank), so move some stuff around if it starts to get cramped
+	-Hard-coded it so that the gunshot sound effect plays (without looping) at the start of the game. It only plays when everything gets set up in a specific order, which I don't really understand the reason for.
+	-Made the empty clip sound effect about 100 bytes shorter by trimming off some unnecessary data at the end of the file
+	-Added spawn coordinates for the ground and the trees for the top-left most screen
+		-Also changed the Y-coordinates to account for the 48-pixel offset of the status board
+		
+Day 117 - 4/18/2018
+	-Fixed controller reading to be safe against DPCM conflicts
+	
+Day 118 - 4/19/2018
+	-Added an "Enemy hurt" sound effect to the game
+		-Maybe tweak it some more to see if it can sound better
+		
+Day 119 - 4/23/2018
+	-Started integrating DMC into the sound engine. It's a little ugly since I guess the sound engine wasn't really designed with DPCM in mind. Need to adjust all headers in the music data files, as well as test to make sure everything still works. But I'm gonna try not to touch this project again until the school year ends, since I need to focus on finals.
+	
+Day 120 - 4/24/2018
+	-I lied, fuck me
+	-Made a few touch-ups to the beehive sprite
+	-Drew a new crab sprite which looks way better than the other one, but could still be improved. Added animation mockups in nesst but havent put the metasprite data in the game yet.
+	-CHR about 56.4% full.
+	
+	-- MONTH 5 --
+	
+Day 121 - 4/25/2018
+	-Lol
+	-Looks like I got DMC implemented into the sound engine ok. I've only used DPCM samples in sound effects so far, so I can't say for sure if they'll work in songs, but it seems like they would
+	-Added the logic to play the correct sound effect when the player uses his weapon, depending on what weapon it is. As well as playing the empty clip sound effect if he's armed with the gun and doesn't have any rounds left.
+		-For some reason the gunshot sound still plays even when the player is out of rounds. FIX THIS (Was using a LDA when I should have been using a LDX)
+		-Also the game now freezes for a second upon loading screens. Probably has something to do with the sound engine, look into this. (Seems to somehow be fixed even though it didn't seem like I did anything to fix it. Oh well, better documented in the bugs file.)
+		
+Day 122 - 4/29/2018
+	-Trimmed the todos up a bit. Have several different approaches to spawning things like sticks/coconuts/debris. This'll be a summer challenge (BE SURE TO PLAN CAREFULLY, MAKE LOTS OF TRACES ON PAPER.)
+	-Wrote some pseudocode for the crab's logic (Going to resemble a state machine, will hopefully be more concise than the snake's ugly code)
+		-Start implementing that, along with the bees' logic, over the summer
+	-Added an idea to the ideas file on finding rope on the island and using it to traverse mountains / climb over rocky barriers.
+	
+Day 123 - 5/1/2018
+	-Discovered a bug where, once the player runs out of rounds, switches to the knife, but then switches back to the gun, it still draws the knife sprite. Fix this
+	-Fixed some message logic so that, after drinking unboiled water, it'll only say the player got sick if he isn't already sick.
+	-Changed the map data for the screen with fresh water back to how it should look (Changed it originally to make sure interactions with the world worked correctly)
+	-Re-discovered a (imo nice-looking) bird sprite in a CHR file for an old project, and added it to the CHR file, as well as a possible palette in the skele file
+		-Can swarm around the player and try and peck him / gash him with their talons
+		-Can collect feathers to make arrows? (Stick + feather + (sharpened stone = stone + energy?))
+			-Would reguire a bow? (Stick + thread?), would this work in a similar way to the gun where the arrow is the actual weapon and the bow is just drawn? Would the bow need to be drawn? Does Zelda draw the bow when Link uses arrows?
+		-Added this all to the ideas file
+		
+Day 124 - 5/4/2018
+	-FINALLY SUMMERTIME AGAIN
+	-Wrote down some more ideas
+	-Came up with some ideas for the clearing area music
+	-Changed all the volume envelopes to have a max volume of 7 so the triangle and DPCM can be heard better.
+	-Fixed the gun sprite knife bug. (Documented in bugs)
+	-Realized it had been 6 months since I tested on real hardware, so put the latest build on the powerpak.
+	
+Day 125 - 5/7/2018
+	-Did some more work on the jungle song (Added a good-sounding bassline)
+	-Worked more on the title track 2 (Changed the volume of the accompaniment to make it sound more balanced)
+	
+Day 126 - 5/8/2018
+	-Started working on a possible contender for the intro cutscene music
+	-Started adding the title music (version 1) to the game as data
+		-Vibrato and portamento need to be worked on as they glitch out
+		
+Day 127 - 5/9/2018
+	-Fixed the vibrato glitches
+		-Had to do with a mixture of incorrect 16-bit math and overwriting temp vars / registers
+	-Fixed portamento
+		-I believe the 16-bit compares were correct, but higher notes = a lower period value, so I was getting that confused
+		-It still sounds coarse at some points, so maybe, each frame when the pitch is changed, compare it to the pitch of the destination note, and turn porta off once it reaches. (Comment out the current data as it'll be different.)
+			-Did the method I described above, and it now sounds great
+	-FINISHED THE TITLE SONG!!!
+	-24.185kb of code and data. Now officially bigger than an NROM-128 game!!! (I guess it has been for a while now, since this isn't counting CHR data, but still)
+	
+Day 128 - 5/10/2018
+	-Adjusted the screen exit boundaries some more since that player's hitbox had been changed
+		-No more more sprites dropping out due to 8-bit limitations
+		-Looks good from all directional entrances / exits
+	-Realized last night that I'm going to inevitably need to increase the ROM size from 128kb to 256kb. Screens are just gonna take up too much space. Assuming the island will be 16x16 screens, and each screen will be 256 bytes (Which on average, I'm guessing it will be, after compression, attributes, terrain and enemy spawn data), we're gonna need 4 banks for all that. And of the 8 we currently have, we have 1 for the engine, 1 for ents, 1 for music, 1 for events, 1 for CHR, 1 for messages, and 1 already used for metatiles / graphics. There's only one left currently, so more space WILL be required. Especially since I highly doubt all the CHR data will fit into one 16kb bank. I think messages / text data should be able to fit in 16kb, as should event data. Music and ent code / data I'm a bit apprehensive about though, but I'm gonna try to fit it all in one bank too. Otherwise, it isn't the end of the world, but I'll need more data in the fixed bank about where each enemy goes, as well as a bunch of trampolines which'll get really ugly.
+		-But we're okay for right now.
+	-Some time tomorrow or tonight, I'm gonna finally start tackling the screen structure todo again. Starting by going through all the notes / memos I have about it first, and then doing sketches on paper to see which approach would be the best. And then I'll start coding. I think having things like coconuts and whatnot is gonna be more difficult to be honest, but I've divided those into two separate issues, the former of which I'm going to work on first.
+	-Transferred all the ideas I'd written as notes on my phone over the years (jesus) into the ideas file
+		-Gonna do the same with voice memos tomorrow, which'll probably be more of a pain since I probably haven't labelled them all accordingly
+		-Also started a master file of approaches for randomly generating events / encounters / enemies / whateveryouwannacallit.
+	-Ended up going through voice memos later in the evening, and it seems like there were really only 2 different ideas I had on how to spawn things like coconuts. I'll have to keep thinking about these two to see which one I like better / which would BE better. Idea 1 seems like it might be a bit more complicated than idea 2, but we'll see.
+	-Added enemy spawn coordinates for screen (1,0). Going to both this and the first screen now crash the game (for now at least)
+	
+Day 129 - 5/11/2018
+	-Started work on spawning ents based on the lists of random hard-coded points
+	-I can already tell that this is gonna require a lot of debugging, so get ready for that
+	-Decided it's finally time to split some of the structures up. Moved the ent spawn data to its own structure. Since the prev ent system dictates that everything'll need to get updated at the same time, that sets a hard limit on where everything can be. So now I'm thinking ent updates will need to happen concurrently with metatile screen updates
+	-Moved the LoadMetaTiles routine to the skeleton file as a subroutine (for right now at least)
+		-Did the same with ReloadMetaTiles
+	-Started moving stuff around / putting comments in place for the new ent spawning approach
+	-Added a 48-byte array in RAM to copy ent spawn coordinates into so we don't have to keep bank-switching from events -> metatiles -> ents etc
+	-Started adding routines to the prev screen system to deal with the metatiles (Also added those respective arrays to WRAM - we now use 2kb of it, so I'd say the extra RAM was worth adding)
+		-Started on the swap routine. Still haven't tested anything yet, so I have no idea if it works, and again, be prepared to debug and step through a lot of code.
+		-I think all there's left to do is write the actual code to spawn the ents now (based off events and the sets of random hard-coded spawn coordinates)
+		
+Day 130 - 5/12/2018
+	-Looked through what I think to be the code in Mega Man 2 for the airman birds' movement. Copied the FCEUX disassembly into a text file. I think for right now I'm just gonna have the bees, when swarming, move towards the player, and then when they're on him (keep track of this), move around randomly.
+	-Put this in the ideas file, as well as a similar idea for the AI for mosquitos.
+	-Also made a few notes on scorpions
+	-Made a few notes on hogs AI
+	-Made a few notes on aligators AI
+	-Made a few notes on lizards AI
+	-Made a few notes on snails AI
+	-Made a few notes on bats AI
+	-Made a few more notes on how doors should work. The prev screen ent system should be completely reset when entering / exiting caves (But I guess we'll have to see. Make sure there's no way the player can get trapped and permanently fucked.)
+	-Wrote the code to spawn ents at the hard-coded random coordinates. I HAVE NOT TESTED ANYTHING YET, SO AS IVE SAID A BUNCH OF TIMES BEFORE, BE READY TO DEBUG AND STEP THROUGH A LOT OF CODE.
+		-I'm going to save that for another day (probably tomorrow) though
+		-And as I expected, after I got it to assemble correctly (fixing all the typos), the game crashes immediately after leaving the file select screen.
+	-Added spawn coordinates for the bottom-right screen where the player starts at.
+	-Looking back at the code later, there were a few things I forgot to account for, which I added to the top of the todos list
+	
+Day 131 - 5/14/2018
+	-Took a break yesterday (It was sunday and also mothers day)
+	-Tweaked the player's sprite a bit to make his pants 1 pixel taller to make it better look like they go around his waist.
+	-Worked a bit more on the jungle music. Started on the accompaniment track
+	-Changed the ent loading code to only load coordinate sets for terrains that are on the current screen
+	-Changed the ent loading code to only spawn ents if their terrain is on the screen
+	-Fixed a few of the new screen loading issues (Mostly bank switching / stack mishaps). Everything APPEARS to load correctly, at least at the start of a new game on a new screen. Obviously when the player goes to an immediate new screen, the game crashes as I haven't put spawn coordinates on any of them yet. But when you leave through the top, the game will only crash on the next screen if you keep moving (It shows garbage metatile data ofc). But if you turn around and go back to the first screen, you'll go to a different screen, or everything'll be messed up. Keep looking into this, but I wouldn't worry about it too much until spawn coordinates for the surrounding screens have been added.
+	-Tweaked the ending of the shore music slightly in the game (There were supposed to be a few measures of drums before the waves come back in)
+	-Added spawn coordinates to the screen above where the player starts at.
+		-The new metasprites weren't loaded, and there were graphical glitches. However, there was one snake that was loaded. The same issue of not returning to the correct screen was still present
+	-Fixed the new ent loading routine so that multiple snakes are loaded
+		-Still no new metatiles (Forgot to mention earlier that some of the actual tiles themselves in the top-left corner (below the statusboard) get overwritten with garbage)
+		-Ent loading, however, seems to work okay (For right now at least, until I optimize it (as best as I can) and implement the PRNG in it)
+	-It turned out the metatile bank wasn't being switched back in after ents were loaded (It was left at the events bank)
+		-But when I fixed this, the game full-on crashed, flashing screen and all. I'm gonna keep debugging for at least another half hour or so (It's 11:38 PM), and then call it a night and try some more tomorrow
+		-Another silly oversight. ptr1 (which was originally pointing to the screen structure data) gets overwritten during all the logic to load enemies. So it gets reloaded at the start of LoadMetaTiles, and now it works okay again
+	-The game still glitches out when you return to a screen, so there's obviously something wrong with the logic to reload a screen. But I'll debug that tomorrow.
+	
+Day 132 - 5/15/2018
+	-Worked more on fixing the bugs of the new prev screen ent system
+		-Added an OverwriteScreenData routine that goes before LoadMetaTiles, to actually overwrite the maps in WRAM.
+		-This fixes the issue of the correct metatile data being reloaded for a previously visited screen, but attributes are still corrupted.
+		-And also, when returning to the first screen, but then returning to the screen above it, attributes are glitched, the wrong metatile bank seems to be loaded, and the game crashes, so there are obviously still bugs.
+		-SOMETIMES, however, going back to thee second screen causes the metatiles and attributes to be loaded just fine (This seemed to only happen when no enemies had been spawned, but I could be wrong)
+		-Fixed the attributes issues (was reading from metatile map instead of attribute map), but the game still crashes when returning to the screen above spawn screen when there are enemies on it.
+		-Turned out some bankswitching needed to be done (Stuff was being read from the wrong banks.)
+	-Seems like ents now spawn at the respective hard-coded spots, and a screen's metatile and attribute maps are saved similar to how ents are
+		-Still need to add randomization for picking spawn points, but I'll do this tomorrow (or maybe later tonight)
+		-Also need to look at the ent overwrite / swap code to make sure things like powerups are also saved in addition to enemies. (If it's a powerup, re-initialize it (Since it's timer isn't saved), we also need to implement init code for ents)
+	-Added spawn coordinates for screen {(2,4),(3,4)}
+		-5 screens completed thus far (the top left screen was done a while back)
+	-Worked more on the jungle song
+		-Added a sample snare drum from a game I've never heard of called Palamedes (Puzzle game by taito apparently), and changed the accompaniment
+		-Sounds a lot more upbeat and cool-sounding, and the sample is only like 300 bytes, it can definitely fit
+		-I'm still afraid the melody strikes an uncanny resemblence to something I've heard before, and I'm just not aware of it, but I'm sure someone will point it out to me if that's true.
+		-Also started on the second part of the song
+			-Maybe at the end throw in some sound effects or something (To try and mimic animal cries.) I want the the ending to be interesting at least
+			
+Day 133 - 5/16/2018
+	-Resized the map in Tiled to 8x8 screens. I think people will want a little more than just 5x5 in the demo
+		-Moved some screens around (In Tiled)
+		-Now have to think up, draw, type in metatile data, figure out / type in attribute tate, and type in enemy spawn points for 39 new screens. Woo.
+	-Drew a rough sketch of how I imagine the the new 8x8 screen island to look in the journal.
+	-Expanded the screen address table
+	-Added spawn coordinates for (what is now) screen (4,7)
+	-Fixed the bug involving the player, the jar, and new screens. In the loop in the play state that processes each ent, I added a few lines of code so that it breaks out if game_state is different from game_state_old
+	-Added full screen data for {(1,7),(2,7),(3,7)}
+	-Added ent spawn data for (0,7)
+		-BOTTOM ROW IS DONE!!!! ~~~>1/8 done
+	-Implemented pseudorandomness into picking ent spawn coordinates
+		-Seems to work okay, maybe try and tweak a bit more as there seem to be a lot of empty screens
+			-For whatever reason there never seems to be anything on (4,7)
+			-Nevermind, enemies do spawn, it was just weird since there was nothing for like 5 tests
+	-Added full screen data for (7,6)
+	
+Day 134 - 5/17/2018
+	-Added enemy spawn data for {(0,6),(1,6),(2,6),(6,6)}
+	-Fixed a tiny bug in the ent spawn coordinate loading code, so now, if a terrain isn't on the screen, it'll correctly skip over that area in RAM
+	-Added full screen data for {(3,6),(4,6),(5,6)}
+	-Added tiles for a stick sprite to the CHR file
+		-Also got rid of some unncecessary character tiles, like TM " ;, and moved a few tiles around
+			-Had to change a bunch of magic numbers that I really should make symbols for
+	-Added some brush and shrubbery background tiles to the CHR file
+		-Also moved some tiles around to make it more compact
+		-Background portion of the CHR file is about 70% full now
+	-Bottom 2 rows of the island are now fully defined!
+	-26.56Kb of code and data (~24% full when CHR bank isn't included)
+		-Once the 64 screens are fully defined, the metatile bank is probably gonna be pretty much filled to the brim. (Just slightly under 6KB of data so far, for what's basically 30 screens of definitions (Because some don't have spawn points yet)). So ~30 more screens will probably leave us with 12-13KB of data. So that'll be enough for a few demo screens of the cave I guess. Just a heads up.
+		
+Day 135 - 5/18/2018
+	-Added enemy spawn data for {(0,5),(1,5)}
+	-Drew a lot of new screens. Concept for the demo island is now finished (nothing of course is set in stone though)
+	-Added some somewhat shitty-looking tiles for thorn bushes. Try and tweak some more
+	-Added full screen data for {(2,5),(3,5),(4,5),(5,5),(6,5),(7,5)}
+		-Bottom 3 rows of the island are completely defined now
+	-Made the knife able to destroy some jungle brush
+		-Found a small bug. When returning from some screens (I saw it when returning to (5,5)), after destroying brush, there will be some incorrect metatiles. Step through ReloadMetaTiles as this bug seems to be predictable.
+		
+Day 136 - 5/26/2018
+	-Took a week break to be with family and not think about the game too much
+		-Came up with some various ideas over break, which I made notes of
+	-Finished screen data for (0,4)
+	
+Day 137 - 5/28/2018
+	-Been busy being lazy
+	-Finished ent spawn data for (0,4)
+	-Finished full screen data for {(1,4),(2,4),(3,4),(4,4),(5,4),(6,4),(7,4)}
+	-Discovered that the player can sometimes crash the game when colliding with solid forest metatiles while inside of them. It might be jumping to an undefined garbage routine address, but I thought I defined everything for what I have so far.
+		-Only seems to happen when the player is above the status board (Which can happen when he zips through walls), so my guess is that, since his Y position gets subtracted by 48 to accound for the status board offset, it reads data that's out of bounds from the collision map in RAM.
+	-Randomized (0,0) coordinate locations in SESD lists
+	-First half of the new island is now defined!!!
+		-Commenting out all the screen data in the upper half of the island, the metatile bank is 6.39KB of data. So, not counting the metatile data, half the island takes up probably 6KB of data exactly. So there'll definitely be enough room for some cave screens
+	-Metatile/screen bank in total (Including empty screen template, metatile data, metatile address table, screen data address table, and SESD address table), It takes up ~8.5KB of data.
+	
+Day 138 - 5/29/2018
+	-Added full screen data for {(0,3)}
+	-Started adding screen data for (1,3)
+	
+Day 139 - 5/30/2018
+	-Finished full screen data for {(1,3),(2,3),(3,3),(4,3),(5,3),(6,3)}
+		-Bottom 5 rows of island completed!!!
+		-11 More screens, a few more that need ent spawn data
+	-Added full screen data for {(0,2)}
+	
+Day 140 - 5/31/2018
+	-Added full screen data for {(1,2),(2,2)}
+	-Added enemy spawn data for {(3,2)}
+	
+Day 141 - 6/4/2018
+	-Took another break from the project as I was beginning to have second thoughts / second guesses about the quality of the game, if I'm focusing too much time on it, whether or not it'll actually be good (Art not good, gameplay too boring / not engaging, lack of variety, lack or originality?), etc.
+	-I've decided I should at least finish the in-game map of the island (Not the map system, but finish defining all the screens.), fix that one glitch, and add the jungle music. I figure I can do that all in 2 weeks' time, and have something to show to people. Possibly at the Indiana meet-up.
+		-The potential feedback I get there will determine whether or not I continue on and finish the full playable demo.
+	-Added noise channel hihats for the jungle track, as well as a bassline for the second half
+		-Still not fully finished, as the ending still needs some work.
+	-Coming back with a fresh pair of ears, I tweaked the ending a little bit more, and I think it sounds alright now.
+		-Started adding the song as data to the game
+			-I'm gonna have to un-hardcodify portamento speed and have it as a parameter instead. (ACTUALLY JUST HAVE A SOUND OPCODE THAT CHANGES PORTA SPEED)
+	-Added the bassline for the jungle song to the game
+	-Added the Palamedes snare DMC sample to the game
+	-Added DMC snares for the jungle song to the game
+	-Added the noise hihats for the jungle song to the game
+	-Discovered a bug where when the player pauses while a BGM sample is playing, its stream position gets ahead, and will then be off with the rest of the song after unpausing. See if this could possibly be fixed by adding the two accompaniment tracks, otherwise investigate further
+		-The issue was, in the pause init state, I forgot to silence the DMC channel. Fixed, explained in the bugs file
+	-Added The main melody for the jungle song to the game
+	-Added the accompanying melody for the jungle song to the game
+	-Jungle song is now finished!
+	
+Day 142 - 6/5/2018
+	-Added a 32-byte array in page 7 of RAM to serve as a palette buffer. Began tweaking the engine to make use of this buffer. (For fade-out transitions)
+	-Fade out works now, but still needs work. Player shouldn't change positions until after the fade out, and the palettes for the player, misc, and status board should be re-drawn at the start of loading screen (Just make this a subroutine, and we can replace the similar title code with it.)
+	-Fixed fade-out issues (Fuck yeah!!!!)
+	-Made some small changes to the screens
+	-Finally got around to adding up the length of each file to see just how big the project is. ~13,500 lines, not counting huge bulk comments, but including data, whitespace and regular comments. So I'd say ~10KLOC for actual stuff.
+	-Finished full-screen data for (4,2)
+	
+Day 143 - 6/6/2018
+	-Added CHR RAM animation for the waves
+	-Added full-screen data for {(5,2)}
+	-Added enemy spawn data for {(6,2),(7,2),(1,0),(4,0),(7,0),(0,1),(1,1),(3,1),(4,1),(7,1)}
+	-Only 6 more screens left to add data for!
+	-Fixed the issue on the one screen with enemies seemingly spawning on the wrong terrain (The spawn points were incorrect :) )
+	
+Day 144 - 6/7/2018
+	-Added full-screen data for {(2,1),(5,1),(6,1),(2,0),(5,0),(6,0)}
+	-Screen data finally finished!!!!!!!!!!!!!
+	-34.58Kb of code and Data (Not including CHR bank)
+	-12Kb + 64 bytes of metatile / screen data (This includes empty screen data though, so without that it would be just under 12Kb)
+	-Fixed the issue with the incorrect metatiles after cutting down brush with the knife (The wrong temp variable was being used, temp1 instead of temp0)
+	-Added some shitty looking inner cave placeholder graphics
+	-Added an inside cave background palette
+	-Started (and finished) tweaking the LoadScreen code to work with special events. Jar now spawns where it should.
+	-Made it so that the saved ent system also saves power-ups
+	-Added some bushes to (6,2) so that the only way to get to the top half of the island is with the machete
+	-Fixed the the title song so that the hammer-ons in the melody sound like the famitracker version.
+	-Updated the copyright year on the title screen to 2018
+	-Started drawing rough sketches of the demo cave system. I think it's going to work on "levels", similar to LTTP. So we'll need to keep track of which level of the cave we're in. Think of a good scheme to represent this data - See if there's a way to structure the cave screen addresses in a table without using 64 entries. Of course, we don't need screen data for all of this, so some dummy addresses aren't a gigantic issue (Since we still have enough space in the metatile / screen bank to add some screens for the cave system), but just be aware of this in the future. Maybe add some offset to the player's screen position when he exits a room and when in the cave, since I believe there's a variable saying whether or not the player's in the cave, or we might just be treating the cave as a regular area.
+	-Started rough work on the clearing song in Famitracker
+	
+Day 145 - 6/8/2018
+	-Drew some concept art for what I eventually want the title screen to be. Planned some palettes, as well as some sprites to help cover up attribute clashes. Maybe attempt some raster effects for the water? (Idk if this'll be possible since I can't use IRQs, but timed code + sprite 0 / sprite overflow splits might be feasible since it's a static screen. Mid-frame palette changes like Indiana Jones title screen [this might be way too difficult])
+		-The title screen data (As I'm guessing it'll be uncompressed) might have to go in a different bank, maybe (for now at least) I can use the unused bank to store it there, as I don't think it's worth wasting ~1Kb of fixed bank space just for a title screen.
+	-Discovered that the Palamedes drum sample I was using is apparently still under copyright from nintendo. So to avoid potentially opening that whole can of worms, I decided to download a different drum sample off freesound.org and convert it to DMC. I think it still sounds pretty good, but could still very much be tweaked later in the future.
+	-Started working on a sample cave screen in NESst
+	-Decided I wanted the crafting system to be a bit more in-depth. Wrote some notes on my phone about how to go about doing this.
+	
+Day 146 - 6/10/2018
+	-Was gone over the weekend for more family-related stuff
+	-Worked more on the cave graphics, tweaked the palette for the floor, added some more floor tiles to make it look more cave-floor-esque and not so repetitive
+		-Coupled with the cave music, I think it'll work well. The walls might still need some work though.
+		-Maybe add some stalagmite graphics, although there might not be enough BG tiles left.
+	-Officially changed title to "I Was Shipwrecked"
+	-Decided it's time to split up metatiles and CHR data into different banks. Wrote up some ideas for how to do this.
+	-Recorded some (very good sounding IMO) ideas for the mountain song
+	-Came up with some more enemy AI ideas, added them to the ideas file.
+	-Made a tiny bit more progress on the clearing song in Famitracker
+	
+Day 147 - 6/11/2018
+	-Started rehauling the CHR RAM system
+	-Split up CHR data into different "banks"
+	-Background tiles load correctly
+	-Started defining cave metatiles (Finished all the definitions for the wall. All that's left now is floor, borders, stairs and rocks)
+	-Discovered that the game will sometimes crash (not go to the break handler, but the screen'll turn black and it'll execute garbage code) at the end of area transitions. I forgot to save the breakpoint I added, but if it happens again, keep track of where. It's probably just the wrong bank being switched in.
+	-Drew more cave graphics
+	-Started working a tiny bit on the mountain song in Famitracker
+	
+Day 148 - 6/12/2018
+	-Finished cave metatile definitions
+	-Separated "island" and "cave" screen and ent spawn data
+		-Updated the screen loading code to work with this
+	-Added the screen data for the cave to the game
+	-Added the cave music to the game
+	-Abstracted the screen loading logic a bit more to deal with cave levels
+	-Came up with a scheme for spawning door ents on screens (Since they need to be separate from events. They also need to be saved by the previous screen system)
+	-Added door ents, and spent a ridiculous amount of time debugging.
+	-Realized there was one issue with my prev screen system logic. Ents that were active but shouldn't be saved weren't getting deactivated, so doors would remain active after the player left the screen, which caused a bunch of weird ent-ent collision bugs. This was easy to fix once I realized the problem though.
+	-Door ent system seems to work correctly now.
+	
+Day 149 - 6/13/2018
+	-Fixed some bullshit enemy spawn points
+	-Fixed the door issues
+	-Started (and and later finished) adding a level-1 cave to get the machete
+	-Added crab metasprite data to the game
+	-Wrote some simple code for crab AI
+	-Moved events around so that crabs are on the shore, and snakes and beehives are in the jungle
+	
+	-- MONTH 6 --
+	
+Day 150 - 6/14/2018
+	-Added newline logic to the inventory system. Machete string now displays correctly
+	-Made it so that in_cave and cave_level are saved by the game
+	-Fixed all the crab AI bugs
+		-Now more or less work as intended, except for instead of flying they just get set to the middle of the screen (Also still need to add grabbing and flying sprites / animation)
+	-Added sticks as collectables and as weapons
+	-Removed some unnecessary "sta prg_bank"s in the messages file
+	-Added a stick item and weapon
+	-Added a stone item
+	-Added a flint item
+	-Incorporated these collectibles into events
+	-Added more ideas to the ideas file
+	-Fixed a bug in DrawInventoryMessageToBuffer that would cause the game to crash if exactly 30 characters were on a line
+	-Fixed another small issue with the screen loading code where, if a screen had special events, it skipped over the terrain byte even though it isn't in the screen structure if there are special events
+	-41.19Kb of code and data (Not counting CHR data, vectors or ROM header)
+	
+Day 151 - 6/15/2018
+	-Added a spear weapon
+	-Added a spear throwing sound effect
+	-Made status changes like potentially cutting foot on jungle floor, and potentially making the cut infeccted on the sandy shore
+	-Added a cloth ent so that the player can heal his cut status
+	-I thought I had already done this, but made it so that the player can only get sick from eating meat if he isn't already sick. This way, the player won't keep getting nagged with messages about it every time he eats uncooked meat.
+	-Tested through the game one last time before the NESDev meetup tomorrow, just to make sure there were no glaring issues I overlooked.
+		-I didn't see any.
+		
+Day 152  6/17/2018
+	-After the meetup, I took a day off to come back with a fresh mind and pair of eyes
+	-Noticed that getting cut on the jungle floor still seems to happen to often, so look into ways to make this more random
+	
+Day 153 - 6/28/2018
+	-Took another little break
+	-Added variables in page 7 for the crafting system
+	-Made more notes about crafting system, like how to use a given recipe to look up a corresponding item to be crafted
+	-Organized TODOs a bit into DEMO and FINAL, and organized the demo TODOs by percieved difficulty / effort / time required
+	-Started making it so that the player can recover from statuses gradually with time
+		-And finished.
+	-Added more points to be checked when the knife/machete collides with the background. It now works much better and the two ents can still share the same code
+	-Added a sound effect for when the player recovers from a status ailment
+	
+Day 154 - 6/29/2018
+	-Drew a placeholder sprite for the bat while he's perched on the ceiling
+		-It still looks a bit off, so work on it some more
+	-Added the bat ent to the ent system, but still no AI or metasprite/animation data
+	-Added an "oh shit" sound effect for when status ailments and whatnot happen to the player
+	-Made the status recovery time get saved
+	-Added the bat's sprite palette to the game
+	-Added more graphics for the bat in yy-chr
+	-Added metasprite data for the bat ents
+	-Added cave bat events to the game
+	-Started writing the skeleton state machine for the bat AI code
+		-Added pseudocode comments for what should happen in each state
+	-Added basic code to get a feel for acceleration-based movement
+	-Added a sprite palette for poisonous snakes
+	
+Day 155 - 6/30/2018
+	-Refined the bat AI pseudocode
+	-Started writing actual code
+	-Finished rough draft of bat AI asm code
+		-Glitchy as expected
+			-Once player comes into contact with bats, they disappear (though they're still active), and when it's time to return to perch spot, they keep flickering
+		-Read through and step through code again later
