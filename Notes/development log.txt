@@ -1224,3 +1224,10 @@ Day 155 - 6/30/2018
 		-Glitchy as expected
 			-Once player comes into contact with bats, they disappear (though they're still active), and when it's time to return to perch spot, they keep flickering
 		-Read through and step through code again later
+		
+Day 156 - 7/8/2018
+	-Started working more on the bat code
+	-Fixed an issue where I forgot to check if the player's in PHI before letting him get attacked
+	-Fixed the issue with the bats turning invisible
+		-Still just move down, and don't stop at the player
+		-Also don't stay still when they go back to being perched

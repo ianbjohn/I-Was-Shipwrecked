@@ -233,9 +233,9 @@ MainLoop:
 	;tint the screen for how long it takes to run a frame (Show's how much shit is going on. If the whole screen turns blue, the game will lag)
 	;For some reason, this causes some graphical glitches when turning the PPU off via setting $2001 to #%00000110.
 	;However, when this debug feature is commented out, no glitches occur, so don't worry about it.
-	lda $2001
-	ora #%10000000
-	sta $2001
+	;lda $2001
+	;ora #%10000000
+	;sta $2001
 	
 	jsr ReadControllerDPCM		;read controller data once during the frame, and store it in RAM so we can access it whenever
 	
@@ -283,9 +283,9 @@ MainLoop:
 	;add up any other values and store them in the random number
 	
 	;stop tinting screen, everything in this frame is finished
-	lda $2001
-	and #%01111111
-	sta $2001
+	;lda $2001
+	;and #%01111111
+	;sta $2001
 	jmp MainLoop
 	
 	

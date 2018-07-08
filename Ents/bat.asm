@@ -89,6 +89,8 @@ BatCheckPlayerCol:
 	cmp #2			;gliding
 	bne BatCheckPlayerColDone
 @continue:
+	lda ent_phi_timer+0
+	bne BatCheckPlayerColDone
 	jsr CheckPlayerCollision
 	beq BatCheckPlayerColDone
 	lda ent_health+0
@@ -129,6 +131,7 @@ BatPerched:
 	lda #2					;gliding
 	sta ent_state,x
 	;figure out which direction to start flying based on where the player is horizontally in relation to the bat
+	lda #0
 	sta ent_dir,x
 	lda ent_x,x
 	sta ent_misc1,x			;put this here until init code is added for ents
@@ -144,7 +147,7 @@ BatPerched:
 	rts
 	
 	
-	;.db "BATFLY"
+	.db "BATFLY"
 BatFlying:
 BatGliding:
 	;basically the same state, but I wanna give some animation variety and have the bat only flap its wings if its flying upward.
@@ -315,17 +318,23 @@ BatNotSlowingDown:
 	lda ent_state,x
 	cmp #1
 	beq @flying
-@gliding:
+@gliding:					;make sure the bat stops once it's at the player (code might have to be altered then)
 	lda ent_y,x
 	clc
 	adc #1
 	sta ent_y,x
+	clc
+	adc ent_height,x
+	sta ent_hb_y,x
 	jmp DecTimer1
 @flying:
 	lda ent_y,x
 	sec
 	sbc #1
 	sta ent_y,x
+	clc
+	adc ent_height,x
+	sta ent_hb_y,x
 	jmp DecTimer1	
 	
 BatSlowDown:
