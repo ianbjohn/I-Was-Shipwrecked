@@ -123,11 +123,12 @@ BatPerched:
 	sbc ent_hb_y,x
 	cmp #30
 	bcs @done
-	lda #$0A
+	lda #$A0				;MAKE A LABEL FOR THIS!!!!!!!!!!!!!!!!!!
 	sta ent_xacc_sp,x		;set base acceleration
 	sta ent_xvel_sp,x		;set base velocity
-	;lda #$00
+	;lda #1
 	;sta ent_xacc,x
+	;sta ent_xvel,x
 	lda #2					;gliding
 	sta ent_state,x
 	;figure out which direction to start flying based on where the player is horizontally in relation to the bat
@@ -250,20 +251,24 @@ BatGliding:
 	rts
 
 BatNotReturning:
-	lda ent_misc3,x
-	beq BatNotSlowingDown
-	lda ent_timer2,x
+	lda ent_misc3,x			;whether or not bat is slowing down
 	beq @continue
+	lda #1
+	sta ent_misc3,x
+	jmp BatSlowDown
+@continue:
+	lda ent_timer2,x
+	beq @continue2
 	lda ent_dir,x
 	beq @checknearedgeleft
 	bne @checknearedgeright
-@continue:
+@continue2:
 	;check if player's changed directions w/ respect to bat
 	lda ent_dir,x
 	beq @checkright
 @checkleft:
 	lda ent_x,x
-	cmp ent_hb_x+0
+	cmp #32
 	bcc @checknearedgeright
 	inc ent_misc3,x		;bat is now slowing down
 	jmp DecTimer1
@@ -275,7 +280,7 @@ BatNotReturning:
 	jmp DecTimer1
 @checknearedgeright:
 	lda ent_hb_x,x
-	cmp #241
+	cmp #-32
 	bcc BatNotSlowingDown
 	bcs @slowdown
 @checknearedgeleft:
@@ -284,7 +289,7 @@ BatNotReturning:
 	bcs BatNotSlowingDown
 @slowdown:
 	inc ent_misc3,x
-	jmp DecTimer1
+	jmp BatSlowDown
 	
 BatNotSlowingDown:
 	jsr BatAccelerate
@@ -337,29 +342,23 @@ BatNotSlowingDown:
 	sta ent_hb_y,x
 	jmp DecTimer1	
 	
+	.db "BSD"
 BatSlowDown:
 	lda ent_xvel,x
-	bcc DecTimer1
 	bne @subtract
 	lda ent_xvel_sp,x
-	bcc DecTimer1
+	beq @reverse
 @subtract:
 	lda ent_xvel_sp,x
 	sec
-	sbc ent_xacc_sp,x
+	sbc #20
 	sta ent_xvel_sp,x
 	lda ent_xvel,x
-	sbc ent_xacc,x
+	sbc #1
+	bcs @nounderflow
+	lda #0
+@nounderflow:
 	sta ent_xvel,x
-	lda ent_dir,x
-	eor #%00000001
-	sta ent_dir,x
-	dec ent_misc3,x
-	lda #120
-	sta ent_timer2,x
-	lda #$0A
-	sta ent_xacc_sp,x		;set base acceleration
-	sta ent_xvel_sp,x		;set base velocity
 	lda ent_dir,x
 	beq @left
 @right:
@@ -385,6 +384,17 @@ BatSlowDown:
 	clc
 	adc ent_width,x
 	sta ent_hb_x,x
+	jmp DecTimer1
+@reverse:
+	lda ent_dir,x
+	eor #%00000001
+	sta ent_dir,x
+	dec ent_misc3,x
+	lda #120
+	sta ent_timer2,x
+	lda #$A0
+	sta ent_xacc_sp,x		;set base acceleration
+	sta ent_xvel_sp,x		;set base velocity
 	
 DecTimer1:
 	dec ent_timer1,x
