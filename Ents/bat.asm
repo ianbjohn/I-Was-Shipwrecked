@@ -1,3 +1,7 @@
+BAT_ACCEL = $0070
+BAT_DECCEL	= $0070
+BAT_MAX_VEL = $0300
+
 BatStates:
 	.dw BatPerched, BatFlying, BatGliding, BatHit
 
@@ -123,12 +127,12 @@ BatPerched:
 	sbc ent_hb_y,x
 	cmp #30
 	bcs @done
-	lda #$A0				;MAKE A LABEL FOR THIS!!!!!!!!!!!!!!!!!!
+	lda #<BAT_ACCEL
 	sta ent_xacc_sp,x		;set base acceleration
 	sta ent_xvel_sp,x		;set base velocity
-	;lda #1
+	;lda #>BAT_ACCEL
 	;sta ent_xacc,x
-	;sta ent_xvel,x
+	;sta ent_xvel,x			;uncomment if acceleration is changed to >255
 	lda #2					;gliding
 	sta ent_state,x
 	;figure out which direction to start flying based on where the player is horizontally in relation to the bat
@@ -351,12 +355,13 @@ BatSlowDown:
 @subtract:
 	lda ent_xvel_sp,x
 	sec
-	sbc #20
+	sbc #<BAT_DECCEL
 	sta ent_xvel_sp,x
 	lda ent_xvel,x
-	sbc #1
+	sbc #>BAT_DECCEL
 	bcs @nounderflow
 	lda #0
+	sta ent_xvel_sp,x		;prevent 16-bit underflows
 @nounderflow:
 	sta ent_xvel,x
 	lda ent_dir,x
@@ -392,9 +397,11 @@ BatSlowDown:
 	dec ent_misc3,x
 	lda #120
 	sta ent_timer2,x
-	lda #$A0
-	sta ent_xacc_sp,x		;set base acceleration
+	;lda #$A0
+	lda ent_xacc_sp,x
 	sta ent_xvel_sp,x		;set base velocity
+	;lda ent_xacc,x
+	;sta ent_xvel			;uncomment is acceleration is changed to >255
 	
 DecTimer1:
 	dec ent_timer1,x
@@ -419,9 +426,10 @@ BatHit:
 	
 	
 	;helper functions
+	.db "BACC"
 BatAccelerate:
 	lda ent_xvel,x
-	cmp #4
+	cmp #>BAT_MAX_VEL
 	bcc @add
 	bne @done
 	lda ent_xvel_sp,x

@@ -1230,7 +1230,10 @@ Day 156 - 7/8/2018
 	-Fixed an issue where I forgot to check if the player's in PHI before letting him get attacked
 	-Fixed the issue with the bats turning invisible
 	-Made bats deccelerate when coming to the edge of a screen, and then reverse direction.
-	-Increased acceleration / decceleration
-		-The bats deccelerate, but don't come to a complete stop
+		-(Had to account for 16-bit underflow so that the bats would actually come to a complete stop)
+	-Increased acceleration / decceleration 
 		-Still just move down, and don't stop at the player
 		-Also don't stay still when they go back to being perched
+	-Added labels for acceleration and maximum velocity
+	-Changed bat's max velocity from 4 pixels/second to 3 pixels/second
+	-Lowered acceleration rate
