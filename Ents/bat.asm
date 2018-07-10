@@ -1,6 +1,7 @@
 BAT_ACCEL = $0070
 BAT_DECCEL	= $0070
 BAT_MAX_VEL = $0300
+DETECTION_RADIUS = 48
 
 BatStates:
 	.dw BatPerched, BatFlying, BatGliding, BatHit
@@ -122,18 +123,39 @@ BatCheckPlayerColDone:
 
 BatPerched:
 	;if player is within x distance of bat, change to either flying or gliding depending on above/below player, and set a timer for when to return to perching
+@vert:
 	lda ent_y+0
+	cmp ent_y,x
+	bcs @down
+@up:
+	lda ent_y,x
 	sec
-	sbc ent_y,x
-	Abs
-	cmp #64
+	sbc ent_y+0
+	cmp #DETECTION_RADIUS
 	bcs @done
+	bcc @horiz
+@down:
+	sec				;A has ent_y+0
+	sbc ent_y+0
+	cmp #DETECTION_RADIUS
+	bcs @done
+@horiz:
 	lda ent_x+0
+	cmp ent_x,x
+	bcs @right
+@left:
+	lda ent_x,x
 	sec
-	sbc ent_x,x
-	Abs
-	cmp #64
+	sbc ent_x+0
+	cmp #DETECTION_RADIUS
 	bcs @done
+	bcc @trigger
+@right:
+	sec				;A has ent_x+0
+	sbc ent_x+0
+	cmp #DETECTION_RADIUS
+	bcs @done
+@trigger:
 	lda #<BAT_ACCEL
 	sta ent_xacc_sp,x		;set base acceleration
 	sta ent_xvel_sp,x		;set base velocity
@@ -143,7 +165,15 @@ BatPerched:
 	lda #2					;gliding
 	sta ent_state,x
 	;figure out which direction to start flying based on where the player is horizontally in relation to the bat
+	lda ent_x+0
+	cmp ent_x,x
+	bcs @moveright
+@moveleft:
 	lda #0
+	beq @store
+@moveright:
+	lda #1
+@store:
 	sta ent_dir,x
 	lda ent_x,x
 	sta ent_misc1,x			;put this here until init code is added for ents

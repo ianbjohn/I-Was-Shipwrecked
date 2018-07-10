@@ -1245,3 +1245,5 @@ Day 157 - 7/10/2018
 	-Made the bat's animation speed slightly slower.
 	-Made it so that bats only get activated when the player is close both horizontally and vertically
 	-Changed the bat's player detection distance from 30 pixels to 64 pixels
+	-Changed code in absolute value macro
+	-Added bat spawns to other screens of the cave
