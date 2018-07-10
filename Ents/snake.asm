@@ -248,45 +248,77 @@ SnakeRetreating:
 	sec
 	sbc #1
 	sta ent_y,x
-	lda ent_hb_y,x
-	sec
-	sbc #1
+	clc
+	adc ent_height,x
+	sta ent_hb_y,x
+	lda ent_y,x
+	cmp #48				;status board height
+	bcs @upcheckbgcol
+	lda #48
 	sta ent_y,x
-	;(resolve collision with bg)
+	clc
+	adc ent_height,x
+	sta ent_hb_y,x
 	rts
+@upcheckbgcol:
+	jsr EntCheckBGColTL
+	jmp EntCheckBGColTR
 @down:
 	lda ent_y,x
 	clc
 	adc #1
 	sta ent_y,x
-	lda ent_hb_y,x
 	clc
-	adc #1
+	adc ent_height,x
 	sta ent_hb_y,x
-	;(resolve collision with bg)
+	cmp #224
+	bcc @downcheckbgcol
+	lda #223
+	sta ent_hb_y,x
+	sec
+	sbc ent_height,x
+	sta ent_y,x
 	rts
+@downcheckbgcol:
+	jsr EntCheckBGColBL
+	jmp EntCheckBGColBR
 @left:
 	lda ent_x,x
 	sec
 	sbc #1
 	sta ent_x,x
-	lda ent_hb_x,x
-	sec
-	sbc #1
+	clc
+	adc ent_width,x
 	sta ent_hb_x,x
-	;(resolve collision with bg)
+	cmp #15
+	bcs @leftcheckbgcol
+	lda #15
+	sta ent_hb_x,x
+	sec
+	sbc ent_width,x
+	sta ent_x,x
 	rts
+@leftcheckbgcol:
+	jsr EntCheckBGColTL
+	jmp EntCheckBGColBL
 @right:
 	lda ent_x,x
 	clc
 	adc #1
 	sta ent_x,x
-	lda ent_hb_x,x
 	clc
-	adc #1
+	adc ent_width,x
 	sta ent_hb_x,x
-	;(resolve collision with bg)
+	bcc @rightcheckbgcol
+	lda #-1
+	sta ent_hb_x,x
+	sec
+	sbc ent_width,x
+	sta ent_x,x
 	rts
+@rightcheckbgcol:
+	jsr EntCheckBGColTR
+	jmp EntCheckBGColBR
 SnakeRetreatingDone:
 
 SnakeSlithering:

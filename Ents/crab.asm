@@ -158,42 +158,78 @@ CrabMoving:
 	clc
 	adc #2
 	sta ent_x,x
-	lda ent_hb_x,x
 	clc
-	adc #2
+	adc ent_width,x
 	sta ent_hb_x,x
-	jmp @done
+	bcc @rightcheckbgcol
+	lda #-1
+	sta ent_hb_x,x
+	sec
+	sbc ent_width,x
+	sta ent_x,x
+	rts
+@rightcheckbgcol:
+	;background collision
+	jsr EntCheckBGColTR
+	jmp EntCheckBGColBR
 @up:
 	lda ent_y,x
 	sec
 	sbc #2
 	sta ent_y,x
-	lda ent_hb_y,x
-	sec
-	sbc #2
+	clc
+	adc ent_height,x
 	sta ent_hb_y,x
-	jmp @done
+	lda ent_y,x
+	cmp #48				;status board height
+	bcs @upcheckbgcol
+	lda #48
+	sta ent_y,x
+	clc
+	adc ent_height,x
+	sta ent_hb_y,x
+	rts
+@upcheckbgcol:
+	jsr EntCheckBGColTL
+	jmp EntCheckBGColTR
 @down:
 	lda ent_y,x
 	clc
 	adc #2
 	sta ent_y,x
-	lda ent_hb_y,x
 	clc
-	adc #2
+	adc ent_height,x
 	sta ent_hb_y,x
-	jmp @done
+	cmp #224
+	bcc @downcheckbgcol
+	lda #223
+	sta ent_hb_y,x
+	sec
+	sbc ent_height,x
+	sta ent_y,x
+	rts
+@downcheckbgcol:
+	jsr EntCheckBGColBL
+	jmp EntCheckBGColBR
 @left:
 	lda ent_x,x
 	sec
 	sbc #2
 	sta ent_x,x
-	lda ent_hb_x,x
-	sec
-	sbc #2
+	clc
+	adc ent_height,x
 	sta ent_hb_x,x
-@done:
+	cmp #15
+	bcs @leftcheckbgcol
+	lda #15
+	sta ent_hb_x,x
+	sec
+	sbc ent_width,x
+	sta ent_x,x
 	rts
+@leftcheckbgcol:
+	jsr EntCheckBGColTL
+	jmp EntCheckBGColBL
 	
 	
 CrabStill:

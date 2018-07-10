@@ -147,14 +147,17 @@ EntCheckBGColBR:
 ;EVENTUALLY, MAYBE MOVE THE INDIVIDUAL ROUTINES TO A DIFFERENT BANK
 EntBGColResponses:
 	;sorted by ent ID
-	.dw PlayerBGColResponses,KnifeBGColResponses,BREAK,BREAK,BREAK,BREAK,BREAK,BREAK
-	.dw BREAK,BREAK,BREAK,BREAK,BREAK,MacheteBGColResponses,BREAK,StickBGColResponses
+	.dw PlayerBGColResponses,KnifeBGColResponses,SnakeBGColResponses,BREAK,BREAK,BREAK,BREAK,BREAK
+	.dw BREAK,BREAK,BREAK,CrabBGColResponses,BREAK,MacheteBGColResponses,BREAK,StickBGColResponses
 
 PlayerBGColResponses:
 	;sorted by collision type (consult metatiles.asm for more info)
 	.dw DoNothing,EjectEnt,EjectEnt,EjectEnt,EjectEnt,HurtPlayer,EjectEnt
 KnifeBGColResponses:
 	.dw DoNothing,DoNothing,DoNothing,DoNothing,DoNothing,DoNothing,KnifeCutBrush
+SnakeBGColResponses:
+CrabBGColResponses:
+	.dw DoNothing,EjectEnt,EjectEnt,EjectEnt,EjectEnt,EjectEnt,EjectEnt
 MacheteBGColResponses:
 	.dw DoNothing,DoNothing,DoNothing,DoNothing,KnifeCutBrush,KnifeCutBrush,KnifeCutBrush
 StickBGColResponses:

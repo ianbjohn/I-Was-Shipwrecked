@@ -1247,3 +1247,4 @@ Day 157 - 7/10/2018
 	-Changed the bat's player detection distance from 30 pixels to 64 pixels
 	-Changed code in absolute value macro
 	-Added bat spawns to other screens of the cave
+	-Added background collision for the snake and crab ents
