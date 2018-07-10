@@ -124,8 +124,15 @@ BatPerched:
 	;if player is within x distance of bat, change to either flying or gliding depending on above/below player, and set a timer for when to return to perching
 	lda ent_y+0
 	sec
-	sbc ent_hb_y,x
-	cmp #30
+	sbc ent_y,x
+	Abs
+	cmp #64
+	bcs @done
+	lda ent_x+0
+	sec
+	sbc ent_x,x
+	Abs
+	cmp #64
 	bcs @done
 	lda #<BAT_ACCEL
 	sta ent_xacc_sp,x		;set base acceleration
@@ -152,7 +159,7 @@ BatPerched:
 	rts
 	
 	
-	.db "BATFLY"
+	;.db "BATFLY"
 BatFlying:
 BatGliding:
 	;basically the same state, but I wanna give some animation variety and have the bat only flap its wings if its flying upward.
@@ -188,12 +195,23 @@ BatGliding:
 	jmp BatNotReturning
 @continue:
 	lda ent_x,x
-	cmp ent_misc1,x
-	bne @movetowardsperchspot
+	sec
+	sbc ent_misc1,x
+	Abs
+	cmp #3
+	bcs @movetowardsperchspot
 	lda ent_y,x
-	cmp ent_misc2,x
-	bne @movetowardsperchspot
+	sec
+	sbc ent_misc2,x
+	Abs
+	cmp #3
+	bcs @movetowardsperchspot
+	lda ent_misc1,x
+	sta ent_x,x
+	lda ent_misc2,x
+	sta ent_y,x
 	lda #0						;perched
+	sta ent_dir,x
 	sta ent_state,x
 	jmp FindEntAnimLengthsAndFrames
 @movetowardsperchspot:
@@ -347,7 +365,8 @@ BatNotSlowingDown:
 	sta temp0		;get midpoint
 	lda ent_y,x
 	cmp temp0
-	bcc @done		;< midpoint, don't move up anymore, but still animate flying
+	bcc @done		;<= midpoint, don't move up anymore, but still animate flying
+	beq @done
 @fly:
 	lda ent_y,x
 	sec
@@ -359,7 +378,7 @@ BatNotSlowingDown:
 @done:
 	jmp DecTimer1	
 	
-	.db "BSD"
+	;.db "BSD"
 BatSlowDown:
 	lda ent_xvel,x
 	bne @subtract
@@ -416,6 +435,7 @@ BatSlowDown:
 	;lda ent_xacc,x
 	;sta ent_xvel			;uncomment is acceleration is changed to >255
 	
+	;.db "DT1"
 DecTimer1:
 	dec ent_timer1,x
 	;change bat's state to flying or gliding, depending on where bat is vertically relative to player's vertical midpoint
@@ -424,20 +444,20 @@ DecTimer1:
 	adc ent_hb_y+0
 	ror
 	sta temp0		;get midpoint
-	lda ent_y,x
-	cmp temp0
-	bcs @fly
-@glide:
-	lda ent_state,x
-	cmp #2			;gliding
-	beq @done
-	lda #2
-	bne @changestate	;will always branch
-@fly:
 	lda ent_state,x
 	cmp #1			;flying
-	beq @done
-	lda #1
+	beq @fly
+@glide:
+	lda ent_y,x
+	cmp temp0
+	bcc @done
+	lda #1			;flying
+	bne @changestate	;will always branch
+@fly:
+	lda ent_y,x
+	cmp temp0
+	bcs @done
+	lda #2			;gliding
 @changestate:
 	sta ent_state,x
 	jmp FindEntAnimLengthsAndFrames
@@ -463,7 +483,7 @@ BatHit:
 	
 	
 	;helper functions
-	.db "BACC"
+	;.db "BACC"
 BatAccelerate:
 	lda ent_xvel,x
 	cmp #>BAT_MAX_VEL

@@ -1239,4 +1239,9 @@ Day 156 - 7/8/2018
 	-Lowered acceleration rate
 	
 Day 157 - 7/10/2018
-	-Fixed bat's code so that they now stop swooping down once they reach player's height midpoint, and animate flying
+	-Fixed bat's code so that they now stop swooping down once they reach player's height midpoint, and animate flying.
+	-Fixed bat's code so that they go back to being perched.
+	-Fixed some issues with the bat's flying/swooping state transitions when approaching the player's midpoint.
+	-Made the bat's animation speed slightly slower.
+	-Made it so that bats only get activated when the player is close both horizontally and vertically
+	-Changed the bat's player detection distance from 30 pixels to 64 pixels
