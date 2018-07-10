@@ -1,6 +1,6 @@
 .macro Abs
 	;returns the absolute value of the accumulator
-	bvs @absdone
+	bpl @absdone
 	eor #%11111111
 	clc
 	adc #1
