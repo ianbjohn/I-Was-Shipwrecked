@@ -337,6 +337,18 @@ BatNotSlowingDown:
 	sta ent_hb_y,x
 	jmp DecTimer1
 @flying:
+	;if timer1 == 0, fly towards perch spot. Otherwise, only actually move up if below player's midpoint
+	lda ent_timer1,x
+	beq @fly
+	lda ent_y+0
+	clc
+	adc ent_hb_y+0
+	ror
+	sta temp0		;get midpoint
+	lda ent_y,x
+	cmp temp0
+	bcc @done		;< midpoint, don't move up anymore, but still animate flying
+@fly:
 	lda ent_y,x
 	sec
 	sbc #1
@@ -344,6 +356,7 @@ BatNotSlowingDown:
 	clc
 	adc ent_height,x
 	sta ent_hb_y,x
+@done:
 	jmp DecTimer1	
 	
 	.db "BSD"
@@ -405,6 +418,30 @@ BatSlowDown:
 	
 DecTimer1:
 	dec ent_timer1,x
+	;change bat's state to flying or gliding, depending on where bat is vertically relative to player's vertical midpoint
+	lda ent_y+0
+	clc
+	adc ent_hb_y+0
+	ror
+	sta temp0		;get midpoint
+	lda ent_y,x
+	cmp temp0
+	bcs @fly
+@glide:
+	lda ent_state,x
+	cmp #2			;gliding
+	beq @done
+	lda #2
+	bne @changestate	;will always branch
+@fly:
+	lda ent_state,x
+	cmp #1			;flying
+	beq @done
+	lda #1
+@changestate:
+	sta ent_state,x
+	jmp FindEntAnimLengthsAndFrames
+@done:
 	rts
 	
 	

@@ -1237,3 +1237,6 @@ Day 156 - 7/8/2018
 	-Added labels for acceleration and maximum velocity
 	-Changed bat's max velocity from 4 pixels/second to 3 pixels/second
 	-Lowered acceleration rate
+	
+Day 157 - 7/10/2018
+	-Fixed bat's code so that they now stop swooping down once they reach player's height midpoint, and animate flying
