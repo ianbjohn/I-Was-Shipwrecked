@@ -975,7 +975,7 @@ BeeAnimationLengths:
 	.db 1,4,4,2,4,4,1,1
 CrabAnimationLengths:
 BatAnimationLengths:
-	.db 4,4,4,1
+	.db 4,6,6,1
 	
 	;(other ents)
 	
