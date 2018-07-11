@@ -1252,3 +1252,6 @@ Day 157 - 7/10/2018
 	
 Day 158 - 7/11/2018
 	-Added code to make crabs fly when the player shakes them off
+	-Added poisonous snakes to the ent system
+	-Added logic to the snake's code (Which is shared by the venomous snakes) to randomly poison the player if the snake is venomous
+	-Added a message that the player's poisoned

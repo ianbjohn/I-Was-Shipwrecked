@@ -204,7 +204,7 @@ EntRoutines:
 	;sorted by ID
 	.dw PlayerRoutine, KnifeRoutine, SnakeRoutine, JarRoutine, HeartRoutine, MeatRoutine, BeehiveRoutine, BeeRoutine
 	.dw GunRoutine, BulletRoutine, DoorRoutine, CrabRoutine, MacheteColRoutine, KnifeRoutine, StickColRoutine, KnifeRoutine
-	.dw StoneRoutine, FlintRoutine, SpearRoutine, ClothRoutine, BatRoutine
+	.dw StoneRoutine, FlintRoutine, SpearRoutine, ClothRoutine, BatRoutine, SnakeRoutine
 	;.db "ROUTINES"
 RunEnt:
 	ldx ent_index

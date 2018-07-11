@@ -485,9 +485,26 @@ SnakePlayerCol:
 	lda #0
 @nounderflow:
 	sta ent_health+0
-	;(if a random chance occurs, poison player)
 	lda #120
 	sta ent_phi_timer+0
+	;if poisonous snake and a random chance occurs, poison the player
+	lda ent_id,x
+	cmp #ENT_POISONSNAKE
+	bne @nopoison
+	lda status
+	cmp #STATUS_POISONED
+	beq @nopoison
+	lda random
+	jsr RandomLFSR
+	and #%00000111			;1/8 chance
+	bne @nopoison
+	lda #MSG_POISONED
+	sta message
+	lda #STATE_DRAWINGMBOX
+	sta game_state
+	ldy #SFX_OHSHIT
+	jmp PlaySound
+@nopoison:
 	ldy #SFX_PLAYERHURT		;play sfx
 	jmp PlaySound
 SnakePlayerCol_done:

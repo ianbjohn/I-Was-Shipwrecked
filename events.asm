@@ -5,7 +5,7 @@ EventCounts:
 	;rows of area, columns of difficulty
 	;(must be a power of 2)
 	.db 15,0,0
-	.db 7,0,0
+	.db 7,3,0
 	.db 0,0,0
 	.db 0,0,0
 	.db 1,0,0
@@ -42,6 +42,7 @@ JungleEventsEasy:
 	.dw EmptyEvent,JungleEventEasy0,JungleEventEasy1,JungleEventEasy2,JungleEventEasy3,JungleEventEasy4,JungleEventEasy0,JungleEventEasy1
 
 JungleEventsModerate:
+	.dw EmptyEvent,JungleEventModerate0,JungleEventModerate1,JungleEventModerate2
 
 JungleEventsHard:
 
@@ -102,6 +103,14 @@ JungleEventEasy3:
 	.db SP_SNAKE, ENT_SNAKE,ENT_SNAKE,ENT_SNAKE,ENT_SNAKE, $FF
 JungleEventEasy4:
 	.db SP_BEE, ENT_BEEHIVE, $FF
+	
+	
+JungleEventModerate0:
+	.db SP_POISONSNAKE, ENT_POISONSNAKE, $FF
+JungleEventModerate1:
+	.db SP_POISONSNAKE, ENT_POISONSNAKE,ENT_POISONSNAKE, $FF
+JungleEventModerate2:
+	.db SP_POISONSNAKE, ENT_POISONSNAKE,ENT_POISONSNAKE,ENT_POISONSNAKE, $FF
 	
 	
 CaveEventsEasy0:

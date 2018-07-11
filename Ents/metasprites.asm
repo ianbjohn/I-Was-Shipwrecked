@@ -6,7 +6,7 @@ EntMetaSprites:
 	;sorted by ent ID
 	.dw PlayerMetaSprites, PlayerWeapon0MetaSprites, SnakeMetaSprites, JarMetaSprites, HeartMetaSprites, MeatMetaSprites, BeehiveMetaSprites, BeeMetaSprites
 	.dw GunMetaSprites, BulletMetaSprites, DoorMetaSprites, CrabMetaSprites, MacheteColMetaSpites, MacheteMetaSprites, StickColMetaSprites, StickMetaSprites
-	.dw StoneMetaSprites, FlintMetaSprites, SpearMetaSprites, ClothMetaSprites, BatMetaSprites
+	.dw StoneMetaSprites, FlintMetaSprites, SpearMetaSprites, ClothMetaSprites, BatMetaSprites, SnakeMetaSprites
 
 	
 	;Player
@@ -942,7 +942,7 @@ BatMetaSpritesFlyingR_1:
 EntAnimationLengths:
 	.dw PlayerAnimationLengths, PlayerWeapon0AnimationLengths, SnakeAnimationLengths, JarAnimationLengths, HeartAnimationLengths, MeatAnimationLengths, BeehiveAnimationLengths, BeeAnimationLengths
 	.dw GunAnimationLengths, BulletAnimationLengths, DoorAnimationLengths, CrabAnimationLengths, MacheteColAnimationLengths, MacheteAnimationLengths, StickColAnimationLengths, StickAnimationLengths
-	.dw StoneAnimationLengths, FlintAnimationLengths, SpearAnimationLengths, ClothAnimationLengths, BatAnimationLengths
+	.dw StoneAnimationLengths, FlintAnimationLengths, SpearAnimationLengths, ClothAnimationLengths, BatAnimationLengths, SnakeAnimationLengths
 	
 	
 	;Player
@@ -985,7 +985,7 @@ BatAnimationLengths:
 EntAnimationFrames:
 	.dw PlayerAnimationFrames, PlayerWeapon0AnimationFrames, SnakeAnimationFrames, JarAnimationFrames, HeartAnimationFrames, MeatAnimationFrames, BeehiveAnimationFrames, BeeAnimationFrames
 	.dw GunAnimationFrames, BulletAnimationFrames, DoorAnimationFrames, CrabAnimationFrames, MacheteColAnimationFrames, MacheteAnimationFrames, StickColAnimationFrames, StickAnimationFrames
-	.dw StoneAnimationFrames, FlintAnimationFrames, SpearAnimationFrames, ClothAnimationFrames, BatAnimationFrames
+	.dw StoneAnimationFrames, FlintAnimationFrames, SpearAnimationFrames, ClothAnimationFrames, BatAnimationFrames, SnakeAnimationFrames
 	
 
 PlayerAnimationFrames:
@@ -1023,7 +1023,7 @@ BatAnimationFrames:
 EntHitboxSizes:
 	.dw PlayerHitboxSizes, PlayerWeapon0HitboxSizes, SnakeHitboxSizes, JarHitboxSizes, HeartHitboxSizes, MeatHitboxSizes, BeehiveHitboxSizes, BeeHitboxSizes
 	.dw GunHitboxSizes, BulletHitboxSizes, DoorHitboxSizes, CrabHitboxSizes, MacheteColHitboxSizes, MacheteHitboxSizes, StickColHitboxSizes, StickHitboxSizes
-	.dw StoneHitboxSizes, FlintHitboxSizes, SpearHitboxSizes, ClothHitboxSizes, BatHitboxSizes
+	.dw StoneHitboxSizes, FlintHitboxSizes, SpearHitboxSizes, ClothHitboxSizes, BatHitboxSizes, SnakeHitboxSizes
 	
 	
 ;Lots of ents use 7x7 and 15x15 for all their states, so these are here to avoid a lot of repeated data

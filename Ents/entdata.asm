@@ -3,7 +3,7 @@ EntData:
 	;sorted by ent ID
 	.dw PlayerData, PlayerWeapon0Data, SnakeData, JarData, HeartData, MeatData, BeehiveData, BeeData
 	.dw GunData, BulletData, DoorData, CrabData, MacheteColData, MacheteData, StickColData, StickData
-	.dw StoneData, FlintData, SpearData, ClothData, BatData
+	.dw StoneData, FlintData, SpearData, ClothData, BatData, PoisonSnakeData
 	
 	
 PlayerData:
@@ -23,6 +23,7 @@ FlintData:
 ClothData:
 	.db ENT_TYPE_POWERUP, 0, 0
 SnakeData:
+PoisonSnakeData:
 	.db ENT_TYPE_ENEMY, 8, 30
 BeehiveData:
 BeeData:

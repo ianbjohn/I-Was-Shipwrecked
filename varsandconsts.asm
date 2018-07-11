@@ -418,6 +418,7 @@
 	MSG_NOTCUT				= $2E
 	MSG_MADEBANDAGE			= $2F
 	MSG_RECOVERED			= $30
+	MSG_POISONED			= $31
 	
 	EXPLOSION_TIME		= 12			;how many frames an explosion should last
 	
@@ -476,6 +477,7 @@
 	ENT_SPEAR			= 18
 	ENT_CLOTH			= 19
 	ENT_BAT				= 20
+	ENT_POISONSNAKE		= 21
 	
 	;ent tyes
 	ENT_TYPE_PLAYER		= 0
@@ -494,6 +496,7 @@
 	SP_FLINT			= 3
 	SP_CLOTH			= 4
 	SP_BAT				= 5
+	SP_POISONSNAKE		= 6
 	
 	;Background collision type IDs
 	BGCOL_NORMAL		= 0
