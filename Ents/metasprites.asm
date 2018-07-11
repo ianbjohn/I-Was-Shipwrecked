@@ -664,8 +664,8 @@ DoorMetaSpritesNormalU_0:
 	
 	;crab
 CrabMetaSprites:
-	;walking, still, grabbing, hit
-	.dw CrabMetaSpritesWalking, CrabMetaSpritesWalking, CrabMetaSpritesWalking, ExplosionMetaSprites
+	;walking, still, grabbing, flying, hit
+	.dw CrabMetaSpritesWalking, CrabMetaSpritesWalking, CrabMetaSpritesWalking, CrabMetaSpritesWalking, ExplosionMetaSprites
 	
 CrabMetaSpritesWalking:
 	.dw CrabMetaSpritesWalkingU, CrabMetaSpritesWalkingU, CrabMetaSpritesWalkingU, CrabMetaSpritesWalkingU
@@ -974,6 +974,7 @@ SnakeAnimationLengths:
 BeeAnimationLengths:
 	.db 1,4,4,2,4,4,1,1
 CrabAnimationLengths:
+	.db 4,4,4,4,1
 BatAnimationLengths:
 	.db 4,6,6,1
 	
@@ -1012,7 +1013,7 @@ SnakeAnimationFrames:
 BeeAnimationFrames:
 	.db 1,2,2,2,2,2,1,1
 CrabAnimationFrames:
-	.db 4,4,4,1
+	.db 4,4,4,4,1
 BatAnimationFrames:
 	.db 1,2,1,1
 	
@@ -1052,7 +1053,7 @@ PlayerWeapon0HitboxSizesNormal:
 	
 SnakeHitboxSizes:
 CrabHitboxSizes:
-	.dw HitboxSize15x15, HitboxSize15x15, HitboxSize15x15, HitboxSize15x15
+	.dw HitboxSize15x15, HitboxSize15x15, HitboxSize15x15, HitboxSize15x15, HitboxSize15x15
 	
 	
 JarHitboxSizes:

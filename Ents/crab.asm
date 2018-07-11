@@ -1,6 +1,6 @@
 	;.db "CRAB"
 CrabStates:
-	.dw CrabMoving,CrabStill,CrabGrabbing,CrabHit
+	.dw CrabMoving,CrabStill,CrabGrabbing,CrabFlying,CrabHit
 	
 CrabRoutine:
 CrabCheckDead:
@@ -95,7 +95,7 @@ CrabKnifeCol:
 	
 	lda #EXPLOSION_TIME
 	sta ent_timer1,x
-	lda #3				;HIT
+	lda #4				;HIT
 	sta ent_state,x
 	lda #0
 	sta ent_anim_timer,x
@@ -305,7 +305,7 @@ CrabStill:
 	sta ent_timer1,x
 	rts
 	
-	;.db "GRAB"
+
 CrabGrabbing:
 	;if the player fidgets the D-Pad fast enough, the crab'll stop grabbing
 	lda buttons_old
@@ -318,24 +318,23 @@ CrabGrabbing:
 	eor temp1
 	cmp #%00000011
 	bne @grab				;still grabbing
-	lda #1			;still
+	lda #3					;flying
 	sta ent_state,x
-	;(for now, set the crab to the middle of the screen until "flying" is implemented)
-	lda #$80
-	sta ent_x,x
-	sta ent_y,x
-	clc
-	adc ent_width,x
-	sta ent_hb_x,x
-	sta ent_hb_y,x
-	lda #0
-	sta ent_timer1,x
 	lda random
 	jsr RandomLFSR
-	and #%00111000
-	ora #%00000111
-	sta ent_time1,x
-	jmp FindEntAnimLengthsAndFrames
+	and #%00000001			;fly either left or right (Determined by up/down)
+	sta ent_dir,x
+	lda #$00
+	sta ent_yvel_sp,x
+	sta ent_yacc,x
+	lda #$05
+	sta ent_yvel,x
+	lda #$50
+	sta ent_yacc_sp,x
+	eor #%11111111
+	lda ent_y,x
+	sta ent_misc1,x			;save crab's Y position for flying
+	rts
 @grab:
 	lda ent_x+0
 	clc
@@ -374,6 +373,72 @@ CrabGrabbing:
 	jmp PlaySound
 CrabGrabbingDone:
 	rts
+	
+	
+CrabFlying:
+	;if crabs Y position is >= what it was when starting to fly, stop flying.
+	lda ent_ysp,x
+	sec
+	sbc ent_yvel_sp,x
+	sta ent_ysp,x
+	lda ent_y,x
+	sbc ent_yvel,x
+	sta ent_y,x
+	pha					;save Y
+	clc
+	adc ent_height,x
+	sta ent_hb_y,x
+	pla
+	cmp ent_misc1,x
+	bcs @doneflying
+	lda ent_yvel_sp,x
+	sec
+	sbc ent_yacc_sp,x
+	sta ent_yvel_sp,x
+	lda ent_yvel,x
+	sbc ent_yacc,x
+	sta ent_yvel,x
+	lda ent_dir,x
+	beq @left
+@right:
+	lda ent_hb_x,x
+	clc
+	adc #2
+	bcc @nooverflow
+	lda #255
+@nooverflow:
+	sta ent_hb_x,x
+	sec
+	sbc ent_width,x
+	sta ent_x,x
+	;jsr EntCheckBGColTR
+	;jmp EntCheckBGColBR
+	rts
+@left:
+	lda ent_x,x
+	sec
+	sbc #2
+	bcs @nounderflow
+	lda #0
+@nounderflow:
+	sta ent_x,x
+	clc
+	adc ent_width,x
+	sta ent_hb_x,x
+	;jsr EntCheckBGColTL
+	;jmp EntCheckBGColBL
+	rts
+@doneflying:
+	lda #0
+	sta ent_timer1
+	lda random
+	jsr RandomLFSR
+	and #%00111000
+	ora #%00000111
+	sta ent_time1,x
+	lda #1					;still
+	sta ent_state,x
+	jmp FindEntAnimLengthsAndFrames
 	
 	
 CrabHit:
