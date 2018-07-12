@@ -373,8 +373,9 @@ DrawPageNumber:
 	lda #$30			; /
 	sta $2007
 	;draw how many total pages there are
-	lda inventory_pages
-	sta $2007
+	ldx inventory_pages
+	inx
+	stx $2007
 
 	lda #%00011110
 	sta soft_2001
