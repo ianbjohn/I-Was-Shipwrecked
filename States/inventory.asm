@@ -50,6 +50,7 @@ CleanUpInventorySystem:
 @clearpreviousitemsdone:
 	;any other misc inventory system variables, clear them here (Maybe, once page flipping is implemented, turn this bit of code into a subroutine since this'll need to be done in both these situations)
 	sta inventory_page
+	sta inventory_pages
 	sta items_on_screen
 	sta in_inventory_state
 	sta inventory_cursor_x
@@ -60,7 +61,7 @@ CleanUpInventorySystem:
 	rts
 	
 	
-	;.db "INVENTORY"
+	.db "INVENTORY"
 InventoryInit:
 	jsr ClearOAM
 
@@ -105,6 +106,14 @@ InventoryInit:
 	
 	;let the game know that we're in the inventory state, and that message boxes are gonna work a little differently
 	inc in_inventory_state
+	
+	;figure out how many pages the inventory system currently has
+	lda num_obtained_items
+	lsr
+	lsr
+	lsr
+	lsr					;pages = num_obtained_items / 16
+	sta inventory_pages
 	
 	;"SAVE"
 @drawsave
@@ -184,12 +193,29 @@ InventoryInit:
 	;All inventory system variables should be reset (done when exiting the state), so we should be okay
 	;to find where to start loading items from, we need to multiply the page # by 16 (how many items can be on one screen)
 DrawItems:
+	;figure out which items to draw on the current page
 	lda inventory_page
 	asl
 	asl
 	asl
-	asl					;multiply by 16 to find which item to draw first
-	sta temp2			;this is used as the index of which item is being processed
+	asl
+	sta temp3
+	;count which items have have been obtained compared to the current page to figure out what items to load on this page
+	ldx #0
+	stx temp2
+@countobtaineditemsloop
+	lda temp2
+	cmp temp3
+	beq @loopdone
+	stx temp1						;save x
+	jsr CheckIfItemObtained
+	beq @countobtaineditemsloop
+	ldx temp1
+	inx
+	inc temp2
+	bne @countobtaineditemsloop		;will always branch
+@loopdone:
+	stx temp2						;temp2 now has the ITEM INDEX of the first item to draw on this page
 ProcessItem:
 	;stop drawing items if 16 have already been drawn
 	lda items_on_screen
@@ -347,13 +373,7 @@ DrawPageNumber:
 	lda #$30			; /
 	sta $2007
 	;draw how many total pages there are
-	lda num_obtained_items
-	lsr
-	lsr
-	lsr
-	lsr					;remember, # pages is # obtained items / 16
-	clc
-	adc #1
+	lda inventory_pages
 	sta $2007
 
 	lda #%00011110

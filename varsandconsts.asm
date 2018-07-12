@@ -186,6 +186,7 @@
 	message_response	.dsb 1
 	in_inventory_state	.dsb 1		;Used by the messagebox system for things like - Draw ents only if in the play state (and not the inventory state), which state to return to, etc
 	inventory_page		.dsb 1		;what page of the inventory screen we're currently on (16 items per page)
+	inventory_pages		.dsb 1
 	inventory_screen_items	.dsb 16	;keep track of what items are currently on the inventory screen. **IMPORTANT** -> 0 means that the cell is empty, so items here are indexed 1-based. Be sure to account for this and avoid off-by-one errors
 	items_on_screen		.dsb 1		;stop processing and drawing items once this gets to 16
 	;inventory_screen_pos	.dsb 1	;where on the screen information about items is currently being drawn
