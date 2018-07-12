@@ -62,7 +62,7 @@ CrabDecPHIDone:
 
 CrabCheckKnifeCol:
 	lda ent_state,x
-	cmp #3				;hit
+	cmp #4				;hit
 	beq CrabCheckKnifeColDone
 	lda ent_active+1
 	beq CrabCheckKnifeColDone
