@@ -697,7 +697,18 @@ Inventory_ReadLeft:
 	sta inventory_cursor_x
 	;jmp Inventory_DrawCursor
 @prevpage:
-	;(if "page" is selected, and if we aren't at the first page, go back a page)
+	;if "page" is selected, and if we aren't at the first page, go back a page
+	lda inventory_page
+	sec
+	sbc #1
+	bcc Inventory_DrawCursor
+	;go to the previous page
+	sta inventory_page
+	lda #STATE_PLAY				;we need to re-initialize the game state, so set game_state to a state that isn't the inventory state
+	sta game_state_old
+	;lda #STATE_INVENTORY
+	;sta game_state
+	rts
 	jmp Inventory_DrawCursor
 	
 Inventory_ReadRight:
@@ -741,8 +752,20 @@ Inventory_ReadRight:
 @skipoverflow2:
 	sta inventory_cursor_x
 @nextpage:
-	;(if "page" is selected, and if we aren't at the last page, go forward a page)
-
+	;if "page" is selected, and if we aren't at the last page, go forward a page
+	lda inventory_page
+	clc
+	adc #1
+	cmp inventory_pages
+	bcs Inventory_DrawCursor
+	;go to next page
+	sta inventory_page
+	lda #STATE_PLAY
+	sta game_state_old
+	;lda #STATE_INVENTORY
+	;sta game_state
+	rts
+	
 Inventory_DrawCursor:
 	ldy oam_index
 	lda inventory_status
