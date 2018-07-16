@@ -5,6 +5,12 @@ InventorySaveString:
 	.db S,lA,V,E
 InventoryPageString:
 	.db P,lA,G,E,SPA
+InventoryQueueString:
+	.db Q,U,E,U,E,$2F,SPA
+InventoryClearString:
+	.db C,L,E,lA,R
+InventoryCraftString:
+	.db C,R,lA,F,T
 	
 	
 ChangeWeaponPalette:

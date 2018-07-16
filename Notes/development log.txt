@@ -1257,3 +1257,9 @@ Day 158 - 7/11/2018
 	-Started rehauling the inventory system to handle page-turning
 		-Added code to compute the index of the first item to draw depending on the page and how many items have currently been obtained
 	-Added a message that the player's poisoned
+	
+Day 159 - 7/14/2018
+	-Messed around with crab's code a little more, changed it so that the crab stops flying when the negative initial velocity is reached. Fixed some background collision errors.
+	
+Day 160 - 7/15/2018
+	-Added strings in the inventory system for "Queue: ", "Craft" and "Clear"
