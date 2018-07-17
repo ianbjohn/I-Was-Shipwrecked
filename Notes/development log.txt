@@ -1263,3 +1263,8 @@ Day 159 - 7/14/2018
 	
 Day 160 - 7/15/2018
 	-Added strings in the inventory system for "Queue: ", "Craft" and "Clear"
+	
+Day 161 - 7/17/2018
+	-Worked more on the crafting system
+	-Made a table of which items are craftable
+	-Wrote some comments for what the "Craft" subroutine should do

@@ -12,6 +12,10 @@ InventoryClearString:
 InventoryCraftString:
 	.db C,R,lA,F,T
 	
+ItemCraftable:
+	;sorted by item ID
+	.db 0,0,0,1,0,1,0,0,0,0,1,0,1,0,0
+	
 	
 ChangeWeaponPalette:
 	;For right now I only think the weapon will change in the inventory state, so this can go here

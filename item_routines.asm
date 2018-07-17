@@ -182,3 +182,10 @@ SubtractFromItemCount:
 	ora temp1
 	sta item_count,x
 	rts
+	
+	
+CraftItem:
+	;a work-in-progress currently
+	;takes what's in the crafting queue, adds it up, and searches a table to see if such an item is valid (0 = not valid)
+	;if it is valid, either add to the item's count or mark it as obtained
+	rts

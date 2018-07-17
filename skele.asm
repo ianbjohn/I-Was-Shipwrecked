@@ -1412,7 +1412,7 @@ TerrainSpawnCoordinates:
 
 ;Eventually move all this stuff to a separate file (itemdata or something), and to a different bank (The same bank where all the message data and code is. Remember to bankswitch)
 ItemStrings:
-	.dw KnifeString, JarString, MeatString, FlintString, GreenCoconutString, BrownCoconutString, StickString, AloeString
+	.dw KnifeString, JarString, MeatString, FlintString, CoconutString, StickString, AloeString
 	.dw SpearString, BigBoneString, MacheteString, StoneString, TorchString, ClothString, TourniquetString, GunString
 WeaponStrings:
 	;Weapon strings need to be different from their item string counterparts, since there needs to be padding instead of a terminating character
@@ -1429,12 +1429,9 @@ MeatString:
 	.db M,E,lA,T,$FF
 FlintString:
 	.db F,L,I,N,T,$FF
-GreenCoconutString:
-	.db G,R,E,E,N,$FE
-	.db C,$2D,N,U,T,$FF
-BrownCoconutString:
-	.db B,R,O,W,N,$FE
-	.db C,$2D,N,U,T,$FF
+CoconutString:
+	.db C,O,C,O,$FE
+	.db N,U,T,$FF
 StickString:
 	.db S,T,I,C,K,$FF
 AloeString:
