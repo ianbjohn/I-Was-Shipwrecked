@@ -188,4 +188,33 @@ CraftItem:
 	;a work-in-progress currently
 	;takes what's in the crafting queue, adds it up, and searches a table to see if such an item is valid (0 = not valid)
 	;if it is valid, either add to the item's count or mark it as obtained
-	rts
+	;FOR RIGHT NOW, I'VE JUST MOVED THE CODE TO MAKE A SPEAR HERE, SINCE THE SAME GENERAL IDEA FOR CRAFTING (ALL THE EXTRA STUFF LIKE CHECKING FOR ITEMS AND DRAWING THE MESSAGES) WILL BE THE SAME
+	;see if we have a stick and a flint, and if so, make a torch
+	;lda #ITEM_STICK
+	;jsr GetItemCount
+	;beq @cantmaketorch
+	;lda #ITEM_FLINT
+	;jsr GetItemCount
+	;beq @cantmaketorch
+	;lda #ITEM_STICK
+	;ldy #1
+	;jsr SubtractFromItemCount
+	;lda #ITEM_FLINT
+	;ldy #1
+	;jsr SubtractFromItemCount
+	;lda #ITEM_TORCH
+	;jsr CheckIfItemObtained
+	;bne @inc
+	;lda #ITEM_TORCH
+	;jsr SetItemAsObtained
+;@inc:
+	;lda #ITEM_TORCH
+	;ldy #1
+	;jsr AddToItemCount
+	;lda #MSG_CRAFTEDTORCH
+	;bne @draw
+;@cantmaketorch:
+	;lda #MSG_CANTMAKETORCH
+;@draw:
+	;sta message
+	;jmp Inventory_DrawCursor

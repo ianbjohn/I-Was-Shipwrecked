@@ -189,6 +189,7 @@
 	inventory_pages		.dsb 1
 	inventory_screen_items	.dsb 16	;keep track of what items are currently on the inventory screen. **IMPORTANT** -> 0 means that the cell is empty, so items here are indexed 1-based. Be sure to account for this and avoid off-by-one errors
 	items_on_screen		.dsb 1		;stop processing and drawing items once this gets to 16
+	selected_item		.dsb 1
 	;inventory_screen_pos	.dsb 1	;where on the screen information about items is currently being drawn
 	file				.dsb 1		;current file being played (0-2)
 	fadeout_state		.dsb 1		;0 - regular palette, 1 - palette-$10, 2 - palette-$20, 3 - palette-$30, 4 - all black, 5 - go to loading screen state
@@ -235,7 +236,7 @@
 	torch_time			.dsb 2		;# of frames left until current torch goes out
 	craft_queue			.dsb 3		;IDs of what items are currently in the crafting queue. A max of only 3 items is needed to make a new item.
 									;1-based, so 0 means no item. Be sure to remember this and subtract 1
-	craft_queue_status	.dsb 1		;0 - queue is empty, 1 - it isnt
+	craft_queue_count	.dsb 1		;a max of the items in the crafting queue
 	discovered_recipes	.dsb 2		;Think more about how to do this. These can be encoded as bits. I guess for each "craftable" item, keep track of whether or not the recipe to make it has been discovered. Store the string for its recipe in the messages bank? (Maybe in the encounters bank since I'm thinking thats where extra miscellaneous stuff can go)
 	status_recovery_time	.dsb 2	;how long it takes for whatever status the player has to return to normal
 									;depends on status

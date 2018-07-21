@@ -1268,3 +1268,8 @@ Day 161 - 7/17/2018
 	-Worked more on the crafting system
 	-Made a table of which items are craftable
 	-Wrote some comments for what the "Craft" subroutine should do
+	
+Day 162 - 7/21/2018
+	-Been lazy and haven't made any progress since the last update
+	-Changed a few things in the inventory messages file to reflect on this general "crafting" approach
+	-Wrote a routine to add an item to the crafting queue

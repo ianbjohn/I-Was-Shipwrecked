@@ -479,20 +479,14 @@ Inventory_ReadA:
 	dey						;account for the 1-based indexing
 	;Y now has the correct item id
 	tya
+	sta selected_item
 	jsr DrawInventoryMessageToBuffer
 	lda #3					;let the game know an item's been selected
 	sta inventory_status
 	jmp Inventory_DrawCursor
 @itemaction:
 	;call the right routine for the selected item's logic
-	lda inventory_cursor_y
-	asl
-	asl						;multiply by 4 since its a 4x4 grid
-	ora inventory_cursor_x	;combine high nibble Y with low nibble X
-	tax
-	ldy inventory_screen_items,x
-	dey
-	tya
+	lda selected_item				;should have already been computed
 	asl
 	tay
 	lda InventoryMessageLogics+0,y
