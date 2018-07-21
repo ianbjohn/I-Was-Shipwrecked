@@ -1273,3 +1273,8 @@ Day 162 - 7/21/2018
 	-Been lazy and haven't made any progress since the last update
 	-Changed a few things in the inventory messages file to reflect on this general "crafting" approach
 	-Wrote a routine to add an item to the crafting queue
+		-This replaced one of the stick's inventory logic routines
+		-Got rid of the "Out of X item" messages and replaced them with one general "Out of item" message
+	-Expanded on the inventory system to draw "Clear", "Craft", and "Queue: (items in queue)" when an item is added in the queue
+	-Made the queue get cleared when the user exits the inventory state
+	-Still need to add cursor positions, inventory substates, and logic for "clear" and "craft"

@@ -36,7 +36,7 @@ IM_Meat:
 IM_Flint:
 IM_Stone:
 IM_Aloe:
-	.db SPA, lA,D,D, SPA, T,O, SPA, C,R,lA,F,T, Q,U,E,U,E,$FF
+	.db SPA, lA,D,D, SPA, T,O, SPA, C,R,lA,F,T, SPA, Q,U,E,U,E,$FF
 IM_Cloth:
 	.db SPA, M,lA,K,E, SPA, B,lA,N,D,lA,G,E,$FF
 IM_Coconut:
@@ -175,7 +175,7 @@ IML_Meat_0:
 	lda #MSG_ATERAWMEAT
 	bne @draw			;will always branch
 @nomeat:
-	lda #MSG_NOMEAT
+	lda #MSG_OUTOFITEM
 @draw:
 	sta message
 	jmp Inventory_DrawCursor
@@ -204,7 +204,7 @@ IML_Meat_1:
 	lda #MSG_MADECOOKFIRE
 	bne @draw			;will always branch
 @nomeat:
-	lda #MSG_NOMEAT
+	lda #MSG_OUTOFITEM
 	bne @draw
 @cantcook:
 	lda #MSG_CANTMAKEFIRE
@@ -266,7 +266,7 @@ IML_Stick_0:
 	lda #MSG_ALREADYEQUIPPED
 	bne @draw
 @nosticks:
-	lda #MSG_NOSTICKS
+	lda #MSG_OUTOFITEM
 @draw:
 	sta message
 	jmp Inventory_DrawCursor
@@ -282,8 +282,15 @@ IML_Stick_1:
 	sta message
 	jmp Inventory_DrawCursor
 @continue:
-	ldx craft_queue_count
 	lda selected_item
+	jsr GetItemCount
+	bne @continue2
+	lda #MSG_OUTOFITEM
+	sta message
+	jmp Inventory_DrawCursor
+@continue2:
+	lda selected_item
+	ldx craft_queue_count
 	sta craft_queue,x
 	inc craft_queue_count
 	ldy #1
@@ -328,7 +335,7 @@ IML_Cloth_0:
 	lda #MSG_MADEBANDAGE
 	bne @draw
 @nocloth:
-	lda #MSG_NOCLOTH
+	lda #MSG_OUTOFITEM
 	bne @draw
 @notcut:
 	lda #MSG_NOTCUT

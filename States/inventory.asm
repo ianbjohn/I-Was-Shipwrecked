@@ -51,23 +51,11 @@ ChangeWeaponPalette:
 
 CleanUpInventorySystem:
 	lda #0
-	ldx #16
-@clearpreviousitems:
-	;get rid of the 16 instances in RAM for the items that were on the screen (We may have switched to a new page, so we need to load all new items)
-	sta inventory_screen_items-1,x
+	ldx #25
+@clear:
+	sta inventory_page-1,x				;check the varsandconsts file, this clears all the inventory system variables (Excluding the crafting queue, since it should only be cleared manually by the player or by leaving the inventory state)
 	dex
-	bne @clearpreviousitems
-@clearpreviousitemsdone:
-	;any other misc inventory system variables, clear them here (Maybe, once page flipping is implemented, turn this bit of code into a subroutine since this'll need to be done in both these situations)
-	sta inventory_page
-	sta inventory_pages
-	sta items_on_screen
-	sta in_inventory_state
-	sta inventory_cursor_x
-	sta inventory_cursor_y
-	sta inventory_status
-	sta inventory_choices
-	sta inventory_choice
+	bne @clear
 	rts
 	
 	
@@ -125,6 +113,81 @@ InventoryInit:
 	lsr					;pages = num_obtained_items / 16
 	sta inventory_pages
 	
+@drawccraftstuff:
+	;only draw this, and "craft", if the craft queue isn't empty
+	lda craft_queue_count
+	bne @continue
+	jmp @drawcraftstuffdone
+@continue:
+	lda $2002
+	lda #$20			;left of "save"
+	sta $2006
+	lda #$C2
+	sta $2006
+	ldx #0
+@clear:
+	lda InventoryClearString,x
+	sta $2007
+	inx
+	cpx #5
+	bne @clear
+	;lda $2002
+	lda #$20			;right of "save"
+	sta $2006
+	lda #$D9
+	sta $2006
+	ldx #0
+@craft:
+	lda InventoryCraftString,x
+	sta $2007
+	inx
+	cpx #5
+	bne @craft
+@queue:
+	;lda $2002
+	lda #$23
+	sta $2006
+	lda #$20
+	sta $2006
+	ldx #0
+	stx temp0						;used to keep track of which item in the queue we're currently drawing
+@queuestring:
+	lda InventoryQueueString,x
+	sta $2007
+	inx
+	cpx #6
+	bne @queuestring
+	lda #SPA
+	sta $2007						
+@queueitem:
+	ldx temp0
+	lda craft_queue,x
+	asl
+	tax
+	lda ItemStrings,x
+	sta ptr1+0
+	lda ItemStrings+1,x
+	sta ptr1+1
+	ldy #0
+@queueitemstringloop:
+	lda (ptr1),y
+	cmp #$FF
+	bne @cont
+	inc temp0
+	lda temp0
+	cmp craft_queue_count
+	beq @drawcraftstuffdone
+	lda #$29					;,
+	sta $2007
+	lda #SPA
+	sta $2007
+	bne @queueitem				;will always branch
+@cont:
+	sta $2007
+	iny
+	bne @queueitemstringloop	;will always branch
+@drawcraftstuffdone:
+	
 	;"SAVE"
 @drawsave
 	;only draw this, and have saving as an option, if all the monsters on the screen have been killed
@@ -135,6 +198,7 @@ InventoryInit:
 	sta $2006
 	lda #$CE
 	sta $2006
+	ldx #0
 @drawsaveloop:
 	lda InventorySaveString,x
 	sta $2007
@@ -399,7 +463,7 @@ InventoryCursorXs:
 InventoryCursorYs:
 	.db $58, $78, $98, $B8
 	
-	;.db "INVMAIN"
+	.db "INVMAIN"
 InventoryMain:
 	lda prg_bank
 	pha
@@ -536,11 +600,20 @@ Inventory_ReadB:
 	lda #1
 	sta nmi_enabled
 	lda #0
+	tax
 	sta inventory_status
 	jmp InventoryMain_Done
 	
 @exit:
 	jsr CleanUpInventorySystem
+@clearcraftstuff:
+	jsr ClearCraftQueue
+@clearqueue:
+	;^ a bit of an ambiquous name, but this literally sets each variable in the craft queue to 0
+	sta craft_queue,x		;A and X have 0
+	inx
+	cpx #4					;clears craft_queue_count as well
+	bne @clearqueue
 	;When returning back to the play state, we need to reload the metatiles, attributes, and all that fun stuff from RAM, so we go to the Play state init code to do this
 	lda #STATE_PLAY
 	sta game_state
