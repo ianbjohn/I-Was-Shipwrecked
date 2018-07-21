@@ -421,6 +421,7 @@
 	MSG_MADEBANDAGE			= $2F
 	MSG_RECOVERED			= $30
 	MSG_POISONED			= $31
+	MSG_CRAFTQUEUEFULL		= $32
 	
 	EXPLOSION_TIME		= 12			;how many frames an explosion should last
 	

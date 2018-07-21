@@ -25,7 +25,7 @@ Messages:
 	.dw Message18, Message19, Message1A, Message1B, Message1C, Message1D, Message1E, Message1F
 	.dw Message20, Message21, Message22, Message23, Message24, Message25, Message26, Message27
 	.dw Message28, Message29, Message2A, Message2B, Message2C, Message2D, Message2E, Message2F
-	.dw Message30, Message31
+	.dw Message30, Message31, Message32
 MessageResponseNumbers:
 	;sorted by message index
 	.db 3,1,1,1,2,1,1,1
@@ -34,7 +34,7 @@ MessageResponseNumbers:
 	.db 1,1,1,1,1,1,1,1
 	.db 1,1,1,1,1,1,1,1
 	.db 1,1,1,1,1,1,1,1
-	.db 1,1
+	.db 1,1,1
 MessageResponses:
 	;this is a jump table. This way, logic can happen for different responses
 	;(M0R2 is just normal "Okay")
@@ -44,7 +44,7 @@ MessageResponses:
 	.dw Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2
 	.dw Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2
 	.dw Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2
-	.dw Message0Response2,Message0Response2
+	.dw Message0Response2,Message0Response2,Message0Response2
 	
 Message0:
 	.db T,H,E,R,E, SPA, I,S, SPA, F,R,E,S,H, SPA, W,lA,T,E,R, SPA, H,E,R,E,$2A,$FE
@@ -163,6 +163,8 @@ Message30:
 	.db S,T,lA,T,U,S, SPA, R,E,T,U,R,N,E,D, SPA, T,O, SPA, N,O,R,M,lA,L,$2A,$FF
 Message31:
 	.db lY,O,U, SPA, B,E,C,lA,M,E, SPA, P,O,I,S,O,N,E,D,$2A,$FF
+Message32:
+	.db C,R,lA,F,T,I,N,G, SPA, Q,U,E,U,E, SPA, I,S, SPA, F,U,L,L,$2A,$FF
 	
 
 TryCrossWater:

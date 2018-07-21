@@ -63,7 +63,7 @@ IML_Aloe:
 	.dw IML_Stick_1
 IML_Cloth:
 	.dw IML_Cloth_0
-IML_Cocount:
+IML_Coconut:
 IML_Stick:
 	.dw IML_Stick_0, IML_Stick_1
 IML_Spear:
@@ -71,8 +71,6 @@ IML_Spear:
 IML_BigBone:
 IML_Machete:
 	.dw IML_Machete_0
-IML_Stone:
-	.dw IML_Stick_1
 IML_Torch:
 	.dw IML_Torch_0
 IML_Tourniquet:
@@ -274,22 +272,27 @@ IML_Stick_0:
 	jmp Inventory_DrawCursor
 	
 	
+	;.db "IMLS1"
 IML_Stick_1:
 	;this is the general "Add item to crafting queue" logic.
 	lda craft_queue_count
 	cmp #3
 	bcc @continue
-	;(play a buzzer / "NO!" sound effect or something)
-	rts
+	lda #MSG_CRAFTQUEUEFULL
+	sta message
+	jmp Inventory_DrawCursor
 @continue:
-	lda #STATE_INVENTORY		;will re-draw the inventory_system
-	sta game_state
 	ldx craft_queue_count
 	lda selected_item
 	sta craft_queue,x
 	inc craft_queue_count
 	ldy #1
-	jmp SubtractFromItemCount
+	jsr SubtractFromItemCount
+	lda #0
+	sta game_state_old				;trick the state machine into thinking the inventory state should be re-initialized
+	jsr EraseMBoxOrReinitInventory
+	pla
+	jmp SetPRGBank
 	
 	
 IML_Spear_0:
