@@ -184,9 +184,9 @@
 	;Local variables or less general variables that aren't used every frame
 	player_weapon_active_timer		.dsb 1				;if later weapons are added that fly across the screen rather than being stabbed with, don't use this variable
 	message_response	.dsb 1
-	in_inventory_state	.dsb 1		;Used by the messagebox system for things like - Draw ents only if in the play state (and not the inventory state), which state to return to, etc
 	fadeout_state		.dsb 1		;0 - regular palette, 1 - palette-$10, 2 - palette-$20, 3 - palette-$30, 4 - all black, 5 - go to loading screen state
 	fadeout_timer		.dsb 1
+	in_inventory_state	.dsb 1		;Used by the messagebox system for things like - Draw ents only if in the play state (and not the inventory state), which state to return to, etc
 	inventory_page		.dsb 1		;what page of the inventory screen we're currently on (16 items per page)
 	inventory_pages		.dsb 1
 	inventory_screen_items	.dsb 16	;keep track of what items are currently on the inventory screen. **IMPORTANT** -> 0 means that the cell is empty, so items here are indexed 1-based. Be sure to account for this and avoid off-by-one errors
@@ -195,7 +195,7 @@
 	;inventory_screen_pos	.dsb 1	;where on the screen information about items is currently being drawn
 	inventory_cursor_x	.dsb 1		;0-15			;maybe convert these to nibbles to save a byte of RAM but it doesn't seem like a huge deal right now
 	inventory_cursor_y	.dsb 1		;0-15
-	inventory_status	.dsb 1		;normal (selecting an item), at "save", at "page", selecting item choice
+	inventory_status	.dsb 1		;normal (selecting an item), at "save", at "page", selecting item choice, at "craft", at "clear", at "list"
 	inventory_choices	.dsb 1		;how many choices in the inventory screen you can make with the given item
 	inventory_choice	.dsb 1		;the ID of whatever selected choice for whatever selected item
 	craft_queue			.dsb 3		;IDs of what items are currently in the crafting queue. A max of only 3 items is needed to make a new item

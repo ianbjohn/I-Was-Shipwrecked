@@ -11,6 +11,8 @@ InventoryClearString:
 	.db C,L,E,lA,R
 InventoryCraftString:
 	.db C,R,lA,F,T
+InventoryListString:
+	.db L,I,S,T
 	
 ItemCraftable:
 	;sorted by item ID
@@ -51,9 +53,9 @@ ChangeWeaponPalette:
 
 CleanUpInventorySystem:
 	lda #0
-	ldx #25
+	ldx #26
 @clear:
-	sta inventory_page-1,x				;check the varsandconsts file, this clears all the inventory system variables (Excluding the crafting queue, since it should only be cleared manually by the player or by leaving the inventory state)
+	sta in_inventory_state-1,x				;check the varsandconsts file, this clears all the inventory system variables (Excluding the crafting queue, since it should only be cleared manually by the player or by leaving the inventory state)
 	dex
 	bne @clear
 	rts
@@ -125,29 +127,29 @@ InventoryInit:
 	lda #$C2
 	sta $2006
 	ldx #0
-@clear:
-	lda InventoryClearString,x
-	sta $2007
-	inx
-	cpx #5
-	bne @clear
-	;lda $2002
-	lda #$20			;right of "save"
-	sta $2006
-	lda #$D9
-	sta $2006
-	ldx #0
 @craft:
 	lda InventoryCraftString,x
 	sta $2007
 	inx
 	cpx #5
 	bne @craft
+	;lda $2002
+	lda #$20			;right of "save"
+	sta $2006
+	lda #$D9
+	sta $2006
+	ldx #0
+@clear:
+	lda InventoryClearString,x
+	sta $2007
+	inx
+	cpx #5
+	bne @clear
 @queue:
 	;lda $2002
 	lda #$23
 	sta $2006
-	lda #$20
+	lda #$21
 	sta $2006
 	ldx #0
 	stx temp0						;used to keep track of which item in the queue we're currently drawing
@@ -187,6 +189,19 @@ InventoryInit:
 	iny
 	bne @queueitemstringloop	;will always branch
 @drawcraftstuffdone:
+
+@drawlist:
+	lda #$23
+	sta $2006
+	lda #$57					;bottom-right-ish of the screen below the craft queue but above "page"
+	sta $2006
+	ldx #0
+@drawlistloop:
+	lda InventoryListString,x
+	sta $2007
+	inx
+	cpx #4
+	bne @drawlistloop
 	
 	;"SAVE"
 @drawsave
@@ -463,6 +478,10 @@ InventoryCursorXs:
 InventoryCursorYs:
 	.db $58, $78, $98, $B8
 	
+InventoryAButtonActions:
+	;sorted by inventory_status
+	.dw InventoryA_Normal, InventoryA_Save, Inventory_ReadB, InventoryA_ItemAction, InventoryA_CraftItem, InventoryA_ClearCraftQueue, InventoryA_ViewList
+	
 	.db "INVMAIN"
 InventoryMain:
 	lda prg_bank
@@ -515,17 +534,16 @@ Inventory_ReadA:
 	bne @continue
 	jmp Inventory_ReadB
 @continue:
-	
-	;for right now, all I have is save the game if the save option is selected
-	;ugly-as-fuck branching, but it's only because of the big SaveFileData macro, and I don't think this needs a jump table
 	lda inventory_status
-	beq @normal
-	cmp #1					;save selected
-	beq @save
-	cmp #3					;item action selected
-	beq @itemaction
-	jmp Inventory_ReadB
-@normal:
+	asl
+	tax
+	lda InventoryAButtonActions+0,x
+	sta jump_ptr+0
+	lda InventoryAButtonActions+1,x
+	sta jump_ptr+1
+	jmp (jump_ptr)
+	
+InventoryA_Normal:
 	;(if there's an item in the cell, draw what can be done with it to where the status board is)
 	;whatever item cell is currently selected, draw either the right inventory message, or blackspace, to the status board
 	;Use the X and Y of the cursor to get the item id of the cell
@@ -548,7 +566,8 @@ Inventory_ReadA:
 	lda #3					;let the game know an item's been selected
 	sta inventory_status
 	jmp Inventory_DrawCursor
-@itemaction:
+	
+InventoryA_ItemAction:
 	;call the right routine for the selected item's logic
 	lda selected_item				;should have already been computed
 	asl
@@ -570,11 +589,25 @@ Inventory_ReadA:
 	lda #0
 	sta inventory_status
 	jmp (jump_ptr)			;each routine should, instead of RTS, JMP back to Inventory_DrawCursor
-@save:
+	
+InventoryA_Save:
 	SaveFileData			;save the game!!!!!
 	;Play a sound effect
 	ldy #SFX_SAVE
 	jsr PlaySound
+	jmp Inventory_DrawCursor
+	
+InventoryA_CraftItem:
+	jmp Inventory_DrawCursor
+	
+InventoryA_ClearCraftQueue:
+	jsr ClearCraftQueue
+	jsr CleanUpInventorySystem
+	lda #0						;re-initialize inventory state
+	sta game_state_old
+	jmp Inventory_DrawCursor
+	
+InventoryA_ViewList:
 	jmp Inventory_DrawCursor
 	
 Inventory_ReadB:
@@ -608,12 +641,6 @@ Inventory_ReadB:
 	jsr CleanUpInventorySystem
 @clearcraftstuff:
 	jsr ClearCraftQueue
-@clearqueue:
-	;^ a bit of an ambiquous name, but this literally sets each variable in the craft queue to 0
-	sta craft_queue,x		;A and X have 0
-	inx
-	cpx #4					;clears craft_queue_count as well
-	bne @clearqueue
 	;When returning back to the play state, we need to reload the metatiles, attributes, and all that fun stuff from RAM, so we go to the Play state init code to do this
 	lda #STATE_PLAY
 	sta game_state
@@ -626,6 +653,7 @@ Inventory_ReadSelect:
 	beq Inventory_ReadUp
 	
 	lda inventory_status
+	cmp #3						;item action
 	bne Inventory_ReadUp		;we only need to do shit here if we're normal (i.e not at save or page and just looking at an item)
 	
 	;select the next possible thing to do with the item, wrapping around if necessary
@@ -637,6 +665,7 @@ Inventory_ReadSelect:
 	lda #0
 @skipoverflow:
 	sta inventory_choice
+	jmp Inventory_DrawCursor
 	
 Inventory_ReadUp:
 	;ReadDown is better commented
@@ -651,33 +680,51 @@ Inventory_ReadUp:
 	cmp #1
 	beq @gofromsavetopage
 	cmp #2
-	beq @gofrompagetonormal
+	beq @gofrompagetolist
+	cmp #4
+	beq @gofromcrafttopage
+	cmp #5
+	beq @gofromcleartopage
+	cmp #6
+	beq @gofromlisttonormal
 	bne Inventory_ReadDown
-@gofrompagetonormal:
+@gofromlisttonormal:
 	lda #0
 	sta inventory_status
 	lda #3
 	sta inventory_cursor_y
-	bne Inventory_ReadLeft		;will always branch
+	jmp Inventory_ReadLeft
+	
+@gofrompagetolist:
+	lda #6
+	sta inventory_status
+	jmp Inventory_ReadLeft
 	
 @gofromsavetopage:
+@gofromcrafttopage:
+@gofromcleartopage:
 	lda #2
 	sta inventory_status
-	bne Inventory_ReadLeft		;will always branch
+	jmp Inventory_ReadLeft
 	
 @normal:
 	lda inventory_cursor_y
 	sec
 	sbc #1
 	bcs @skipunderflow
-	;check if save is an option. If it is, go there, otherwise, go to page
+	;check if save is an option. If it is, go there, if not go to craft if possible, otherwise, go to page
 	lda num_active_enemies
 	beq @cangotosave
+	lda craft_queue_count
+	bne @cangotocraft
 	;can't go to save, so just go to page
 	lda #2
 	bne @continue
 @cangotosave:
 	lda #1
+	bne @continue
+@cangotocraft:
+	lda #4
 @continue:
 	sta inventory_status
 	jmp Inventory_ReadLeft
@@ -698,25 +745,43 @@ Inventory_ReadDown:
 	beq @gofromsavetonormal
 	cmp #2
 	beq @gofrompagetosave
+	cmp #4
+	beq @gofromcrafttonormal
+	cmp #5
+	beq @gofromcleartonormal
+	cmp #6
+	beq @gofromlisttopage
 	bne Inventory_ReadLeft
 @gofrompagetosave:
-	;we were at page. Now we need to go to either save if we can, otherwise back to normal
+	;we were at page. Now we need to go to either save if we can, if not go to craft if we can, otherwise back to normal
 	lda num_active_enemies
 	beq @cangotosave
+	lda craft_queue_count
+	bne @cangotocraft
 	lda #0
 	sta inventory_cursor_y		;wrap the cursor to the top
 	beq @continue				;will always branch
 @cangotosave:
 	lda #1
+	bne @continue
+@cangotocraft:
+	lda #4
 @continue:
 	sta inventory_status
 	jmp Inventory_ReadLeft
 	
 @gofromsavetonormal:
+@gofromcrafttonormal:
+@gofromcleartonormal:
 	lda #0
 	sta inventory_status
 	sta inventory_cursor_y
 	beq Inventory_ReadLeft		;will always branch
+	
+@gofromlisttopage:
+	lda #2
+	sta inventory_status
+	bne Inventory_ReadLeft
 	
 @normal:
 	;do the normal thing and advance the cursor down by one
@@ -725,8 +790,8 @@ Inventory_ReadDown:
 	adc #1
 	cmp #4
 	bcc @skipoverflow
-	;now at page
-	lda #2
+	;now at list
+	lda #6					;list
 	sta inventory_status
 	lda #3
 @skipoverflow:
@@ -735,16 +800,57 @@ Inventory_ReadDown:
 Inventory_ReadLeft:
 	lda buttons_pressed
 	and #BUTTONS_LEFT
-	beq Inventory_ReadRight
-	
+	bne @continue
+	jmp Inventory_ReadRight
+@continue:
 	ldy #SFX_SELECTION			;play sfx
 	jsr PlaySound
 	lda inventory_status
 	beq @normal
 	cmp #1					;don't do anything if save is selected
-	beq Inventory_ReadRight
+	beq @gofromsavetocraft
 	cmp #2
 	beq @prevpage
+	cmp #3
+	beq @itemaction
+	cmp #4
+	beq @gofromcrafttoclear
+	cmp #5
+	beq @gofromcleartosave
+	jmp Inventory_DrawCursor	;don't do anything if list is selected
+@normal:
+	;simply move the cursor back 1, wrapping if necessary
+	lda inventory_cursor_x
+	sec
+	sbc #1
+	bcs @skipunderflow2
+	lda #3
+@skipunderflow2:
+	sta inventory_cursor_x
+	jmp Inventory_DrawCursor
+@gofromsavetocraft:
+	;only do so if the craft queue isn't empty
+	lda craft_queue_count
+	bne @cangotocraft
+	jmp Inventory_DrawCursor
+@cangotocraft:
+	lda #4
+	sta inventory_status
+	jmp Inventory_DrawCursor
+@prevpage:
+	;if "page" is selected, and if we aren't at the first page, go back a page
+	lda inventory_page
+	sec
+	sbc #1
+	bcs @prev
+	jmp Inventory_DrawCursor
+@prev:
+	;go to the previous page
+	sta inventory_page
+	lda #STATE_PLAY				;we need to re-initialize the game state, so set game_state to a state that isn't the inventory state
+	sta game_state_old
+	jmp Inventory_DrawCursor
+@itemaction:
 	;if we've gotten here, that means the player's selecting what to do with a selected item
 	lda inventory_cursor_y
 	asl
@@ -763,44 +869,73 @@ Inventory_ReadLeft:
 @skipunderflow:
 	sta inventory_choice
 	jmp Inventory_DrawCursor
-@normal:
-	;simply move the cursor back 1, wrapping if necessary
-	lda inventory_cursor_x
-	sec
-	sbc #1
-	bcs @skipunderflow2
-	lda #3
-@skipunderflow2:
-	sta inventory_cursor_x
-	;jmp Inventory_DrawCursor
-@prevpage:
-	;if "page" is selected, and if we aren't at the first page, go back a page
-	lda inventory_page
-	sec
-	sbc #1
-	bcc Inventory_DrawCursor
-	;go to the previous page
-	sta inventory_page
-	lda #STATE_PLAY				;we need to re-initialize the game state, so set game_state to a state that isn't the inventory state
-	sta game_state_old
-	;lda #STATE_INVENTORY
-	;sta game_state
-	rts
+@gofromcrafttoclear:
+	lda #5
+	sta inventory_status
 	jmp Inventory_DrawCursor
+@gofromcleartosave:
+	;basically the same idea as @gofromsavetocraft
+	lda num_active_enemies
+	beq @cangotosave
+	lda #4
+	bne @continue2
+@cangotosave:
+	lda #1
+@continue2:
+	sta inventory_status
+	jmp Inventory_DrawCursor
+
 	
 Inventory_ReadRight:
 	lda buttons_pressed
 	and #BUTTONS_RIGHT
-	beq Inventory_DrawCursor
-	
+	bne @continue
+	jmp Inventory_DrawCursor
+@continue:
 	ldy #SFX_SELECTION			;play sfx
 	jsr PlaySound
 	lda inventory_status
 	beq @normal
 	cmp #1
-	beq Inventory_DrawCursor
+	beq @gofromsavetoclear
 	cmp #2
 	beq @nextpage
+	cmp #3
+	beq @itemaction
+	cmp #4
+	beq @gofromcrafttosave
+	cmp #5
+	beq @gofromcleartocraft
+	bne Inventory_DrawCursor
+@normal:
+	;simply move the cursor forward 1, wrapping if necessary
+	lda inventory_cursor_x
+	clc
+	adc #1
+	cmp #4
+	bcc @skipoverflow2
+	lda #0
+@skipoverflow2:
+	sta inventory_cursor_x
+@gofromsavetoclear:
+	lda craft_queue_count
+	beq Inventory_DrawCursor
+	lda #5
+	sta inventory_status
+	bne Inventory_DrawCursor	;w.a.b
+@nextpage:
+	;if "page" is selected, and if we aren't at the last page, go forward a page
+	lda inventory_page
+	clc
+	adc #1
+	cmp inventory_pages
+	bcs Inventory_DrawCursor
+	;go to next page
+	sta inventory_page
+	lda #STATE_PLAY
+	sta game_state_old
+	bne Inventory_DrawCursor	;w.a.b
+@itemaction:
 	;if we've gotten here, that means the player's selecting what to do with a selected item
 	lda inventory_cursor_y
 	asl
@@ -818,30 +953,20 @@ Inventory_ReadRight:
 @skipoverflow:
 	sta inventory_choice
 	jmp Inventory_DrawCursor
-@normal:
-	;simply move the cursor forward 1, wrapping if necessary
-	lda inventory_cursor_x
-	clc
-	adc #1
-	cmp #4
-	bcc @skipoverflow2
-	lda #0
-@skipoverflow2:
-	sta inventory_cursor_x
-@nextpage:
-	;if "page" is selected, and if we aren't at the last page, go forward a page
-	lda inventory_page
-	clc
-	adc #1
-	cmp inventory_pages
-	bcs Inventory_DrawCursor
-	;go to next page
-	sta inventory_page
-	lda #STATE_PLAY
-	sta game_state_old
-	;lda #STATE_INVENTORY
-	;sta game_state
-	rts
+@gofromcrafttosave:
+	lda num_active_enemies
+	beq @cangotosave
+	lda #5					;go straight to clear since we can't save
+	bne @continue2
+@cangotosave:
+	lda #1
+@continue2:
+	sta inventory_status
+	bne Inventory_DrawCursor	;w.a.b
+@gofromcleartocraft:
+	lda #4
+	sta inventory_status
+	
 	
 Inventory_DrawCursor:
 	ldy oam_index
@@ -851,14 +976,20 @@ Inventory_DrawCursor:
 	beq @normal
 	cmp #1
 	beq @save
-@page:
-	lda #$58					;X
+	cmp #2
+	beq @page
+	cmp #4
+	beq @craft
+	cmp #5
+	beq @clear
+@list:
+	lda #176					;X
 	sta $0203,y
-	lda #$D8
-	sta $0200,y					;Y
+	lda #208					;Y
+	sta $0200,y
 	lda #$51					;left cursor
 	sta $0201,y
-	bne @findcursorposdone		;will always branch
+	bne @findcursorposdone
 @save:
 	lda #$68
 	sta $0203,y					;X
@@ -867,6 +998,30 @@ Inventory_DrawCursor:
 	lda #$51					;left cursor
 	sta $0201,y
 	bne @findcursorposdone		;will always branch
+@page:
+	lda #$58					;X
+	sta $0203,y
+	lda #$D8
+	sta $0200,y					;Y
+	lda #$51					;left cursor
+	sta $0201,y
+	bne @findcursorposdone		;will always branch
+@craft:
+	lda #8
+	sta $0203,y					;X
+	lda #48
+	sta $0200,y					;Y
+	lda #$51					;left cursor
+	sta $0201,y
+	bne @findcursorposdone		;w.a.b
+@clear:
+	lda #192					;X
+	sta $0203,y
+	lda #48						;Y
+	sta $0200,y
+	lda #$51					;left cursor
+	sta $0201,y
+	bne @findcursorposdone			;w.a.b
 @normal:
 	ldx inventory_cursor_x
 	lda InventoryCursorXs,x

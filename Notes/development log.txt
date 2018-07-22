@@ -1278,3 +1278,8 @@ Day 162 - 7/21/2018
 	-Expanded on the inventory system to draw "Clear", "Craft", and "Queue: (items in queue)" when an item is added in the queue
 	-Made the queue get cleared when the user exits the inventory state
 	-Still need to add cursor positions, inventory substates, and logic for "clear" and "craft"
+	
+Day 163 - 7/22/2018
+	-Updated code in the inventory state to handle button presses to go to the new inventory substates
+	-The crafting queue now gets cleared when the user hits A at "Clear"
+	-Fixed an issue in ClearCraftQueue where I was using temp0 instead of temp2, causing issues with item counts

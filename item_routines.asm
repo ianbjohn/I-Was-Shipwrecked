@@ -219,22 +219,23 @@ CraftItem:
 	;sta message
 	;jmp Inventory_DrawCursor
 	
-	
 	.db "CCQ"
 ClearCraftQueue:
+	;Clears the craft queue and adds all the items that were in it back to where they were in the inventory system
 	;If the player leaves the inventory screen, or clears the craft queue manually, all the items in the queue need to be put back into the main inventory
 	ldx #0
 	stx temp2			;AddToItemCount uses temp0 and temp1
 @clear:
-	ldx temp0
+	ldx temp2
 	cmp craft_queue_count
 	beq @done
 	lda craft_queue,x
 	ldy #1
 	jsr AddToItemCount
+	lda #0
+	sta craft_queue,x
 	inc temp2
 	bne @clear			;will always branch
 @done:
-	lda #0
 	sta craft_queue_count
 	rts

@@ -292,6 +292,7 @@ Message0Response1:
 	pla
 	jmp SetPRGBank
 	
+
 Message0Response2:
 	;set game back to normal
 @readBorA:

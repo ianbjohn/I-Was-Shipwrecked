@@ -1474,7 +1474,7 @@ W_GunString:
 ItemHasCount:
 	;Table of flags, sorted by item id (the 0th item is the 0th bit of the 0th byte).
 	;Whether or not each item has a count
-	.db %11111100,%01111001
+	.db %11111100,%00111100
 	
 	
 StatusStrings:
