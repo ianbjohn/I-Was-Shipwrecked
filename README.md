@@ -3,9 +3,9 @@
 This is a work-in-progress homebrew game for the Nintendo Entertainment System.
 https://en.wikipedia.org/wiki/Homebrew_(video_games)
 
-![alt text](https://github.iu.edu/raw/ianbjohn/I-Was-Shipwrecked/master/exhib/island-0.png?token=AAAjNgb0I8ZLysnMnjZEfnxP8VAY7Mpmks5bSWFgwA%3D%3D)
-![alt text](https://github.iu.edu/raw/ianbjohn/I-Was-Shipwrecked/master/exhib/island-1.png?token=AAAjNpMVyneejdGkOOR31drYOWyAyuAdks5bSWGfwA%3D%3D)
-![alt text](https://github.iu.edu/raw/ianbjohn/I-Was-Shipwrecked/master/exhib/island-2.png?token=AAAjNjPNQjAkEH_s-fv8Ere36Pcwt-PVks5bSWHZwA%3D%3D)
+![alt text](https://raw.githubusercontent.com/ianbjohn/I-Was-Shipwrecked/master/exhib/island-0.png)
+![alt text](https://raw.githubusercontent.com/ianbjohn/I-Was-Shipwrecked/master/exhib/island-1.png)
+![alt text](https://raw.githubusercontent.com/ianbjohn/I-Was-Shipwrecked/master/exhib/island-2.png)
 
 # Introduction
 I started this project in the fall of 2016 to learn more about low-level programming, game design, and embedded systems. It's been a valuable learning experience and I'm hoping to be able to use what I've learned for future systems programming, as well as apply various principles to higher-level projects I work on in the future.
