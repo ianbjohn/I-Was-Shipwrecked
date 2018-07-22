@@ -1,3 +1,8 @@
+FLYING_ACCELERATION = $0050
+BASE_FLYING_VELOCITY = $0500
+STOP_FLYING_VELOCITY = ((BASE_FLYING_VELOCITY ^ $FFFF) + 1)		;16-bit twos complement
+
+
 	;.db "CRAB"
 CrabStates:
 	.dw CrabMoving,CrabStill,CrabGrabbing,CrabFlying,CrabHit
@@ -322,18 +327,17 @@ CrabGrabbing:
 	sta ent_state,x
 	lda random
 	jsr RandomLFSR
-	and #%00000001			;fly either left or right (Determined by up/down)
+	and #%00000001			;fly either left or right
+	ora #%00000010
 	sta ent_dir,x
-	lda #$00
+	lda #<BASE_FLYING_VELOCITY
 	sta ent_yvel_sp,x
+	;lda #>FLYING_ACCELERATIN
 	sta ent_yacc,x
-	lda #$05
+	lda #>BASE_FLYING_VELOCITY
 	sta ent_yvel,x
-	lda #$50
+	lda #<FLYING_ACCELERATION
 	sta ent_yacc_sp,x
-	eor #%11111111
-	lda ent_y,x
-	sta ent_misc1,x			;save crab's Y position for flying
 	rts
 @grab:
 	lda ent_x+0
@@ -374,23 +378,9 @@ CrabGrabbing:
 CrabGrabbingDone:
 	rts
 	
-	
+	.db "fly"
 CrabFlying:
-	;if crabs Y position is >= what it was when starting to fly, stop flying.
-	lda ent_ysp,x
-	sec
-	sbc ent_yvel_sp,x
-	sta ent_ysp,x
-	lda ent_y,x
-	sbc ent_yvel,x
-	sta ent_y,x
-	pha					;save Y
-	clc
-	adc ent_height,x
-	sta ent_hb_y,x
-	pla
-	cmp ent_misc1,x
-	bcs @doneflying
+	;move in a parabolic arc
 	lda ent_yvel_sp,x
 	sec
 	sbc ent_yacc_sp,x
@@ -398,22 +388,69 @@ CrabFlying:
 	lda ent_yvel,x
 	sbc ent_yacc,x
 	sta ent_yvel,x
+	;if velocity < negative base flying velocity, stop flying
+	;signed 16-bit comparison for <
+	;Thanks to 6502.org for this
+	lda ent_yvel,x
+	sec
+	sbc #>STOP_FLYING_VELOCITY
+	bvc @vc
+	eor #$80
+@vc:
+	bpl @pl
+	jmp @doneflying
+@pl:
+	bvc @checklo
+	eor #$80
+@checklo:
+	bne @fly
+	lda ent_yvel_sp,x
+	sbc #<STOP_FLYING_VELOCITY
+	bcc @doneflying
+@fly:
+	lda ent_ysp,x
+	sec
+	sbc ent_yvel_sp,x
+	sta ent_ysp,x
+	lda ent_y,x
+	sec
+	sbc ent_yvel,x
+	cmp #48
+	bcs @nooverflow
+	lda #48
+@nooverflow:
+	sta ent_y,x
+	clc
+	adc ent_height,x
+	sta ent_hb_y,x
 	lda ent_dir,x
+	pha
+	;vertical collision detection
+	lda #0
+	sta ent_dir,x
+	jsr EntCheckBGColTL
+	jsr EntCheckBGColTR
+	inc ent_dir,x
+	jsr EntCheckBGColBL
+	jsr EntCheckBGColBR
+	pla
+	sta ent_dir,x
+	cmp #2
 	beq @left
 @right:
 	lda ent_hb_x,x
 	clc
 	adc #2
-	bcc @nooverflow
+	bcc @nooverflow2
 	lda #255
-@nooverflow:
+@nooverflow2:
 	sta ent_hb_x,x
 	sec
 	sbc ent_width,x
 	sta ent_x,x
-	;jsr EntCheckBGColTR
-	;jmp EntCheckBGColBR
-	rts
+	jsr EntCheckBGColTR
+	jmp EntCheckBGColBR
+	;rts
 @left:
 	lda ent_x,x
 	sec
@@ -425,9 +462,9 @@ CrabFlying:
 	clc
 	adc ent_width,x
 	sta ent_hb_x,x
-	;jsr EntCheckBGColTL
-	;jmp EntCheckBGColBL
-	rts
+	jsr EntCheckBGColTL
+	jmp EntCheckBGColBL
+	;rts
 @doneflying:
 	lda #0
 	sta ent_timer1
