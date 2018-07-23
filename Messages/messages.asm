@@ -25,7 +25,7 @@ Messages:
 	.dw Message18, Message19, Message1A, Message1B, Message1C, Message1D, Message1E, Message1F
 	.dw Message20, Message21, Message22, Message23, Message24, Message25, Message26, Message27
 	.dw Message28, Message29, Message2A, Message2B, Message2C, Message2D, Message2E, Message2F
-	.dw Message30, Message31
+	.dw Message30, Message31, Message32, Message33, Message34
 MessageResponseNumbers:
 	;sorted by message index
 	.db 3,1,1,1,2,1,1,1
@@ -34,7 +34,7 @@ MessageResponseNumbers:
 	.db 1,1,1,1,1,1,1,1
 	.db 1,1,1,1,1,1,1,1
 	.db 1,1,1,1,1,1,1,1
-	.db 1,1
+	.db 1,1,1,1,1
 MessageResponses:
 	;this is a jump table. This way, logic can happen for different responses
 	;(M0R2 is just normal "Okay")
@@ -42,9 +42,9 @@ MessageResponses:
 	.dw Message0Response2,Message9Response0,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2
 	.dw Message0Response2,Message11Response0,Message0Response2,Message0Response2,Message0Response2,Message15Response0,Message16Response0,Message0Response2
 	.dw Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2
+	.dw Message0Response2,Message0Response2,Message22Response0,Message0Response2,Message22Response0,Message0Response2,Message0Response2,Message0Response2
 	.dw Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2
-	.dw Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2
-	.dw Message0Response2,Message0Response2
+	.dw Message0Response2,Message22Response0,Message0Response2,Message0Response2,Message0Response2
 	
 Message0:
 	.db T,H,E,R,E, SPA, I,S, SPA, F,R,E,S,H, SPA, W,lA,T,E,R, SPA, H,E,R,E,$2A,$FE
@@ -108,61 +108,67 @@ Message17:
 	.db lA,T,E, SPA, C,O,O,K,E,D, SPA, M,E,lA,T,$2A,$FE
 	.db $2E,2,5, SPA, H,U,N,G,E,R,$2A,$FF
 Message18:
-	.db N,O, SPA, M,E,lA,T,$2A,$FF
-Message19:
 	.db B,lA,D, SPA, M,E,lA,T,$2A, SPA, B,E,C,lA,M,E, SPA, S,I,C,K,$2A,$FF
-Message1A:
+Message19:
 	.db G,U,N, SPA, E,Q,U,I,P,P,E,D,$2A,$FF
-Message1B:
+Message1A:
 	.db T,H,E, SPA, B,R,U,S,H, SPA, I,S, SPA, T,O,O, SPA, L,lA,R,G,E, SPA, T,O,$FE
 	.db B,E, SPA, C,U,T, SPA, W,I,T,H, SPA, lA, SPA, K,N,I,F,E,$2A,$FF
-Message1C:
+Message1B:
 	.db O,B,T,lA,I,N,E,D, SPA, M,lA,C,H,E,T,E,$2A,$FF
-Message1D:
+Message1C:
 	.db M,lA,C,H,E,T,E, SPA, E,Q,U,I,P,P,E,D,$2A,$FF
-Message1E:
+Message1D:
 	.db O,B,T,lA,I,N,E,D, SPA, S,T,I,C,K,$2A,$FF
-Message1F:
+Message1E:
 	.db S,T,I,C,K, SPA, E,Q,U,I,P,P,E,D,$2A,$FF
-Message20:
-	.db N,O, SPA, S,T,I,C,K,S,$2A,$FF
-Message21:
+Message1F:
 	.db O,B,T,lA,I,N,E,D, SPA, S,T,O,N,E,$2A,$FF
-Message22:
+Message20:
 	.db O,B,T,lA,I,N,E,D, SPA, F,L,I,N,T,$2A,$FF
-Message23:
+Message21:
 	.db C,lA,N,N,O,T, SPA, M,lA,K,E, SPA, S,P,E,lA,R,$2A,$FE
 	.db $2B,R,E,Q,U,I,R,E,S, SPA, 1, SPA, S,T,I,C,K, SPA, $2E, SPA, 1, SPA, S,T,O,N,E,$2A,$2C,$FF
-Message24:
-	.db C,R,lA,F,T,E,D, SPA, S,P,E,lA,R,$2A,$FF
-Message25:
+Message22:
+	.db C,R,lA,F,T,E,D, SPA, lA, SPA, S,P,E,lA,R,$2A,$FF
+Message23:
 	.db C,lA,N,N,O,T, SPA, M,lA,K,E, SPA, T,O,R,C,H,$2A,$FE
 	.db $2B,R,E,Q,U,I,R,E,S, SPA, 1, SPA, S,T,I,C,K, SPA, $2E, SPA, 1, SPA, F,L,I,N,T,$2A,$2C,$FF
-Message26:
-	.db C,R,lA,F,T,E,D, SPA, T,O,R,C,H,$2A,$FF
-Message27:
+Message24:
+	.db C,R,lA,F,T,E,D, SPA, lA, SPA, T,O,R,C,H,$2A,$FF
+Message25:
 	.db S,P,E,lA,R, SPA, E,Q,U,I,P,P,E,D,$2A,$FF
-Message28:
+Message26:
 	.db O,U,T, SPA, O,F, SPA, W,E,lA,P,O,N,$2A,$FF
-Message29:
+Message27:
 	.db T,H,E, SPA, C,lA,V,E, SPA, I,S, SPA, P,I,T,C,H, SPA, B,L,lA,C,K,$2A,$FF
-Message2A:
+Message28:
 	.db C,U,T, SPA, F,O,O,T, SPA, O,N, SPA, J,U,N,G,L,E, SPA, F,L,O,O,R,$2A,$FF
-Message2B:
+Message29:
 	.db C,U,T, SPA, B,E,C,lA,M,E, SPA, I,N,F,E,C,T,E,D, SPA, B,lY, SPA, S,lA,N,D,$2A,$FF
-Message2C:
+Message2A:
 	.db O,B,T,lA,I,N,E,D, SPA, C,L,O,T,H,$2A,$FF
-Message2D:
-	.db N,O, SPA, C,L,O,T,H,$2A,$FF
-Message2E:
+Message2B:
 	.db lY,O,U, SPA, lA,R,E, SPA, N,O,T, SPA, C,U,T,$2A,$FF
-Message2F:
-	.db M,lA,D,E, SPA, B,lA,N,D,lA,G,E, SPA, lA,N,D, SPA, L,E,T,$FE
+Message2C:
+	.db U,S,E,D, SPA, T,O,U,R,N,I,Q,U,E,T, SPA, lA,N,D, SPA, L,E,T,$FE
 	.db C,U,T, SPA, H,E,lA,L,$2A,$FF
-Message30:
+Message2D:
 	.db S,T,lA,T,U,S, SPA, R,E,T,U,R,N,E,D, SPA, T,O, SPA, N,O,R,M,lA,L,$2A,$FF
-Message31:
+Message2E:
 	.db lY,O,U, SPA, B,E,C,lA,M,E, SPA, P,O,I,S,O,N,E,D,$2A,$FF
+Message2F:
+	.db C,R,lA,F,T,I,N,G, SPA, Q,U,E,U,E, SPA, I,S, SPA, F,U,L,L,$2A,$FF
+Message30:
+	.db O,U,T, SPA, O,F, SPA, I,T,E,M,$2A,$FF
+Message31:
+	.db C,R,lA,F,T,E,D, SPA, lA, SPA, T,O,U,R,N,I,Q,U,E,T,$2A,$FF
+Message32:
+	.db N,O,T,H,I,N,G, SPA, H,lA,P,P,E,N,E,D,$2A,$FF
+Message33:
+	.db M,lA,lX, SPA, N,U,M,B,E,R, SPA, O,F, SPA, I,T,E,M,$2A,$FF
+Message34:
+	.db lY,O,U, SPA, C,lA,N,$26,T, SPA, S,lA,V,E, SPA, W,H,I,L,E, SPA, C,R,lA,F,T,I,N,G,$2A,$FF
 	
 
 TryCrossWater:
@@ -294,6 +300,7 @@ Message0Response1:
 	pla
 	jmp SetPRGBank
 	
+
 Message0Response2:
 	;set game back to normal
 @readBorA:
@@ -478,5 +485,24 @@ M16R0_ReadAorB:
 	lda #STATE_DRAWINGMBOX
 	sta game_state
 @rts:
+	pla
+	jmp SetPRGBank
+	
+	
+Message22Response0:
+	;(Happens after crafting an item) reset inventory system, including the crafting system
+@readBorA:
+	lda buttons_pressed
+	and #(BUTTONS_B | #BUTTONS_A)
+	beq @readBorADone
+	jsr CleanUpMBoxVars
+	jsr CleanUpInventorySystem
+	sta craft_queue+0			;A has 0
+	sta craft_queue+1
+	sta craft_queue+2
+	sta craft_queue_count
+	lda #STATE_INVENTORY
+	sta game_state
+@readBorADone:
 	pla
 	jmp SetPRGBank

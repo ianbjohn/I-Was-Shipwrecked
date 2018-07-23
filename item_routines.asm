@@ -182,3 +182,65 @@ SubtractFromItemCount:
 	ora temp1
 	sta item_count,x
 	rts
+	
+	
+	;.db "CRIT"
+CraftItem:
+	;takes what's in the crafting queue, adds it up, does a few other basic hashing operations, and searches a table to see if such an item is valid (0 = not valid)
+	;if it is valid, either add to the item's count or mark it as obtained
+	lda craft_queue+0
+	clc
+	adc craft_queue+1
+	adc craft_queue+2
+	adc #$7B					;add a random value to improve the entropy (IDK thats probably not the right word) of this checksum and to prevent collisions
+	sta temp0
+	lda craft_queue+0
+	asl
+	asl
+	adc #$39
+	sta temp1
+	lda craft_queue+1
+	ror
+	ror
+	ror
+	sbc #$B2
+	sta temp2
+	lda craft_queue+2
+	eor #$45
+	rol
+	rol
+	eor #$3C
+	rol
+	rol
+	sta temp3
+	lda temp0
+	clc
+	adc temp1
+	adc temp2
+	adc temp3
+	and #%00111111
+	tax							;the hash of the items in the craft queue will be the index for the item to craft
+								;this should then be checked to see if an item corresponding to this index exists and is craftable
+								;If it is, get the ID of that item, either set it to obtained or increase the count of it, and draw a message saying that the item was crafted
+	rts
+	
+	;.db "CCQ"
+ClearCraftQueue:
+	;Clears the craft queue and adds all the items that were in it back to where they were in the inventory system
+	;If the player leaves the inventory screen, or clears the craft queue manually, all the items in the queue need to be put back into the main inventory
+	ldx #0
+	stx temp2			;AddToItemCount uses temp0 and temp1
+@clear:
+	ldx temp2
+	cmp craft_queue_count
+	beq @done
+	lda craft_queue,x
+	ldy #1
+	jsr AddToItemCount
+	lda #0
+	sta craft_queue,x
+	inc temp2
+	bne @clear			;will always branch
+@done:
+	sta craft_queue_count
+	rts

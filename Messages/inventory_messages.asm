@@ -8,17 +8,17 @@
 
 InventoryMessages:
 	;sorted by item
-	.dw IM_Knife,IM_Jar,IM_Meat,IM_Flint,IM_GreenCoconut,IM_BrownCoconut,IM_Stick,IM_Aloe
-	.dw IM_Spear,IM_BigBone,IM_Machete,IM_Stone,IM_Torch,IM_Cloth,IM_Tourniquet,IM_Gun
+	.dw IM_Knife,IM_Jar,IM_Meat,IM_Flint,IM_Coconut,IM_Stick,IM_Aloe,IM_Spear
+	.dw IM_BigBone,IM_Machete,IM_Stone,IM_Torch,IM_Cloth,IM_Tourniquet,IM_Gun
 InventoryMessageLogics:
-	.dw IML_Knife,IML_Jar,IML_Meat,IML_Flint,IML_GreenCoconut,IML_BrownCoconut,IML_Stick,IML_Aloe
-	.dw IML_Spear,IML_BigBone,IML_Machete,IML_Stone,IML_Torch,IML_Cloth,IML_Tourniquet,IML_Gun
+	.dw IML_Knife,IML_Jar,IML_Meat,IML_Flint,IML_Coconut,IML_Stick,IML_Aloe,IML_Spear
+	.dw IML_BigBone,IML_Machete,IML_Stone,IML_Torch,IML_Cloth,IML_Tourniquet,IML_Gun
 InventoryMessageChoices:
-	.db 1,4,2,1,1,1,3,1
-	.db 1,1,1,3,1,1,1,1
+	.db 1,4,2,1,1,2,1,1
+	.db 1,1,1,1,1,1,1
 InventoryMessageCursorPositions:
-	.dw IMCP_Knife,IMCP_Jar,IMCP_Meat,IMCP_Flint,IMCP_GreenCoconut,IMCP_BrownCoconut,IMCP_Stick,IMCP_Aloe
-	.dw IMCP_Spear,IMCP_BigBone,IMCP_Machete,IMCP_Stone,IMCP_Torch,IMCP_Cloth,IMCP_Tourniquet,IMCP_Gun
+	.dw IMCP_Knife,IMCP_Jar,IMCP_Meat,IMCP_Flint,IMCP_Coconut,IMCP_Stick,IMCP_Aloe,IMCP_Spear
+	.dw IMCP_BigBone,IMCP_Machete,IMCP_Stone,IMCP_Torch,IMCP_Cloth,IMCP_Tourniquet,IMCP_Gun
 
 
 IM_Knife:
@@ -34,19 +34,18 @@ IM_Meat:
 	.db SPA, E,lA,T, SPA,SPA,SPA,SPA,SPA,SPA, C,O,O,K, SPA, lA,N,D, SPA,$FE
 	.db SPA, R,lA,W, SPA,SPA,SPA,SPA,SPA,SPA, E,lA,T,$FF
 IM_Flint:
-	.db SPA, M,lA,K,E, SPA, T,O,R,C,H,$FF
-IM_GreenCoconut:
-IM_BrownCoconut:
-IM_Stick:
-	.db SPA, E,Q,U,I,P, SPA,SPA, M,lA,K,E, SPA, S,P,E,lA,R, SPA,SPA, M,lA,K,E, SPA, T,O,R,C,H,$FF
-IM_Aloe:
 IM_Stone:
-	.db SPA, M,lA,K,E, SPA, S,P,E,lA,R,$FF
+IM_Aloe:
+IM_Cloth:
+	.db SPA, lA,D,D, SPA, T,O, SPA, C,R,lA,F,T, SPA, Q,U,E,U,E,$FF
+	.db SPA, M,lA,K,E, SPA, B,lA,N,D,lA,G,E,$FF
+IM_Coconut:
+IM_Stick:
+	.db SPA, E,Q,U,I,P, SPA,SPA, lA,D,D, SPA, T,O, SPA, C,R,lA,F,T, SPA, Q,U,E,U,E,$FF
 IM_Torch:
 	.db SPA, N,O,T,H,I,N,G,$FF
-IM_Cloth:
-	.db SPA, M,lA,K,E, SPA, B,lA,N,D,lA,G,E,$FF
 IM_Tourniquet:
+	.db SPA, U,S,E,$FF
 IM_Gun:
 	.db SPA, E,Q,U,I,P,$FE
 	.db $FE
@@ -60,24 +59,22 @@ IML_Jar:
 IML_Meat:
 	.dw IML_Meat_0, IML_Meat_1
 IML_Flint:
-	.dw IML_Stick_2
-IML_GreenCoconut:
-IML_BrownCoconut:
-IML_Stick:
-	.dw IML_Stick_0, IML_Stick_1, IML_Stick_2
+IML_Stone:
 IML_Aloe:
+IML_Cloth:
+	.dw IML_Stick_1
+IML_Coconut:
+IML_Stick:
+	.dw IML_Stick_0, IML_Stick_1
 IML_Spear:
 	.dw IML_Spear_0
 IML_BigBone:
 IML_Machete:
 	.dw IML_Machete_0
-IML_Stone:
-	.dw IML_Stick_1
 IML_Torch:
 	.dw IML_Torch_0
-IML_Cloth:
-	.dw IML_Cloth_0
 IML_Tourniquet:
+	.dw IML_Tourniquet_0
 IML_Gun:
 	.dw IML_Gun_0
 	
@@ -179,7 +176,7 @@ IML_Meat_0:
 	lda #MSG_ATERAWMEAT
 	bne @draw			;will always branch
 @nomeat:
-	lda #MSG_NOMEAT
+	lda #MSG_OUTOFITEM
 @draw:
 	sta message
 	jmp Inventory_DrawCursor
@@ -208,7 +205,7 @@ IML_Meat_1:
 	lda #MSG_MADECOOKFIRE
 	bne @draw			;will always branch
 @nomeat:
-	lda #MSG_NOMEAT
+	lda #MSG_OUTOFITEM
 	bne @draw
 @cantcook:
 	lda #MSG_CANTMAKEFIRE
@@ -270,74 +267,39 @@ IML_Stick_0:
 	lda #MSG_ALREADYEQUIPPED
 	bne @draw
 @nosticks:
-	lda #MSG_NOSTICKS
+	lda #MSG_OUTOFITEM
 @draw:
 	sta message
 	jmp Inventory_DrawCursor
 	
 	
 IML_Stick_1:
-	;see if we have a stick and a stone, and if so, make a spear
-	lda #ITEM_STICK
-	jsr GetItemCount
-	beq @cantmakespear
-	lda #ITEM_STONE
-	jsr GetItemCount
-	beq @cantmakespear
-	lda #ITEM_STICK
-	ldy #1
-	jsr SubtractFromItemCount
-	lda #ITEM_STONE
-	ldy #1
-	jsr SubtractFromItemCount
-	lda #ITEM_SPEAR
-	jsr CheckIfItemObtained
-	bne @inc
-	lda #ITEM_SPEAR
-	jsr SetItemAsObtained
-@inc:
-	lda #ITEM_SPEAR
-	ldy #1
-	jsr AddToItemCount
-	lda #MSG_CRAFTEDSPEAR
-	bne @draw
-@cantmakespear:
-	lda #MSG_CANTMAKESPEAR
-@draw:
+	;this is the general "Add item to crafting queue" logic.
+	lda craft_queue_count
+	cmp #3
+	bcc @continue
+	lda #MSG_CRAFTQUEUEFULL
 	sta message
 	jmp Inventory_DrawCursor
-	
-	
-IML_Stick_2:
-	;see if we have a stick and a flint, and if so, make a torch
-	lda #ITEM_STICK
+@continue:
+	lda selected_item
 	jsr GetItemCount
-	beq @cantmaketorch
-	lda #ITEM_FLINT
-	jsr GetItemCount
-	beq @cantmaketorch
-	lda #ITEM_STICK
-	ldy #1
-	jsr SubtractFromItemCount
-	lda #ITEM_FLINT
-	ldy #1
-	jsr SubtractFromItemCount
-	lda #ITEM_TORCH
-	jsr CheckIfItemObtained
-	bne @inc
-	lda #ITEM_TORCH
-	jsr SetItemAsObtained
-@inc:
-	lda #ITEM_TORCH
-	ldy #1
-	jsr AddToItemCount
-	lda #MSG_CRAFTEDTORCH
-	bne @draw
-@cantmaketorch:
-	lda #MSG_CANTMAKETORCH
-@draw:
+	bne @continue2
+	lda #MSG_OUTOFITEM
 	sta message
 	jmp Inventory_DrawCursor
+@continue2:
+	lda selected_item
+	ldx craft_queue_count
+	sta craft_queue,x
+	inc craft_queue_count
+	ldy #1
+	jsr SubtractFromItemCount
+	lda #0
+	sta game_state_old				;trick the state machine into thinking the inventory state should be re-initialized
+	jsr EraseMBoxOrReinitInventory
+	pla
+	jmp SetPRGBank
 	
 	
 IML_Spear_0:
@@ -354,26 +316,31 @@ IML_Spear_0:
 	lda #MSG_ALREADYEQUIPPED
 @draw:
 	sta message
+	jmp Inventory_DrawCursor
+	
+	.db "IMLT0"
 IML_Torch_0:
+	lda #MSG_NOTHINGHAPPENED
+	sta message
 	jmp Inventory_DrawCursor
 	
 	
-IML_Cloth_0:
-	lda #ITEM_CLOTH
+IML_Tourniquet_0:
+	lda #ITEM_TOURNIQUET
 	jsr GetItemCount
-	beq @nocloth
+	beq @notourni
 	lda status
 	cmp #STATUS_CUT
 	bne @notcut
-	lda #ITEM_CLOTH
+	lda #ITEM_TOURNIQUET
 	ldy #1
 	jsr SubtractFromItemCount
 	lda #STATUS_NORMAL
 	sta status
-	lda #MSG_MADEBANDAGE
+	lda #MSG_USEDTOURNIQUET
 	bne @draw
-@nocloth:
-	lda #MSG_NOCLOTH
+@notourni:
+	lda #MSG_OUTOFITEM
 	bne @draw
 @notcut:
 	lda #MSG_NOTCUT
@@ -403,13 +370,12 @@ IMCP_Gun:
 	.db 8,16, 64,16, 144,16, 8,32
 IMCP_Meat:
 	.db 8,16, 80,16
-IMCP_GreenCoconut:
-IMCP_BrownCoconut:
+IMCP_Coconut:
 IMCP_Stick:
 IMCP_Stone:
 IMCP_Flint:
 IMCP_Cloth:
-	.db 8,16, 64,16, 160,16
 IMCP_Aloe:
 IMCP_Torch:
 IMCP_Tourniquet:
+	.db 8,16, 64,16

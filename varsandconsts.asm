@@ -184,21 +184,26 @@
 	;Local variables or less general variables that aren't used every frame
 	player_weapon_active_timer		.dsb 1				;if later weapons are added that fly across the screen rather than being stabbed with, don't use this variable
 	message_response	.dsb 1
-	in_inventory_state	.dsb 1		;Used by the messagebox system for things like - Draw ents only if in the play state (and not the inventory state), which state to return to, etc
-	inventory_page		.dsb 1		;what page of the inventory screen we're currently on (16 items per page)
-	inventory_screen_items	.dsb 16	;keep track of what items are currently on the inventory screen. **IMPORTANT** -> 0 means that the cell is empty, so items here are indexed 1-based. Be sure to account for this and avoid off-by-one errors
-	items_on_screen		.dsb 1		;stop processing and drawing items once this gets to 16
-	;inventory_screen_pos	.dsb 1	;where on the screen information about items is currently being drawn
-	file				.dsb 1		;current file being played (0-2)
 	fadeout_state		.dsb 1		;0 - regular palette, 1 - palette-$10, 2 - palette-$20, 3 - palette-$30, 4 - all black, 5 - go to loading screen state
 	fadeout_timer		.dsb 1
+	in_inventory_state	.dsb 1		;Used by the messagebox system for things like - Draw ents only if in the play state (and not the inventory state), which state to return to, etc
+	inventory_page		.dsb 1		;what page of the inventory screen we're currently on (16 items per page)
+	inventory_pages		.dsb 1
+	inventory_screen_items	.dsb 16	;keep track of what items are currently on the inventory screen. **IMPORTANT** -> 0 means that the cell is empty, so items here are indexed 1-based. Be sure to account for this and avoid off-by-one errors
+	items_on_screen		.dsb 1		;stop processing and drawing items once this gets to 16
+	selected_item		.dsb 1
+	;inventory_screen_pos	.dsb 1	;where on the screen information about items is currently being drawn
 	inventory_cursor_x	.dsb 1		;0-15			;maybe convert these to nibbles to save a byte of RAM but it doesn't seem like a huge deal right now
 	inventory_cursor_y	.dsb 1		;0-15
-	inventory_status	.dsb 1		;normal (selecting an item), at "save", at "page", selecting item choice
-	fileselect_status	.dsb 1
-	fileselect_cursorpos	.dsb 1	;which position the horizontal cursor in the file select state is
+	inventory_status	.dsb 1		;normal (selecting an item), at "save", at "page", selecting item choice, at "craft", at "clear", at "list"
 	inventory_choices	.dsb 1		;how many choices in the inventory screen you can make with the given item
 	inventory_choice	.dsb 1		;the ID of whatever selected choice for whatever selected item
+	craft_queue			.dsb 3		;IDs of what items are currently in the crafting queue. A max of only 3 items is needed to make a new item
+	craft_queue_count	.dsb 1		;a max of the items in the crafting queue
+	discovered_recipes	.dsb 2		;Think more about how to do this. These can be encoded as bits. I guess for each "craftable" item, keep track of whether or not the recipe to make it has been discovered. Store the string for its recipe in the messages bank? (Maybe in the encounters bank since I'm thinking thats where extra miscellaneous stuff can go)
+	file				.dsb 1		;current file being played (0-2)
+	fileselect_status	.dsb 1
+	fileselect_cursorpos	.dsb 1	;which position the horizontal cursor in the file select state is
 	palette_buffer		.dsb 32
 	screen_leave_dir	.dsb 1		;0 - up, 1 - down, 2 - left, 3 - right
 	;arrays and other stuff for the "previous screen ent data reloading system" (The ent data is kept track of for the last 4 screens the player's visited)
@@ -232,10 +237,6 @@
 	loading_sound		.dsb 1		;prevent corruption from NMI sound code when a sound is being loaded
 	player_dir_old		.dsb 1
 	torch_time			.dsb 2		;# of frames left until current torch goes out
-	craft_queue			.dsb 3		;IDs of what items are currently in the crafting queue. A max of only 3 items is needed to make a new item.
-									;1-based, so 0 means no item. Be sure to remember this and subtract 1
-	craft_queue_status	.dsb 1		;0 - queue is empty, 1 - it isnt
-	discovered_recipes	.dsb 2		;Think more about how to do this. These can be encoded as bits. I guess for each "craftable" item, keep track of whether or not the recipe to make it has been discovered. Store the string for its recipe in the messages bank? (Maybe in the encounters bank since I'm thinking thats where extra miscellaneous stuff can go)
 	status_recovery_time	.dsb 2	;how long it takes for whatever status the player has to return to normal
 									;depends on status
 	.ende
@@ -307,7 +308,7 @@
 	SAVED_SCREEN_DATA_2 = $6600
 	SAVED_SCREEN_DATA_3 = $6700
 	
-	NUM_TOTAL_ITEMS		= 16
+	NUM_TOTAL_ITEMS		= 15
 	MAX_ENTS			= 16
 	
 	;controller buttons
@@ -393,32 +394,35 @@
 	MSG_ATERAWMEAT			= $15
 	MSG_MADECOOKFIRE		= $16
 	MSG_ATECOOKEDMEAT		= $17
-	MSG_NOMEAT				= $18
-	MSG_BADMEAT				= $19
-	MSG_GUNEQUIPPED			= $1A
-	MSG_CANBECUT			= $1B
-	MSG_MACHETEFOUND		= $1C
-	MSG_MACHETEEQUIPPED		= $1D
-	MSG_STICKFOUND			= $1E
-	MSG_STICKEQUIPPED		= $1F
-	MSG_NOSTICKS			= $20
-	MSG_STONEFOUND			= $21
-	MSG_FLINTFOUND			= $22
-	MSG_CANTMAKESPEAR		= $23
-	MSG_CRAFTEDSPEAR		= $24
-	MSG_CANTMAKETORCH		= $25
-	MSG_CRAFTEDTORCH		= $26
-	MSG_SPEAREQUIPPED		= $27
-	MSG_OUTOFWEAPON			= $28
-	MSG_CAVEPITCHBLACK		= $29
-	MSG_CUT					= $2A
-	MSG_INFECTED			= $2B
-	MSG_CLOTHFOUND			= $2C
-	MSG_NOCLOTH				= $2D
-	MSG_NOTCUT				= $2E
-	MSG_MADEBANDAGE			= $2F
-	MSG_RECOVERED			= $30
-	MSG_POISONED			= $31
+	MSG_BADMEAT				= $18
+	MSG_GUNEQUIPPED			= $19
+	MSG_CANBECUT			= $1A
+	MSG_MACHETEFOUND		= $1B
+	MSG_MACHETEEQUIPPED		= $1C
+	MSG_STICKFOUND			= $1D
+	MSG_STICKEQUIPPED		= $1E
+	MSG_STONEFOUND			= $1F
+	MSG_FLINTFOUND			= $20
+	MSG_CANTMAKESPEAR		= $21
+	MSG_CRAFTEDSPEAR		= $22
+	MSG_CANTMAKETORCH		= $23
+	MSG_CRAFTEDTORCH		= $24
+	MSG_SPEAREQUIPPED		= $25
+	MSG_OUTOFWEAPON			= $26
+	MSG_CAVEPITCHBLACK		= $27
+	MSG_CUT					= $28
+	MSG_INFECTED			= $29
+	MSG_CLOTHFOUND			= $2A
+	MSG_NOTCUT				= $2B
+	MSG_USEDTOURNIQUET		= $2C
+	MSG_RECOVERED			= $2D
+	MSG_POISONED			= $2E
+	MSG_CRAFTQUEUEFULL		= $2F
+	MSG_OUTOFITEM			= $30
+	MSG_CRAFTEDTOURNIQUET	= $31
+	MSG_NOTHINGHAPPENED		= $32
+	MSG_MAXITEMCOUNT		= $33
+	MSG_CANTSAVEWHILECRAFTING	= $34
 	
 	EXPLOSION_TIME		= 12			;how many frames an explosion should last
 	
@@ -434,18 +438,17 @@
 	ITEM_JAR			= 1
 	ITEM_MEAT			= 2
 	ITEM_FLINT			= 3
-	ITEM_GREENCOCONUT	= 4
-	ITEM_BROWNCOCONUT	= 5
-	ITEM_STICK			= 6
-	ITEM_ALOE			= 7
-	ITEM_SPEAR			= 8
-	ITEM_BIGBONE		= 9
-	ITEM_MACHETE		= 10
-	ITEM_STONE			= 11
-	ITEM_TORCH			= 12
-	ITEM_CLOTH			= 13
-	ITEM_TOURNIQUET		= 14
-	ITEM_GUN			= 15
+	ITEM_COCONUT		= 4
+	ITEM_STICK			= 5
+	ITEM_ALOE			= 6
+	ITEM_SPEAR			= 7
+	ITEM_BIGBONE		= 8
+	ITEM_MACHETE		= 9
+	ITEM_STONE			= 10
+	ITEM_TORCH			= 11
+	ITEM_CLOTH			= 12
+	ITEM_TOURNIQUET		= 13
+	ITEM_GUN			= 14
 	
 	;weapon IDs
 	WEAPON_KNIFE		= 0

@@ -1254,4 +1254,35 @@ Day 158 - 7/11/2018
 	-Added code to make crabs fly when the player shakes them off
 	-Added poisonous snakes to the ent system
 	-Added logic to the snake's code (Which is shared by the venomous snakes) to randomly poison the player if the snake is venomous
+	-Started rehauling the inventory system to handle page-turning
+		-Added code to compute the index of the first item to draw depending on the page and how many items have currently been obtained
 	-Added a message that the player's poisoned
+	
+Day 159 - 7/14/2018
+	-Messed around with crab's code a little more, changed it so that the crab stops flying when the negative initial velocity is reached. Fixed some background collision errors.
+	
+Day 160 - 7/15/2018
+	-Added strings in the inventory system for "Queue: ", "Craft" and "Clear"
+	
+Day 161 - 7/17/2018
+	-Worked more on the crafting system
+	-Made a table of which items are craftable
+	-Wrote some comments for what the "Craft" subroutine should do
+	
+Day 162 - 7/21/2018
+	-Been lazy and haven't made any progress since the last update
+	-Changed a few things in the inventory messages file to reflect on this general "crafting" approach
+	-Wrote a routine to add an item to the crafting queue
+		-This replaced one of the stick's inventory logic routines
+		-Got rid of the "Out of X item" messages and replaced them with one general "Out of item" message
+	-Expanded on the inventory system to draw "Clear", "Craft", and "Queue: (items in queue)" when an item is added in the queue
+	-Made the queue get cleared when the user exits the inventory state
+	-Still need to add cursor positions, inventory substates, and logic for "clear" and "craft"
+	
+Day 163 - 7/22/2018
+	-Updated code in the inventory state to handle button presses to go to the new inventory substates
+	-The crafting queue now gets cleared when the user hits A at "Clear"
+	-Fixed an issue in ClearCraftQueue where I was using temp0 instead of temp2, causing issues with item counts
+	-ITEMS CAN NOW BE CRAFTED!!!!!!!!!!!
+		-Added a hashing function, mapping tables for crafting, etc
+	-Made it so that you can only save if you aren't in the middle of crafting (To prevent items from getting lost.)
