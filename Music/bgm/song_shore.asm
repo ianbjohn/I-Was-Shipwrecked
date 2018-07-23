@@ -11,7 +11,7 @@ SongShore:
 	.db %01110000	;initial duty (7th bit set for triangle)
 	.db VE1		;initial volume envelope
 	.dw SongShoreSquare1
-	.db 120			;initial tempo
+	.db 117			;initial tempo
 	
 	.db MUSIC_SQ2
 	.db 1
@@ -19,7 +19,7 @@ SongShore:
 	.db #%01110000
 	.db VE1
 	.dw SongShoreSquare2
-	.db 120
+	.db 117
 	
 	.db MUSIC_TRI
 	.db 1
@@ -27,7 +27,7 @@ SongShore:
 	.db %10000001
 	.db VE0
 	.dw SongShoreTri
-	.db 120
+	.db 117
 	
 	.db MUSIC_NOI
 	.db 1
@@ -35,7 +35,7 @@ SongShore:
 	.db #%00110000
 	.db VE3
 	.dw SongShoreNoise
-	.db 120
+	.db 117
 	
 	.db MUSIC_DMC
 	.db 0

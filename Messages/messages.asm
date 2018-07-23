@@ -443,10 +443,11 @@ M15R0_ReadAorB:
 	jsr SubtractFromItemCount
 	lda status
 	cmp #STATUS_SICK
-	beq @rts
+	bne @notsick
 	lda random
 	and #%00000001
 	bne @sick
+@notsick:
 	jsr EraseMBoxOrReinitInventory
 	bne @rts			;will always branch
 @sick:

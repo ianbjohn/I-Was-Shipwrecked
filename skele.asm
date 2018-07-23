@@ -295,7 +295,7 @@ MainLoop:
 	;subroutines
 InitStates:
 	.dw TitleInit, IntroInit, PlayInit, PausedInit, GameOverInit, FadeInInit, FadeOutInit, DrawingMBoxInit
-	.dw WritingMSGInit, MBoxResponseInit, ErasingMBoxInit, InventoryInit, LoadingScreenInit, FileSelectInit
+	.dw WritingMSGInit, MBoxResponseInit, ErasingMBoxInit, InventoryInit, LoadingScreenInit, FileSelectInit, RecipeListInit
 SelectStateToInit:
 	lda game_state
 	asl
@@ -309,7 +309,7 @@ SelectStateToInit:
 	
 MainStates:
 	.dw TitleMain, IntroMain, PlayMain, PausedMain, GameOverMain, FadeInMain, FadeOutMain, DrawingMBoxMain
-	.dw WritingMsgMain, MBoxResponseMain, ErasingMBoxMain, InventoryMain, LoadingScreenMain, FileSelectMain
+	.dw WritingMsgMain, MBoxResponseMain, ErasingMBoxMain, InventoryMain, LoadingScreenMain, FileSelectMain, RecipeListMain
 SelectMainState:
 	lda game_state
 	asl
@@ -332,6 +332,7 @@ SelectMainState:
 	.include "States/inventory.asm"
 	.include "States/fileselect.asm"
 	.include "States/loadingscreen.asm"
+	.include "States/recipelist.asm"
 	
 	
 IntroInit:

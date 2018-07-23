@@ -711,9 +711,9 @@ MacheteColMetaSpritesNormalU:
 	
 MacheteColMetaSpritesNormalU_0:
 	.db 12
-	.db 0,$36,%00000001,3
-	.db 8,$37,%00000001,3
-	.db 16,$4A,%00000001,3
+	.db 0,$36,%00000010,3
+	.db 8,$37,%00000010,3
+	.db 16,$4A,%00000010,3
 	
 MacheteMetaSprites:
 	.dw MacheteMetaSpritesNormal
