@@ -1,0 +1,3 @@
+RecipeListInit:
+RecipeListMain:
+	rts
