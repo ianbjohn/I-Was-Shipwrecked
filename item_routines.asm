@@ -18,6 +18,23 @@ SetItemAsObtained:
 	inc num_obtained_items
 	rts
 	
+
+SetItemAsCrafted:
+	;same as SetItemAsObtained
+	pha
+	lsr
+	lsr
+	lsr
+	tax
+	pla
+	and #%00000111
+	tay
+	lda crafted_items,x
+	ora PowersOfTwo,y
+	sta crafted_items,x
+	inc num_crafted_items
+	rts
+	
 	
 CheckIfItemObtained:
 	;returns 0 if an item hasn't been obtained, and a number that isn't 0 if it has been obtained
@@ -37,6 +54,22 @@ CheckIfItemObtained:
 	tay
 	lda obtained_items,x
 	and PowersOfTwo,y				;will give us just the flag we want (either 0 or 1)
+	rts
+	
+	
+CheckIfItemCrafted:
+	;same as CheckIfItemObtained
+	pha
+	sta temp0
+	lsr
+	lsr
+	lsr
+	tax
+	pla
+	and #%00000111
+	tay
+	lda crafted_items,x
+	and PowersOfTwo,y
 	rts
 	
 	

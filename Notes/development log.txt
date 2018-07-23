@@ -1294,3 +1294,6 @@ Day 164 - 7/23/2018
 	-The machete collectable ent had the wrong palette, fixed that
 	-There was a logic error for the message response code when eating uncooked meat, fixed that as well
 	-Made the tempo for the shore song a tad bit shorter, to make it sound more like the famitracker version
+	-Added item routines to check if and set item as crafted
+		-Added relevant variables too
+		-Updated save, load and delete macros accordingly

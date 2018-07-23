@@ -405,7 +405,8 @@ FS_ReadA:
 	sta fileselect_cursorpos
 	lda #2
 	sta fileselect_status
-	bne FS_ReadSelect				;will always branch
+	beq @continue4
+	jmp FS_ReadSelect
 @continue4:
 	;Are you sure?
 	lda fileselect_cursorpos

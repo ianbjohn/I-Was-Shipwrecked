@@ -258,6 +258,8 @@
 	;stuff for inventory system
 	item_count			.dsb (NUM_TOTAL_ITEMS / 2) + 1		;You can only have a maximum of 15 of each item, so we can pack 2 items to a byte
 	;(*** Make sure this doesn't spill into the next page. If it does, move the save file variables to the next page ***)
+	crafted_items		.dsb (NUM_CRAFTABLE_ITEMS / 8) + 1
+	num_crafted_items	.dsb 1
 	.ende
 	.enum $6200
 	;Save file variables (And a few other SRAM variables most of which are related to the file system)
@@ -275,12 +277,14 @@
 	;less common variables
 	file_data_jar_contents	.dsb 3
 	file_data_num_obtained_items	.dsb 3
+	file_data_num_crafted_items	.dsb 3
 	file_data_in_cave	.dsb 3
 	file_data_cave_level	.dsb 3
 	file_data_recovery_time	.dsb 6
 	;arrays
 	file_data_obtained_items	.dsb 3 * ((NUM_TOTAL_ITEMS / 8) + 1)	;stored as such - first bytes of all 3 files, second bytes of all 3 files, etc.
 	file_data_item_count	.dsb 3 * ((NUM_TOTAL_ITEMS / 2) + 1)		;^
+	file_data_crafted_items	.dsb 3 * ((NUM_CRAFTABLE_ITEMS / 8) + 1)
 	;other SRAM things
 	file_contents		.dsb 1		;last 3 bits tell which of the three files has data (0 - no data, 1 - data)
 	.ende
@@ -310,6 +314,7 @@
 	
 	NUM_TOTAL_ITEMS		= 15
 	MAX_ENTS			= 16
+	NUM_CRAFTABLE_ITEMS	= 3
 	
 	;controller buttons
 	BUTTONS_A			= %10000000
@@ -450,6 +455,11 @@
 	ITEM_CLOTH			= 12
 	ITEM_TOURNIQUET		= 13
 	ITEM_GUN			= 14
+	
+	;crafted item IDs
+	CR_ITEM_SPEAR		= 0
+	CR_ITEM_TORCH		= 1
+	CR_ITEM_TOURNIQUET	= 2
 	
 	;weapon IDs
 	WEAPON_KNIFE		= 0
