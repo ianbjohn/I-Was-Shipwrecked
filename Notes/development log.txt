@@ -1281,18 +1281,16 @@ Day 162 - 7/21/2018
 	
 Day 163 - 7/22/2018
 	-Updated code in the inventory state to handle button presses to go to the new inventory substates
-	
-Day 164 - 7/23/2018
-	-Added craft recipe list game state skeleton code to the game
-	-Worked more on the mountains song in Famitracker
-		-Added accompaniment tracks to a few parts of the song
 	-The crafting queue now gets cleared when the user hits A at "Clear"
 	-Fixed an issue in ClearCraftQueue where I was using temp0 instead of temp2, causing issues with item counts
 	-ITEMS CAN NOW BE CRAFTED!!!!!!!!!!!
 		-Added a hashing function, mapping tables for crafting, etc
 	-Made it so that you can only save if you aren't in the middle of crafting (To prevent items from getting lost.)
-	-Added skeleton code for the new recipe list game state
-	-Worked more on the mountains song in famitracker (Added accompaniment to a few parts)
+	
+Day 164 - 7/23/2018
+	-Added craft recipe list game state skeleton code to the game
+	-Worked more on the mountains song in Famitracker
+		-Added accompaniment tracks to a few parts of the song
 	-The machete collectable ent had the wrong palette, fixed that
 	-There was a logic error for the message response code when eating uncooked meat, fixed that as well
 	-Made the tempo for the shore song a tad bit shorter, to make it sound more like the famitracker version
