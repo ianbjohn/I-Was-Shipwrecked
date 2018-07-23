@@ -18,6 +18,20 @@ ItemCraftable:
 	;sorted by item ID
 	.db 0,0,0,1,0,1,0,0,0,0,1,0,1,0,0
 	
+CraftTable:
+	;when the player crafts an item, it uses what's in the crafting queue and hashes it to get a value between 0-63.
+	;This table maps that value to items that would be crafted. (i.e stick + stone -> 8, so the 8th entry in the table (0-based) would correspond to the spear item. Stone + stick -> 1C, so entry 1C would also be a spear)
+	;0 here means no item corresponds to the respective hash value
+	.db 0,0,0,0,0,0,0,ITEM_TORCH,ITEM_SPEAR,0,0,ITEM_TOURNIQUET,0,0,0,0
+	.db 0,0,0,0,0,0,0,0,0,0,0,0,ITEM_SPEAR,0,0,0
+	.db 0,0,0,0,0,0,ITEM_TOURNIQUET,0,0,0,0,0,0,0,0,0
+	.db 0,0,0,0,0,0,0,0,0,ITEM_TORCH,0,0,0,0,0,0
+	
+CraftMessages:
+	;sorted by item ID
+	;which "Crafted X item" to draw based on the item that was crafted
+	.db 0,0,0,0,0,0,0,MSG_CRAFTEDSPEAR,0,0,0,MSG_CRAFTEDTORCH,0,MSG_CRAFTEDTOURNIQUET,0
+	
 	
 ChangeWeaponPalette:
 	;For right now I only think the weapon will change in the inventory state, so this can go here
@@ -61,7 +75,7 @@ CleanUpInventorySystem:
 	rts
 	
 	
-	.db "INVENTORY"
+	;.db "INVENTORY"
 InventoryInit:
 	jsr ClearOAM
 
@@ -203,7 +217,6 @@ InventoryInit:
 	cpx #4
 	bne @drawlistloop
 	
-	;"SAVE"
 @drawsave
 	;only draw this, and have saving as an option, if all the monsters on the screen have been killed
 	lda num_active_enemies
@@ -482,7 +495,7 @@ InventoryAButtonActions:
 	;sorted by inventory_status
 	.dw InventoryA_Normal, InventoryA_Save, Inventory_ReadB, InventoryA_ItemAction, InventoryA_CraftItem, InventoryA_ClearCraftQueue, InventoryA_ViewList
 	
-	.db "INVMAIN"
+	;.db "INVMAIN"
 InventoryMain:
 	lda prg_bank
 	pha
@@ -591,13 +604,50 @@ InventoryA_ItemAction:
 	jmp (jump_ptr)			;each routine should, instead of RTS, JMP back to Inventory_DrawCursor
 	
 InventoryA_Save:
+	lda craft_queue_count	;only save if the crafting queue is empty, so items don't get lost
+	beq @cansave
+	lda #MSG_CANTSAVEWHILECRAFTING
+	sta message
+	lda #STATE_DRAWINGMBOX
+	sta game_state
+	jmp Inventory_DrawCursor
+@cansave:
 	SaveFileData			;save the game!!!!!
 	;Play a sound effect
 	ldy #SFX_SAVE
 	jsr PlaySound
 	jmp Inventory_DrawCursor
 	
+	;.db "ACRIT"
 InventoryA_CraftItem:
+	jsr CraftItem
+	lda CraftTable,x
+	beq @nothinghappened
+	sta temp2				;save the item ID since we're going to need it later
+	jsr CheckIfItemObtained
+	bne @continue
+	lda temp2
+	jsr SetItemAsObtained
+@continue:
+	lda temp2
+	jsr GetItemCount		;for now we can assume that any item that can get crafted will have a count, but this may change. In which case, be sure to check
+	cmp #15
+	beq @maxitemcount
+	lda temp2
+	ldy #1
+	jsr AddToItemCount
+	ldx temp2
+	lda CraftMessages,x
+	bne @continue2				;w.a.b
+@maxitemcount:
+	lda #MSG_MAXITEMCOUNT
+	bne @continue2				;w.a.b
+@nothinghappened:
+	lda #MSG_NOTHINGHAPPENED
+@continue2:
+	sta message
+	lda #STATE_DRAWINGMBOX
+	sta game_state
 	jmp Inventory_DrawCursor
 	
 InventoryA_ClearCraftQueue:
@@ -917,6 +967,7 @@ Inventory_ReadRight:
 	lda #0
 @skipoverflow2:
 	sta inventory_cursor_x
+	jmp Inventory_DrawCursor
 @gofromsavetoclear:
 	lda craft_queue_count
 	beq Inventory_DrawCursor

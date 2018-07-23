@@ -1283,3 +1283,6 @@ Day 163 - 7/22/2018
 	-Updated code in the inventory state to handle button presses to go to the new inventory substates
 	-The crafting queue now gets cleared when the user hits A at "Clear"
 	-Fixed an issue in ClearCraftQueue where I was using temp0 instead of temp2, causing issues with item counts
+	-ITEMS CAN NOW BE CRAFTED!!!!!!!!!!!
+		-Added a hashing function, mapping tables for crafting, etc
+	-Made it so that you can only save if you aren't in the middle of crafting (To prevent items from getting lost.)

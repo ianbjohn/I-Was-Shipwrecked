@@ -36,8 +36,8 @@ IM_Meat:
 IM_Flint:
 IM_Stone:
 IM_Aloe:
-	.db SPA, lA,D,D, SPA, T,O, SPA, C,R,lA,F,T, SPA, Q,U,E,U,E,$FF
 IM_Cloth:
+	.db SPA, lA,D,D, SPA, T,O, SPA, C,R,lA,F,T, SPA, Q,U,E,U,E,$FF
 	.db SPA, M,lA,K,E, SPA, B,lA,N,D,lA,G,E,$FF
 IM_Coconut:
 IM_Stick:
@@ -45,6 +45,7 @@ IM_Stick:
 IM_Torch:
 	.db SPA, N,O,T,H,I,N,G,$FF
 IM_Tourniquet:
+	.db SPA, U,S,E,$FF
 IM_Gun:
 	.db SPA, E,Q,U,I,P,$FE
 	.db $FE
@@ -60,9 +61,8 @@ IML_Meat:
 IML_Flint:
 IML_Stone:
 IML_Aloe:
-	.dw IML_Stick_1
 IML_Cloth:
-	.dw IML_Cloth_0
+	.dw IML_Stick_1
 IML_Coconut:
 IML_Stick:
 	.dw IML_Stick_0, IML_Stick_1
@@ -74,6 +74,7 @@ IML_Machete:
 IML_Torch:
 	.dw IML_Torch_0
 IML_Tourniquet:
+	.dw IML_Tourniquet_0
 IML_Gun:
 	.dw IML_Gun_0
 	
@@ -272,7 +273,6 @@ IML_Stick_0:
 	jmp Inventory_DrawCursor
 	
 	
-	;.db "IMLS1"
 IML_Stick_1:
 	;this is the general "Add item to crafting queue" logic.
 	lda craft_queue_count
@@ -316,25 +316,30 @@ IML_Spear_0:
 	lda #MSG_ALREADYEQUIPPED
 @draw:
 	sta message
+	jmp Inventory_DrawCursor
+	
+	.db "IMLT0"
 IML_Torch_0:
+	lda #MSG_NOTHINGHAPPENED
+	sta message
 	jmp Inventory_DrawCursor
 	
 	
-IML_Cloth_0:
-	lda #ITEM_CLOTH
+IML_Tourniquet_0:
+	lda #ITEM_TOURNIQUET
 	jsr GetItemCount
-	beq @nocloth
+	beq @notourni
 	lda status
 	cmp #STATUS_CUT
 	bne @notcut
-	lda #ITEM_CLOTH
+	lda #ITEM_TOURNIQUET
 	ldy #1
 	jsr SubtractFromItemCount
 	lda #STATUS_NORMAL
 	sta status
-	lda #MSG_MADEBANDAGE
+	lda #MSG_USEDTOURNIQUET
 	bne @draw
-@nocloth:
+@notourni:
 	lda #MSG_OUTOFITEM
 	bne @draw
 @notcut:

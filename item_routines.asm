@@ -184,6 +184,7 @@ SubtractFromItemCount:
 	rts
 	
 	
+	;.db "CRIT"
 CraftItem:
 	;a work-in-progress currently
 	;takes what's in the crafting queue, adds it up, and searches a table to see if such an item is valid (0 = not valid)
@@ -218,8 +219,44 @@ CraftItem:
 ;@draw:
 	;sta message
 	;jmp Inventory_DrawCursor
+	;A relatively-simple hash function
+	lda craft_queue+0
+	clc
+	adc craft_queue+1
+	adc craft_queue+2
+	adc #$7B					;add a random value to improve the entropy (IDK thats probably not the right word) of this checksum and to prevent collisions
+	sta temp0
+	lda craft_queue+0
+	asl
+	asl
+	adc #$39
+	sta temp1
+	lda craft_queue+1
+	ror
+	ror
+	ror
+	sbc #$B2
+	sta temp2
+	lda craft_queue+2
+	eor #$45
+	rol
+	rol
+	eor #$3C
+	rol
+	rol
+	sta temp3
+	lda temp0
+	clc
+	adc temp1
+	adc temp2
+	adc temp3
+	and #%00111111
+	tax							;the hash of the items in the craft queue will be the index for the item to craft
+								;this should then be checked to see if an item corresponding to this index exists and is craftable
+								;If it is, get the ID of that item, either set it to obtained or increase the count of it, and draw a message saying that the item was crafted
+	rts
 	
-	.db "CCQ"
+	;.db "CCQ"
 ClearCraftQueue:
 	;Clears the craft queue and adds all the items that were in it back to where they were in the inventory system
 	;If the player leaves the inventory screen, or clears the craft queue manually, all the items in the queue need to be put back into the main inventory
