@@ -1297,3 +1297,5 @@ Day 164 - 7/23/2018
 	-Added item routines to check if and set item as crafted
 		-Added relevant variables too
 		-Updated save, load and delete macros accordingly
+	-Added strings for the craftable item recipes
+	-Added a pseudocode outline for the recipe list state
