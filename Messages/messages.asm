@@ -300,7 +300,7 @@ Message0Response1:
 	pla
 	jmp SetPRGBank
 	
-
+	.db "M0R2"
 Message0Response2:
 	;set game back to normal
 @readBorA:
