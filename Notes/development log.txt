@@ -1299,3 +1299,5 @@ Day 164 - 7/23/2018
 		-Updated save, load and delete macros accordingly
 	-Added strings for the craftable item recipes
 	-Added a pseudocode outline for the recipe list state
+		-Turned this into real code later that evening
+	-Recipe list state is now complete and accessible!

@@ -28,9 +28,14 @@ CraftTable:
 	.db 0,0,0,0,0,0,0,0,0,ITEM_TORCH,0,0,0,0,0,0
 	
 CraftMessages:
-	;sorted by item ID
+	;sorted by craftable item ID
 	;which "Crafted X item" to draw based on the item that was crafted
-	.db 0,0,0,0,0,0,0,MSG_CRAFTEDSPEAR,0,0,0,MSG_CRAFTEDTORCH,0,MSG_CRAFTEDTOURNIQUET,0
+	.db MSG_CRAFTEDSPEAR,MSG_CRAFTEDTORCH,MSG_CRAFTEDTOURNIQUET
+	
+ReverseCraftItemsMap:
+	;the opposite of CraftItemsMap (Located in recipelist.asm)
+	;maps items to their craftable item counterpart
+	.db 0,0,0,0,0,0,0,CR_ITEM_SPEAR,0,0,0,CR_ITEM_TORCH,0,CR_ITEM_TOURNIQUET,0
 	
 	
 ChangeWeaponPalette:
@@ -637,6 +642,14 @@ InventoryA_CraftItem:
 	ldy #1
 	jsr AddToItemCount
 	ldx temp2
+	lda ReverseCraftItemsMap,x
+	sta temp2					;we're going to need this later too
+	jsr CheckIfItemCrafted
+	bne @checkcrafteddone
+	lda temp2
+	jsr SetItemAsCrafted
+@checkcrafteddone:
+	ldx temp2
 	lda CraftMessages,x
 	bne @continue2				;w.a.b
 @maxitemcount:
@@ -658,6 +671,8 @@ InventoryA_ClearCraftQueue:
 	jmp Inventory_DrawCursor
 	
 InventoryA_ViewList:
+	lda #STATE_RECIPELIST
+	sta game_state
 	jmp Inventory_DrawCursor
 	
 Inventory_ReadB:
