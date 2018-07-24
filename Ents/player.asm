@@ -307,7 +307,7 @@ PlayerReadA:
 	jsr HandlePlayerInteraction
 	jmp PlayerDone
 	
-	;.db "READB"
+	.db "READB"
 PlayerReadB:
 	;Pressing B makes the player use his weapon
 	lda buttons_pressed
@@ -332,7 +332,10 @@ PlayerReadB:
 	;tax					;put here JUST IN CASE!!! The routine needs X to have ent_index. Uppon debugging, X seems to always be 0 when called by the player, but I don't wanna take any chances
 	;asl
 	;tay
-	ldy #0 ;the player's ID will always be 0
+	lda #0
+	sta ent_anim_timer+0
+	sta ent_anim_frame+0
+	tay						;the player's ID will always be 0
 	jsr UpdateEntHitbox
 	;MAP WEAPONS TO ITEMS, CHECK IF THAT ITEM HAS A COUNT
 		;IF SO

@@ -1301,3 +1301,7 @@ Day 164 - 7/23/2018
 	-Added a pseudocode outline for the recipe list state
 		-Turned this into real code later that evening
 	-Recipe list state is now complete and accessible!
+	~44.61Kb of code and data, not counting CHR data, header, or vectors (~50.76Kb including CHR data)
+	
+Day 165 - 7/24/2018
+	-Fixed an issue with the player throwing spears while walking, where the animation variables weren't getting reset
