@@ -1307,3 +1307,4 @@ Day 165 - 7/24/2018
 	-Fixed an issue with the player throwing spears while walking, where the animation variables weren't getting reset
 	-Began working on making better bee/beehive AI
 	-There was actually a typo in the ent spawn table, so screen (6,3) had the same ent spawns as screen (7,3). Fixed this.
+	-Made a few changes to the crab's code

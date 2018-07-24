@@ -109,6 +109,10 @@ CrabKnifeCol:
 CrabCheckKnifeColDone:
 
 CrabCheckPlayerCol:
+	lda player_still_alive
+	bne @checkattack
+	rts
+@checkattack:
 	;if moving || still, check player collision
 	lda ent_state,x
 	;cmp #0			;moving
@@ -361,7 +365,6 @@ CrabGrabbing:
 	adc ent_height,x
 	sta ent_hb_y,x
 	;hurt player if PHI is up
-	;snake has collided with player
 	lda ent_phi_timer+0
 	bne CrabGrabbingDone
 	lda ent_health+0
@@ -378,7 +381,7 @@ CrabGrabbing:
 CrabGrabbingDone:
 	rts
 	
-	.db "fly"
+	;.db "fly"
 CrabFlying:
 	;move in a parabolic arc
 	lda ent_yvel_sp,x

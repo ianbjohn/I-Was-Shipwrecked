@@ -336,16 +336,12 @@ SnakeSlithering:
 	sta ent_ysp,x
 	lda ent_y,x
 	sbc #0
-	sta ent_y,x
-	lda ent_hb_ysp,x
-	sec
-	sbc #$80
-	sta ent_hb_ysp,x
-	lda ent_hb_y,x
-	sbc #0
 	sta ent_hb_y,x
-	;(resolve collision with bg)
-	rts
+	clc
+	adc ent_height,x
+	sta ent_hb_y,x
+	jsr EntCheckBGColTL
+	jmp EntCheckBGColTR
 @down:
 	lda ent_ysp,x
 	clc
@@ -354,15 +350,11 @@ SnakeSlithering:
 	lda ent_y,x
 	adc #0
 	sta ent_y,x
-	lda ent_hb_ysp,x
 	clc
-	adc #$80
-	sta ent_hb_ysp,x
-	lda ent_hb_y,x
-	adc #0
+	adc ent_height,x
 	sta ent_hb_y,x
-	;(resolve collision with bg)
-	rts
+	jsr EntCheckBGColBL
+	jmp EntCheckBGColBR
 @left:
 	lda ent_xsp,x
 	sec
@@ -371,15 +363,11 @@ SnakeSlithering:
 	lda ent_x,x
 	sbc #0
 	sta ent_x,x
-	lda ent_hb_xsp,x
-	sec
-	sbc #$80
-	sta ent_hb_xsp,x
-	lda ent_hb_x,x
-	sbc #0
+	clc
+	adc ent_width,x
 	sta ent_hb_x,x
-	;(resolve collision with bg)
-	rts
+	jsr EntCheckBGColTL
+	jmp EntCheckBGColBL
 @right:
 	lda ent_xsp,x
 	clc
@@ -388,15 +376,11 @@ SnakeSlithering:
 	lda ent_x,x
 	adc #0
 	sta ent_x,x
-	lda ent_hb_xsp,x
 	clc
-	adc #$80
-	sta ent_hb_xsp,x
-	lda ent_hb_x,x
-	adc #0
+	adc ent_width,x
 	sta ent_hb_x,x
-	;(resolve collision with bg)
-	rts
+	jsr EntCheckBGColTR
+	jmp EntCheckBGColBR
 	
 SnakeAttacking:
 	lda #1
@@ -414,12 +398,11 @@ SnakeCheckPlayerCol:			;PLAYER COLLISION CODE
 	sec
 	sbc #1
 	sta ent_y,x
-	lda ent_hb_y,x
-	sec
-	sbc #1
+	clc
+	adc ent_height,x
 	sta ent_hb_y,x
-	;(resolve collision with bg)
-	rts
+	jsr EntCheckBGColTL
+	jmp EntCheckBGColTR
 @down:
 	lda ent_hb_y,x
 	cmp ent_y+0
@@ -430,12 +413,11 @@ SnakeCheckPlayerCol:			;PLAYER COLLISION CODE
 	clc
 	adc #1
 	sta ent_y,x
-	lda ent_hb_y,x
 	clc
-	adc #1
+	adc ent_height,x
 	sta ent_hb_y,x
-	;(resolve collision with bg)
-	rts
+	jsr EntCheckBGColBL
+	jmp EntCheckBGColBR
 @left:
 	lda ent_x,x
 	cmp ent_hb_x+0
@@ -447,12 +429,11 @@ SnakeCheckPlayerCol:			;PLAYER COLLISION CODE
 	sec
 	sbc #1
 	sta ent_x,x
-	lda ent_hb_x,x
-	sec
-	sbc #1
+	clc
+	adc ent_width,x
 	sta ent_hb_x,x
-	;(resolve collision with bg)
-	rts
+	jsr EntCheckBGColTL
+	jmp EntCheckBGColBL
 @right:
 	lda ent_hb_x,x
 	cmp ent_x+0
@@ -463,12 +444,11 @@ SnakeCheckPlayerCol:			;PLAYER COLLISION CODE
 	clc
 	adc #1
 	sta ent_x,x
-	lda ent_hb_x,x
 	clc
-	adc #1
+	adc ent_width,x
 	sta ent_hb_x,x
-	;(resolve collision with bg)
-	rts
+	jsr EntCheckBGColTR
+	jmp EntCheckBGColBR
 SnakePlayerCol:
 	;snake has collided with player
 	lda ent_phi_timer+0
