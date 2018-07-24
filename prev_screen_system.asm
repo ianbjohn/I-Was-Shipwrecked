@@ -437,7 +437,7 @@ SpecialEvent:
 	ldx #2
 	jmp InitEnt
 	
-	.db "REG"
+	;.db "REG"
 RegularEvent:
 	;use the spawn coordinates and event data to randomly generate enemies
 	lda area			;sorted by area, then difficulty
