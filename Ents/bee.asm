@@ -25,7 +25,7 @@ BeeAdvanceAnimationDone:
 	;Deactivate bee after getting hit
 	lda ent_state,x		;if bee exploded, decrement timer1
 	cmp #7				;explosion
-	bne BeeCheckAttack
+	bne BeeCheckKnifeCol
 	dec ent_timer1,x
 	lda ent_timer1,x
 	bne @rts
@@ -39,6 +39,11 @@ BeeAdvanceAnimationDone:
 	lda EnemyItemDrops,y
 	bne @continue
 	jmp DeactivateEnt
+@continue:
+	sta ent_id,x
+	jmp InitEnt
+@rts:
+	rts
 
 BeeCheckKnifeCol:
 	lda ent_state,x
@@ -61,7 +66,7 @@ BeeCheckKnifeCol:
 	sta ent_anim_frame,x
 	;ldx ent_index
 	jmp FindEntAnimLengthsAndFrames
-BeeCheckPlayerWeaponCol_done:
+BeeCheckKnifeColDone:
 
 BeeCheckPlayerCol:
 	lda player_still_alive
@@ -71,13 +76,13 @@ BeeCheckPlayerCol:
 	;if attacking, check player collision
 	lda ent_state,x
 	cmp #4				;attacking
-	bne BeeCheckPlayerCollisionDone
+	bne BeeCheckPlayerColDone
 @continue:
 	jsr CheckPlayerCollision
 	beq BeeCheckPlayerColDone
 	;hurt player if PHI is up
 	lda ent_phi_timer+0
-	bne CrabGrabbingDone
+	bne BeeCheckPlayerColDone
 	lda ent_health+0
 	sec
 	sbc #5

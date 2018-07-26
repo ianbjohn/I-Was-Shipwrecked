@@ -249,7 +249,7 @@
 	bne -
 	pla
 	tay					;restore Y
-	;pha				;BE SURE TO SAVE Y AGAIN IF THERE ARE EVER ANY MORE ARRAYS WE NEED TO SAVE
+	pha				;BE SURE TO SAVE Y AGAIN IF THERE ARE EVER ANY MORE ARRAYS WE NEED TO SAVE
 	;save the array of the counts of each item
 	ldx #0
 	txa
