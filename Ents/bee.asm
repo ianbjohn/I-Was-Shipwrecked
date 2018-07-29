@@ -108,12 +108,114 @@ BeeCheckPlayerColDone:
 	
 	
 BeeForaging:
+	;When a bee is spawned from the beehive, if it starts out foraging, it should be given a random spot in ent_misc1 and ent_misc2 as the X and Y (respectively) of where to go
+	;once it's been to this spot, (ADD A HOVERING STATE WHERE IT'LL HOVER AROUND THE SPOT FOR A FEW SECONDS), either return to the hive or generate coordinates of a new spot to go to.
+	;If the player is within a certain distance of the bee and attacks, the bee should swarm
+	rts
+	
+	
 BeeReturning:
-BeeGuarding:
+	;When the bee returns from foraging, the coordinates of the hive should be saved in ent_misc1 and 2 respectively
+	;return to these coordinates
+	;Swarm player if he attacks near the bee, same as in BeeForaging (Make it a helper function or something)
+@horiz:
+	lda ent_x,x
+	cmp ent_misc1,x
+	bcs @left
+@right:
+	clc
+	adc #1
+	sta ent_x,x
+	clc
+	adc ent_width,x
+	sta ent_hb_x,x
+	jmp @vert
+@left:
+	sec
+	sbc #1
+	sta ent_x,x
+	clc
+	adc ent_width,x
+	sta ent_hb_x,x
+	
+@vert:
+	lda ent_y,x
+	cmp ent_misc2,x
+	bcs @up
+@down:
+	clc
+	adc #1
+	sta ent_y,x
+	clc
+	adc ent_height,x
+	sta ent_hb_y,x
+	rts
+@up:
+	sec
+	sbc #1
+	sta ent_y,x
+	clc
+	adc ent_height,x
+	sta ent_hb_y,x
+	rts
+	
+	
 BeeSwarming:
+	;get the X and Y positions of the player's midpoint, and move towards him
+	lda ent_x+0
+	clc
+	adc ent_hb_x+0
+	ror
+	sta ent_misc1,x
+	lda ent_y+0
+	clc
+	adc ent_hb_y+0
+	ror
+	sta ent_misc2,x
+	
+@horiz:
+	lda ent_x,x
+	cmp ent_misc1,x
+	bcs @left
+@right:
+	clc
+	adc #2
+	sta ent_x,x
+	clc
+	adc ent_width,x
+	sta ent_hb_x,x
+	jmp @vert
+@left:
+	sec
+	sbc #2
+	sta ent_x,x
+	clc
+	adc ent_width,x
+	sta ent_hb_x,x
+	
+@vert:
+	lda ent_y,x
+	cmp ent_misc2,x
+	bcs @up
+@down:
+	clc
+	adc #2
+	sta ent_y,x
+	clc
+	adc ent_height,x
+	sta ent_hb_y,x
+	rts
+@up:
+	sec
+	sbc #2
+	sta ent_y,x
+	clc
+	adc ent_height,x
+	sta ent_hb_y,x
 	rts
 
 
+BeeGuarding:
 BeeAttacking:
 @horiz:
 	lda random

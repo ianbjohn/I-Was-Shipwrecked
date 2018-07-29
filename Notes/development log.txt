@@ -1311,4 +1311,8 @@ Day 165 - 7/24/2018
 	
 Day 166 - 7/26/2018
 	-Fixed some issues in the bees code
-	-Fixed an issue with stack variables in the DeleteFileMacro that was causing the game to crash at the game over screen
+	-Fixed an issue with stack variables in the DeleteFileMacro that was causing the game to crash at the game over screen]
+	
+Day 167 - 7/29/2018
+	-Worked more on the bee state machine
+	-Came up with some more ideas for the island's geography

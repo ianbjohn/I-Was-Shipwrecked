@@ -1,5 +1,6 @@
 	.db "BEEHIVE"
 BeehiveRoutine:
+	;THE BEEHIVE ENT SHOULD SPAWN SOME BEES NEAR THE HIVE, GUARDING, AND OTHERS AWAY FROM THE HIVE, FORAGING
 	lda ent_timer1,x	;foo variable that's set to 1 once a bee is spawned
 	bne @done
 	stx beehive_ent_slot
