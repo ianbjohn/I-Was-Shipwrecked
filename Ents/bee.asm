@@ -111,6 +111,71 @@ BeeForaging:
 	;When a bee is spawned from the beehive, if it starts out foraging, it should be given a random spot in ent_misc1 and ent_misc2 as the X and Y (respectively) of where to go
 	;once it's been to this spot, (ADD A HOVERING STATE WHERE IT'LL HOVER AROUND THE SPOT FOR A FEW SECONDS), either return to the hive or generate coordinates of a new spot to go to.
 	;If the player is within a certain distance of the bee and attacks, the bee should swarm
+	lda ent_x,x
+	cmp ent_misc1,x
+	bne @movetowardsforagespot
+	lda ent_y,x
+	cmp ent_misc2,x
+	bne @movetowardsforagespot
+	lda random
+	jsr RandomLFSR
+	and #%00000001
+	beq @newforage
+@return:
+	lda #1				;returning
+	sta ent_state,x
+	;MAKE A ROUTINE TO FIND WHICH ENT SLOT THE BEEHIVE'S IN, SAVE THAT IN Y
+	lda ent_x,y
+	sta ent_misc1,x
+	lda ent_y,y
+	sta ent_misc2,x
+	rts
+@newforage:
+	jsr RandomLFSR
+	sta ent_misc1,x
+	jsr RandomLFSR
+	sta ent_misc2,x
+	rts
+@movetowardsforagespot:
+@horiz:
+	lda ent_x,x
+	cmp ent_misc1,x
+	bcs @left
+@right:
+	clc
+	adc #1
+	sta ent_x,x
+	clc
+	adc ent_width,x
+	sta ent_hb_x,x
+	jmp @vert
+@left:
+	sec
+	sbc #1
+	sta ent_x,x
+	clc
+	adc ent_width,x
+	sta ent_hb_x,x
+	
+@vert:
+	lda ent_y,x
+	cmp ent_misc2,x
+	bcs @up
+@down:
+	clc
+	adc #1
+	sta ent_y,x
+	clc
+	adc ent_height,x
+	sta ent_hb_y,x
+	rts
+@up:
+	sec
+	sbc #1
+	sta ent_y,x
+	clc
+	adc ent_height,x
+	sta ent_hb_y,x
 	rts
 	
 	
@@ -118,6 +183,16 @@ BeeReturning:
 	;When the bee returns from foraging, the coordinates of the hive should be saved in ent_misc1 and 2 respectively
 	;return to these coordinates
 	;Swarm player if he attacks near the bee, same as in BeeForaging (Make it a helper function or something)
+	
+	;once at the spot, enter the hive (deactivate)
+	lda ent_x,x
+	cmp ent_misc1,x
+	bne @movetowardshive
+	lda ent_y,x
+	cmp ent_misc2,x
+	bne @movetowardshive
+	jmp DeactivateEnt
+@movetowardshive:
 @horiz:
 	lda ent_x,x
 	cmp ent_misc1,x
@@ -216,6 +291,7 @@ BeeSwarming:
 
 
 BeeGuarding:
+	;If guarding, check and see if the timer's up. If so, either enter the hive or start foraging
 BeeAttacking:
 @horiz:
 	lda random

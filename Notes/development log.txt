@@ -1316,3 +1316,6 @@ Day 166 - 7/26/2018
 Day 167 - 7/29/2018
 	-Worked more on the bee state machine
 	-Came up with some more ideas for the island's geography
+	
+Day 168 - 8/4/2018
+	-Was lazy for about a week, but finally made some more progress on the bee's code today

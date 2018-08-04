@@ -1,6 +1,7 @@
 	.db "BEEHIVE"
 BeehiveRoutine:
 	;THE BEEHIVE ENT SHOULD SPAWN SOME BEES NEAR THE HIVE, GUARDING, AND OTHERS AWAY FROM THE HIVE, FORAGING
+	;When the hive spawns a new bee from the entrance (Which should be on a timer and depend on how many other bees are currently active) the bee should either guard the hive or forage for food
 	lda ent_timer1,x	;foo variable that's set to 1 once a bee is spawned
 	bne @done
 	stx beehive_ent_slot
