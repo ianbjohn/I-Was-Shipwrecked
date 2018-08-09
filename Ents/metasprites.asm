@@ -506,47 +506,56 @@ BeehiveMetaSpritesNormalU_0:
 	
 	;bee
 BeeMetaSprites:
-	;on hive, guarding hive, foraging, on a flower/something, attacking, returning to hive, inside hive, exploding
-	.dw BeeMetaSpritesNormal, BeeMetaSpritesFlying, BeeMetaSpritesFlying, BeeMetaSpritesNormal, BeeMetaSpritesFlying, BeeMetaSpritesFlying, InvisibleMetaSprites, ExplosionMetaSprites
+	;foraging, returning, guarding hive, swarming, on player attacking, on flower, hit
+	.dw BeeMetaSpritesFlying, BeeMetaSpritesFlying, BeeMetaSpritesNormal, BeeMetaSpritesFlying, BeeMetaSpritesFlying, BeeMetaSpritesFlying, ExplosionMetaSprites
 	
 BeeMetaSpritesNormal:
 	.dw BeeMetaSpritesNormalU,BeeMetaSpritesNormalD,BeeMetaSpritesNormalL,BeeMetaSpritesNormalR
 BeeMetaSpritesFlying:
-InvisibleMetaSprites:
-
-BeeMetaSpritesNormalU:
-	.dw BeeMetaSpritesNormalU_0,BeeMetaSpritesNormalU_1
-BeeMetaSpritesNormalD:
-	.dw BeeMetaSpritesNormalD_0,BeeMetaSpritesNormalD_1
-BeeMetaSpritesNormalL:
-	.dw BeeMetaSpritesNormalL_0,BeeMetaSpritesNormalL_1
-BeeMetaSpritesNormalR:
-	.dw BeeMetaSpritesNormalR_0,BeeMetaSpritesNormalR_1
+	.dw BeeMetaSpritesFlyingU,BeeMetaSpritesFlyingD,BeeMetaSpritesFlyingL,BeeMetaSpritesFlyingR
 	
-BeeMetaSpritesNormalU_0:
+BeeMetaSpritesNormalU:
+	.dw BeeMetaSpritesFlyingU_0
+BeeMetaSpritesNormalD:
+	.dw BeeMetaSpritesFlyingD_0
+BeeMetaSpritesNormalL:
+	.dw BeeMetaSpritesFlyingL_0
+BeeMetaSpritesNormalR:
+	.dw BeeMetaSpritesFlyingR_0
+
+BeeMetaSpritesFlyingU:
+	.dw BeeMetaSpritesFlyingU_0,BeeMetaSpritesFlyingU_1
+BeeMetaSpritesFlyingD:
+	.dw BeeMetaSpritesFlyingD_0,BeeMetaSpritesFlyingD_1
+BeeMetaSpritesFlyingL:
+	.dw BeeMetaSpritesFlyingL_0,BeeMetaSpritesFlyingL_1
+BeeMetaSpritesFlyingR:
+	.dw BeeMetaSpritesFlyingR_0,BeeMetaSpritesFlyingR_1
+	
+BeeMetaSpritesFlyingU_0:
 	.db 4
 	.db 0,$60,%00000010,-1
-BeeMetaSpritesNormalU_1:
+BeeMetaSpritesFlyingU_1:
 	.db 4
 	.db 0,$61,%00000010,-1
-BeeMetaSpritesNormalD_0:
+BeeMetaSpritesFlyingD_0:
 	.db 4
 	.db 0,$60,%10000010,-1
-BeeMetaSpritesNormalD_1:
+BeeMetaSpritesFlyingD_1:
 	.db 4
 	.db 0,$61,%10000010,-1
-BeeMetaSpritesNormalL_0:
-	.db 4
-	.db 0,$62,%00000010,-1
-BeeMetaSpritesNormalL_1:
-	.db 4
-	.db 0,$63,%00000010,-1
-BeeMetaSpritesNormalR_0:
+BeeMetaSpritesFlyingL_0:
 	.db 4
 	.db 0,$62,%01000010,-1
-BeeMetaSpritesNormalR_1:
+BeeMetaSpritesFlyingL_1:
 	.db 4
 	.db 0,$63,%01000010,-1
+BeeMetaSpritesFlyingR_0:
+	.db 4
+	.db 0,$62,%00000010,-1
+BeeMetaSpritesFlyingR_1:
+	.db 4
+	.db 0,$63,%00000010,-1
 	
 	
 	;player weapon 1 - bullets
@@ -972,7 +981,7 @@ ClothAnimationLengths:
 SnakeAnimationLengths:
 	.db 8,4,8
 BeeAnimationLengths:
-	.db 1,4,4,2,4,4,1,1
+	.db 4,4,1,4,4,1,1
 CrabAnimationLengths:
 	.db 4,4,4,4,1
 BatAnimationLengths:
@@ -1011,7 +1020,7 @@ BeehiveAnimationFrames
 SnakeAnimationFrames:
 	.db 8,8,8,1
 BeeAnimationFrames:
-	.db 1,2,2,2,2,2,1,1
+	.db 2,2,1,2,2,1,1
 CrabAnimationFrames:
 	.db 4,4,4,4,1
 BatAnimationFrames:

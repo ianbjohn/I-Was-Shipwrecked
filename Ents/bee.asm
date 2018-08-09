@@ -1,5 +1,5 @@
 BeeStates:
-	.dw BeeForaging, BeeReturning, BeeGuarding, BeeSwarming, BeeAttacking, BeeEnteringHive, BeeInsideHive, BeeHit
+	.dw BeeForaging, BeeReturning, BeeGuarding, BeeSwarming, BeeAttacking, BeeOnFlower, BeeHit
 	
 BeeRoutine:
 BeeAdvanceAnimation:
@@ -107,6 +107,7 @@ BeeCheckPlayerColDone:
 	jmp (jump_ptr)
 	
 	
+	.db "BEEFORAGE"
 BeeForaging:
 	;When a bee is spawned from the beehive, if it starts out foraging, it should be given a random spot in ent_misc1 and ent_misc2 as the X and Y (respectively) of where to go
 	;once it's been to this spot, (ADD A HOVERING STATE WHERE IT'LL HOVER AROUND THE SPOT FOR A FEW SECONDS), either return to the hive or generate coordinates of a new spot to go to.
@@ -124,13 +125,19 @@ BeeForaging:
 @return:
 	lda #1				;returning
 	sta ent_state,x
-	;MAKE A ROUTINE TO FIND WHICH ENT SLOT THE BEEHIVE'S IN, SAVE THAT IN Y
+	jsr FindBeehiveSlot
 	lda ent_x,y
+	clc
+	adc #4				;return to beehive entrance
 	sta ent_misc1,x
 	lda ent_y,y
+	clc
+	adc #12
 	sta ent_misc2,x
 	rts
 @newforage:
+	clc
+	adc random
 	jsr RandomLFSR
 	sta ent_misc1,x
 	jsr RandomLFSR
@@ -140,6 +147,7 @@ BeeForaging:
 @horiz:
 	lda ent_x,x
 	cmp ent_misc1,x
+	beq @vert
 	bcs @left
 @right:
 	clc
@@ -148,6 +156,8 @@ BeeForaging:
 	clc
 	adc ent_width,x
 	sta ent_hb_x,x
+	lda #RIGHT
+	sta ent_dir,x
 	jmp @vert
 @left:
 	sec
@@ -156,10 +166,13 @@ BeeForaging:
 	clc
 	adc ent_width,x
 	sta ent_hb_x,x
+	lda #LEFT
+	sta ent_dir,x
 	
 @vert:
 	lda ent_y,x
 	cmp ent_misc2,x
+	beq @done
 	bcs @up
 @down:
 	clc
@@ -168,6 +181,8 @@ BeeForaging:
 	clc
 	adc ent_height,x
 	sta ent_hb_y,x
+	lda #DOWN
+	sta ent_dir,x
 	rts
 @up:
 	sec
@@ -176,6 +191,9 @@ BeeForaging:
 	clc
 	adc ent_height,x
 	sta ent_hb_y,x
+	lda #UP
+	sta ent_dir,x
+@done:
 	rts
 	
 	
@@ -196,6 +214,7 @@ BeeReturning:
 @horiz:
 	lda ent_x,x
 	cmp ent_misc1,x
+	beq @vert
 	bcs @left
 @right:
 	clc
@@ -204,6 +223,8 @@ BeeReturning:
 	clc
 	adc ent_width,x
 	sta ent_hb_x,x
+	lda #RIGHT
+	sta ent_dir,x
 	jmp @vert
 @left:
 	sec
@@ -212,10 +233,13 @@ BeeReturning:
 	clc
 	adc ent_width,x
 	sta ent_hb_x,x
+	lda #LEFT
+	sta ent_dir,x
 	
 @vert:
 	lda ent_y,x
 	cmp ent_misc2,x
+	beq @done
 	bcs @up
 @down:
 	clc
@@ -224,6 +248,8 @@ BeeReturning:
 	clc
 	adc ent_height,x
 	sta ent_hb_y,x
+	lda #DOWN
+	sta ent_dir,x
 	rts
 @up:
 	sec
@@ -232,6 +258,9 @@ BeeReturning:
 	clc
 	adc ent_height,x
 	sta ent_hb_y,x
+	lda #UP
+	sta ent_dir,x
+@done:
 	rts
 	
 	
@@ -259,6 +288,8 @@ BeeSwarming:
 	clc
 	adc ent_width,x
 	sta ent_hb_x,x
+	lda #RIGHT
+	sta ent_dir,x
 	jmp @vert
 @left:
 	sec
@@ -267,6 +298,8 @@ BeeSwarming:
 	clc
 	adc ent_width,x
 	sta ent_hb_x,x
+	lda #LEFT
+	sta ent_dir,x
 	
 @vert:
 	lda ent_y,x
@@ -279,6 +312,8 @@ BeeSwarming:
 	clc
 	adc ent_height,x
 	sta ent_hb_y,x
+	lda #DOWN
+	sta ent_dir,x
 	rts
 @up:
 	sec
@@ -287,6 +322,8 @@ BeeSwarming:
 	clc
 	adc ent_height,x
 	sta ent_hb_y,x
+	lda #UP
+	sta ent_dir,x
 	rts
 
 
@@ -351,7 +388,23 @@ BeeAttacking:
 	rts
 	
 	
-BeeEnteringHive:
-BeeInsideHive:
+BeeOnFlower:
 BeeHit:
+	rts
+	
+	
+FindBeehiveSlot:
+	;searches the list of ents for the beehive
+	;returns the index in Y
+	;if it can't find it, return #$FF (This'll signal that it's been destroyed somehow and that the bee should swarm)
+	ldy #15
+@loop:
+	lda ent_id,y
+	cmp #ENT_BEEHIVE
+	beq @done
+	dey
+	cpy #1
+	bne @loop
+	ldy #$FF
+@done:
 	rts

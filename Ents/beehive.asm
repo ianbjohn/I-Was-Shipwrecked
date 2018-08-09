@@ -20,6 +20,12 @@ BeehiveRoutine:
 	sta ent_y+14
 	ldx #14
 	jsr InitEnt
+	lda random
+	jsr RandomLFSR
+	sta ent_misc1+14
+	jsr RandomLFSR
+	sta ent_misc2+14
+	rts
 @done:
 	;ldx ent_index
 	;inc ent_timer1,x

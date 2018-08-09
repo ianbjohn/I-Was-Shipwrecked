@@ -1319,3 +1319,8 @@ Day 167 - 7/29/2018
 	
 Day 168 - 8/4/2018
 	-Was lazy for about a week, but finally made some more progress on the bee's code today
+	
+Day 169 - 8/9/2018
+	-Fixed issues with bee's AI and metasprite definitions
+		-They now forage correctly, return to hive, and are then deactivated
+		-Added a FindBeehiveSlot helper function
