@@ -1326,3 +1326,6 @@ Day 169 - 8/9/2018
 		-Added a FindBeehiveSlot helper function
 	-Discovered like 3 different bugs relating to the screen with the jar and enemy palettes with the surrounding screens.
 	-Fixed the issue with the poisonous snakes spawning in weird spots. I'd forgotten to define what terrain poisonous snakes are on in the fixed bank
+	
+Day 170 - 8/10/2018
+	-Changed a heart's HP revival from +5 to +10

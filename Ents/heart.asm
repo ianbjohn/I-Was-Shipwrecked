@@ -28,7 +28,7 @@ DecHeartPHIDone:
 @playerweaponcol:
 	lda ent_health+0
 	clc
-	adc #5
+	adc #10
 	bcc @skipoverflow
 	lda #255
 @skipoverflow:
