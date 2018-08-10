@@ -47,7 +47,7 @@ BeeAdvanceAnimationDone:
 
 BeeCheckKnifeCol:
 	lda ent_state,x
-	cmp #7				;hit
+	cmp #6				;hit
 	beq BeeCheckKnifeColDone
 	lda ent_active+1
 	beq BeeCheckKnifeColDone
@@ -59,7 +59,7 @@ BeeCheckKnifeCol:
 	
 	lda #EXPLOSION_TIME
 	sta ent_timer1,x
-	lda #7
+	lda #6
 	sta ent_state,x
 	lda #0
 	sta ent_anim_timer,x
@@ -404,6 +404,13 @@ BeeOnFlower:
 	;once timer hits 0, either pick a new spot to forage or return to hive
 
 BeeHit:
+	lda ent_timer1,x
+	sec
+	sbc #1
+	bcs @done
+	jmp DeactivateEnt			;For right now I don't think bees should drop anything
+@done:
+	sta ent_timer1,x
 	rts
 	
 	

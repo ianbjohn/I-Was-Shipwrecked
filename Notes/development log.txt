@@ -1329,3 +1329,6 @@ Day 169 - 8/9/2018
 	
 Day 170 - 8/10/2018
 	-Changed a heart's HP revival from +5 to +10
+	-Made the beehive continuously spawn bees on a timer
+	-Made bees able to be killed
+	-Added honey / honeycomb sprites

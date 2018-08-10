@@ -222,7 +222,7 @@
 	paused_stream_statuses	.dsb 5	;save which of the 4 BGM streams were enabled (These will almost always, but not always, be all 1)
 	near_death_alert_timer	.dsb 1	;if health, hunger or thirst are below 30, alert the player every 256 frames / ~4.25 seconds
 	player_near_death	.dsb 1
-	beehive_ent_slot	.dsb 1
+	;beehive_ent_slot	.dsb 1
 	rounds_hud_x		.dsb 1
 	rounds_hud_y		.dsb 1
 	rounds_hud_timer	.dsb 1
