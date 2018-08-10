@@ -96,6 +96,18 @@ BeeCheckPlayerCol:
 	jmp PlaySound
 BeeCheckPlayerColDone:
 
+BeeCheckBeehive:
+	;if the beehive isn't active (if it's been destroyed), go to swarm state
+	lda ent_state,x
+	cmp #6				;hit
+	beq BeeCheckBeehiveDone
+	jsr FindBeehiveSlot
+	cpy #$FF
+	bne BeeCheckBeehiveDone
+	lda #3						;swarming
+	sta ent_state,x
+BeeCheckBeehiveDone:
+
 	;go to individual code for each state
 	lda ent_state,x
 	asl
@@ -389,6 +401,8 @@ BeeAttacking:
 	
 	
 BeeOnFlower:
+	;once timer hits 0, either pick a new spot to forage or return to hive
+
 BeeHit:
 	rts
 	

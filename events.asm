@@ -5,7 +5,7 @@ EventCounts:
 	;rows of area, columns of difficulty
 	;(must be a power of 2)
 	.db 15,0,0
-	.db 7,3,0
+	.db 7,7,0
 	.db 0,0,0
 	.db 0,0,0
 	.db 1,0,0
@@ -42,7 +42,7 @@ JungleEventsEasy:
 	.dw EmptyEvent,JungleEventEasy0,JungleEventEasy1,JungleEventEasy2,JungleEventEasy3,JungleEventEasy4,JungleEventEasy0,JungleEventEasy1
 
 JungleEventsModerate:
-	.dw EmptyEvent,JungleEventModerate0,JungleEventModerate1,JungleEventModerate2
+	.dw EmptyEvent,JungleEventModerate0,JungleEventModerate1,JungleEventModerate2,JungleEventModerate0,JungleEventModerate1,JungleEventModerate0,JungleEventModerate1
 
 JungleEventsHard:
 

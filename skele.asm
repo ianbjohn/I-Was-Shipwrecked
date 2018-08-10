@@ -1405,7 +1405,7 @@ EnemyTerrains:
 	;There are labels for the types of terrain, but it seems unnecessary here. 0 - water, 1 - land, 2 - trees
 	;Again, I originally planned for events to just have events have enemies, so don't let the name confuse you
 	.db 0,0,1,0,0,0,2,2,0,0,0,1,1,1,1,1
-	.db 1,1,1,1,2
+	.db 1,1,1,1,2,1
 TerrainSpawnCoordinates:
 	;The addresses of the spawn coordinates for each terrain type
 	.dw ent_spawns+0,ent_spawns+16,ent_spawns+32
