@@ -105,9 +105,6 @@ MovePlayerDone:
 	;Since the NES is a quirky motherfucker, we have to load the palettes during vblank, through a buffer
 	;Background palettes for screens can never change, so we don't have to worry about preserving this and can just load it with every screen
 LoadPalette:
-	jmp @fucker
-	.db "LoadPalette"
-@fucker:
 	lda in_cave
 	bne @cave
 	lda #<(IslandScreens)
