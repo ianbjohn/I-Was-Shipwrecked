@@ -105,6 +105,9 @@ MovePlayerDone:
 	;Since the NES is a quirky motherfucker, we have to load the palettes during vblank, through a buffer
 	;Background palettes for screens can never change, so we don't have to worry about preserving this and can just load it with every screen
 LoadPalette:
+	jmp @fucker
+	.db "LoadPalette"
+@fucker:
 	lda in_cave
 	bne @cave
 	lda #<(IslandScreens)
@@ -114,36 +117,38 @@ LoadPalette:
 	bne @continue
 @cave:
 	;if the player doesn't have any torches, don't light the caves
-;	lda #ITEM_TORCH
-;	jsr GetItemCount
-;	bne @loadcavepalette
-;@notorches:
-;	ldy #2
-;	sty temp0
-;	ldx vram_buffer_pos
-;	lda #$3F
-;	sta vram_buffer+0,x
-;	lda #$00
-;	sta vram_buffer+1,x
-;	lda #<(Copy12Bytes-1)
-;	sta vram_buffer+2,x
-;	lda #>(Copy12Bytes-1)
-;	sta vram_buffer+3,x
-;	ldy #0
-;	lda #$0F				;blackness
-;@darkness:
-;	sta vram_buffer+4,x
-;	inx
-;	iny
-;	cpy #12
-;	bne @darkness
-;	txa
-;	clc
-;	adc #4
-;	sta vram_buffer_pos
-;	lda frame_counter
-;	jmp @waitframe
-;@loadcavepalette:
+	;Currently buggy - flat-out doesn't work
+	lda #ITEM_TORCH
+	jsr GetItemCount
+	bne @loadcavepalette
+@notorches:
+	ldy #2
+	sty temp0				;(10/24/2018) what does this mean? (Used as an enemy index perhaps? (That's what A gets saved to the first time it's loaded with temp0 in this file))
+	ldx vram_buffer_pos
+	lda #$3F
+	sta vram_buffer+0,x
+	lda #$00
+	sta vram_buffer+1,x
+	lda #<(Copy12Bytes-1)
+	sta vram_buffer+2,x
+	lda #>(Copy12Bytes-1)
+	sta vram_buffer+3,x
+	ldy #0
+	lda #$0F				;blackness
+@darkness:
+	sta vram_buffer+4,x
+	inx
+	iny
+	cpy #12
+	bne @darkness
+	txa
+	clc
+	adc #4
+	sta vram_buffer_pos
+	lda frame_counter
+	jmp @waitframe
+	;everything after this part works as intended
+@loadcavepalette:
 	lda cave_level
 	asl
 	tax
@@ -534,6 +539,21 @@ SetUpDoorsDone:
 	cmp frame_counter
 	beq @waitFrame
 	
+	;If we're in a cave, and we have no torches, let the player know what's happening
+	;eventually, add logic so that this only happens when first entering a cave. Should be similar to the logic used for stopping the music.
+	lda in_cave
+	beq @notincave
+	lda #ITEM_TORCH
+	jsr GetItemCount
+	bne @notincave
+	lda #MSG_CAVEPITCHBLACK
+	sta message
+	lda #STATE_DRAWINGMBOX
+	sta game_state
+	;sta game_state_old		;uncomment this if the uncommented code doesn't work
+	rts
+	
+@notincave:
 	lda #STATE_PLAY
 	sta game_state
 	sta game_state_old				;The init state for play is only used for redrawing the screen from RAM when returning from the inventory screen

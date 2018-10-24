@@ -10,15 +10,14 @@ SongTitle:
 	.db %01110000
 	.db VE13
 	.dw SongTitleSquare1
-	.db 115
-	
+	.db 105
 	.db MUSIC_SQ2
 	.db 1
 	.db SQUARE_2
 	.db %01110000
 	.db VE14
 	.dw SongTitleSquare2
-	.db 115
+	.db 105
 	
 	.db MUSIC_TRI
 	.db 1
@@ -26,7 +25,7 @@ SongTitle:
 	.db %10000001
 	.db VE0
 	.dw SongTitleTri
-	.db 115
+	.db 105
 	
 	.db MUSIC_NOI
 	.db 1
@@ -34,10 +33,10 @@ SongTitle:
 	.db %00110000
 	.db VE15
 	.dw SongTitleNoise
-	.db 115
+	.db 105
 	
 SongTitleSquare1:
-	.db SETLOOP0COUNT,8
+	.db SETLOOP0COUNT,8		;cut in half to 4
 @loop:
 	.db SETLOOP1COUNT,4
 @loop_a:
@@ -51,6 +50,11 @@ SongTitleSquare1:
 	.dw @loop_b
 	.db LOOP0
 	.dw @loop
+	
+	;mid-high-pitched square, quick fade in fade out volume, semi staccatoey
+	;A,G,F,D, x4
+	;F,E,C,Bb x4
+	;(maybe)
 	
 	.db CHANGEVE,VE17,FOUR_WHOLE,F3,F3,F3,TWO_WHOLE,F3,DOTTED_WHOLE,F3,HALF,rest
 	.db ENDSOUND
