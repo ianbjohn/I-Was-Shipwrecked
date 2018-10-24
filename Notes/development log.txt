@@ -1339,3 +1339,5 @@ Day 171 - 10/24/2018
 	-Made a note on how to handle torches and cave lighting.
 	-Un-commented the code to make the cave dark if the player has no torches. It's obviously been forever since I've looked at any of this code, but I remember there being issues with this "task" (for complete lack of a better word). So I'm assuming the message saying the caves are dark without torches didn't get drawn correctly
 	-(Regarding the issue above) The message now gets printed when the player enters a cave and has no torches. Need to keep working on this so that it only displays the message when the player enters a cave area from a non-cave area (Review area-changing code), or when the player runs out of torches.
+	--(Later in the afternoon)--
+	-Discovered a bug with cave transitions that seems to happen when the cave is dark. Look into this more, we're probably going to need to debug.
