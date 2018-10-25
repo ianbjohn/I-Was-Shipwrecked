@@ -1341,3 +1341,7 @@ Day 171 - 10/24/2018
 	-(Regarding the issue above) The message now gets printed when the player enters a cave and has no torches. Need to keep working on this so that it only displays the message when the player enters a cave area from a non-cave area (Review area-changing code), or when the player runs out of torches.
 	--(Later in the afternoon)--
 	-Discovered a bug with cave transitions that seems to happen when the cave is dark. Look into this more, we're probably going to need to debug.
+	
+Day 172 - 10/25/2018
+	-Commented out the code for making the cave dark, and the transitions went back to working as intended. So somehow, when this code is executed, the game is unable to detect that an area transition should happen. It does the fade out, but the music doesn't stop, but it does change to the appropriate area music (jungle) but the screen is still black and there's garbage map data. Check and see what the screen index is, and look at the metatile map in RAM. Then step through the code to see why it does this.
+	-Did some more testing and debugging. When the darkness code is commented out, and the normal cave screen is visible, there's a door at the bottom of the screen. But when the cave is dark, the player can exit the screen. Screen fadeout transitions only occur when the player collides with a door ent, so the wrong screen is being loaded. Debug further to figure out which screen and cave level should normally be loaded, and which ones actually are being loaded.

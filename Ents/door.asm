@@ -14,6 +14,7 @@ DoorRoutine:
 	plp
 	bne DoorCollision
 	rts
+	.db "DOORCOLLISION"
 DoorCollision:
 	;the player collided with the door, time to do things!!!
 	;clear the previous screen system
