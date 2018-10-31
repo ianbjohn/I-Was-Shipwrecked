@@ -1345,3 +1345,9 @@ Day 171 - 10/24/2018
 Day 172 - 10/25/2018
 	-Commented out the code for making the cave dark, and the transitions went back to working as intended. So somehow, when this code is executed, the game is unable to detect that an area transition should happen. It does the fade out, but the music doesn't stop, but it does change to the appropriate area music (jungle) but the screen is still black and there's garbage map data. Check and see what the screen index is, and look at the metatile map in RAM. Then step through the code to see why it does this.
 	-Did some more testing and debugging. When the darkness code is commented out, and the normal cave screen is visible, there's a door at the bottom of the screen. But when the cave is dark, the player can exit the screen. Screen fadeout transitions only occur when the player collides with a door ent, so the wrong screen is being loaded. Debug further to figure out which screen and cave level should normally be loaded, and which ones actually are being loaded.
+	
+Day 173 - 10/30/2018
+	-Decided to finally do some debugging
+		-The map gets loaded correctly when the cave is pitch black
+		-But no door ents get loaded
+		-Discovered that the correct "door pointer" gets loaded and read from correctly when the darkness code is commented out, but when testing darkness the pointer gets set to $0004. The code to load doors branches past doing anything if the high byte is 0. So somehow the pointer isn't getting loaded correctly. Debug from GetSpecialEvent to SetUpEnemies, keep track of the pointer values and Y values (to compare when debugging the darkness version) to see when things begin to go awry.
