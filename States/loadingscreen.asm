@@ -2,6 +2,17 @@
 LoadingScreenMain:
 	;(Be sure to eventually, for each area, have a table of which CHR data is needed, and update the CHR RAM accordingly)
 	
+	;I believe that whenever a new screen is loaded, the ent bank should be loaded in
+	;If the game ever just crashes after a screen transition, look here first
+	
+	;If the player was in the middle of walking during a screen transition, set his state to standing so he's not still in the middle of walking when the screen is loaded
+	lda #0					;standing
+	tax						;set ent index to player
+	sta ent_state+0
+	sta ent_anim_timer+0
+	sta ent_anim_frame+0
+	jsr FindEntAnimLengthsAndFrames
+	
 	;load the metatiles for the screen
 	lda #%00000110				;Have this here just to make sure it'll always happen
 	sta $2001
@@ -137,7 +148,6 @@ LoadPalette:
 	lda (mt_ptr1),y
 	sta ptr1+1
 	;if the player doesn't have any torches, don't light the caves
-	;Currently buggy - flat-out doesn't work
 	lda #ITEM_TORCH
 	jsr GetItemCount
 	bne @continue

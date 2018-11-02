@@ -786,7 +786,7 @@ PlayerDone:
 	lda buttons
 	and #%00001111
 	bne @done
-	lda #0
+	lda #0					;standing
 	sta ent_state+0
 	sta ent_anim_timer+0
 	sta ent_anim_frame+0
