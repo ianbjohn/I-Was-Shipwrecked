@@ -448,8 +448,6 @@ SetUpEnemiesDone:
 ++	;pla
 	;sta temp0			;in case things come afterwords
 	
-	jmp SetUpDoors
-	.db "SetUpDoors"
 	;load doors if there were any
 SetUpDoors:
 	lda #BANK_METATILES
