@@ -111,49 +111,6 @@ LoadPalette:
 	sta mt_ptr1+0
 	lda #>(IslandScreens)
 	sta mt_ptr1+1
-	bne @continue		;will always branch
-@cave:
-	;if the player doesn't have any torches, don't light the caves
-	;Currently buggy - flat-out doesn't work
-	lda #ITEM_TORCH
-;	jsr GetItemCount
-;	bne @loadcavepalette
-;@notorches:
-;	ldy #2
-;	sty temp0				;(10/24/2018) what does this mean? (Used as an enemy index perhaps? (That's what A gets saved to the first time it's loaded ;;with temp0 in this file))
-;	ldx vram_buffer_pos
-;	lda #$3F
-;	sta vram_buffer+0,x
-;	lda #$00
-;	sta vram_buffer+1,x
-;	lda #<(Copy12Bytes-1)
-;	sta vram_buffer+2,x
-;	lda #>(Copy12Bytes-1)
-;	sta vram_buffer+3,x
-;	ldy #0
-;	lda #$0F				;blackness
-;@darkness:
-;	sta vram_buffer+4,x
-;	inx
-;	iny
-;	cpy #12
-;	bne @darkness
-;	txa
-;	clc
-;	adc #4
-;	sta vram_buffer_pos
-;	lda frame_counter
-;	jmp @waitframe
-	;everything after this part works as intended
-@loadcavepalette:
-	lda cave_level
-	asl
-	tax
-	lda CaveScreens+0,x
-	sta mt_ptr1+0
-	lda CaveScreens+1,x
-	sta mt_ptr1+1
-@continue:
 	lda screen
 	asl
 	tay
@@ -162,9 +119,57 @@ LoadPalette:
 	iny
 	lda (mt_ptr1),y
 	sta ptr1+1
-	
+	bne @continue		;will always branch
+@cave:
+	lda cave_level
+	asl
+	tax
+	lda CaveScreens+0,x
+	sta mt_ptr1+0
+	lda CaveScreens+1,x
+	sta mt_ptr1+1
+	lda screen
+	asl
+	tay
+	lda (mt_ptr1),y
+	sta ptr1+0		;will be used as the pointer for screen data
+	iny
+	lda (mt_ptr1),y
+	sta ptr1+1
+	;if the player doesn't have any torches, don't light the caves
+	;Currently buggy - flat-out doesn't work
+	lda #ITEM_TORCH
+	jsr GetItemCount
+	bne @continue
+@notorches:
+	ldy #2
+	sty temp0		;position in screen data (Shouldn't be reset until all the screen loading is done)
+	ldx vram_buffer_pos
+	lda #$3F
+	sta vram_buffer+0,x
+	lda #$00
+	sta vram_buffer+1,x
+	lda #<(Copy12Bytes-1)
+	sta vram_buffer+2,x
+	lda #>(Copy12Bytes-1)
+	sta vram_buffer+3,x
 	ldy #0
-	;sty temp0		;position in screen data (Shouldn't be reset until all the screen loading is done)
+	lda #$0F				;blackness
+@darkness:
+	sta vram_buffer+4,x
+	inx
+	iny
+	cpy #12
+	bne @darkness
+	txa
+	clc
+	adc #4
+	sta vram_buffer_pos
+	lda frame_counter
+	jmp @waitframe
+	;everything after this part works as intended
+@continue:
+	ldy #0			;position in screen data (Shouldn't be reset until all the screen loading is done)
 	;get the palette address
 	lda (ptr1),y
 	sta mt_ptr1+0
@@ -443,6 +448,8 @@ SetUpEnemiesDone:
 ++	;pla
 	;sta temp0			;in case things come afterwords
 	
+	jmp SetUpDoors
+	.db "SetUpDoors"
 	;load doors if there were any
 SetUpDoors:
 	lda #BANK_METATILES
@@ -539,17 +546,17 @@ SetUpDoorsDone:
 	;If we're in a cave, and we have no torches, let the player know what's happening
 		;As far as I know, this works as intended for the current situation and isn't what's breaking the game. Uncomment once screen transition bugs are fixed.
 	;eventually, add logic so that this only happens when first entering a cave. Should be similar to the logic used for stopping the music.
-	;lda in_cave
-	;beq @notincave
-	;lda #ITEM_TORCH
-	;jsr GetItemCount
-	;bne @notincave
-	;lda #MSG_CAVEPITCHBLACK
-	;sta message
-	;lda #STATE_DRAWINGMBOX
-	;sta game_state
-	;sta game_state_old		;uncomment this if the uncommented code doesn't work
-	;rts
+	lda in_cave
+	beq @notincave
+	lda #ITEM_TORCH
+	jsr GetItemCount
+	bne @notincave
+	lda #MSG_CAVEPITCHBLACK
+	sta message
+	lda #STATE_DRAWINGMBOX
+	sta game_state
+	sta game_state_old		;uncomment this if the uncommented code doesn't work
+	rts
 	
 @notincave:
 	lda #STATE_PLAY

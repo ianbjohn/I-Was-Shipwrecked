@@ -997,8 +997,6 @@ LoadAttributes:
 	bne @loop
 LoadAttributesDone:
 	rts
-	;tya
-	;pha				;save temp0 (Respawning any ents will clobber it)
 	
 	
 ReloadMetaTiles:

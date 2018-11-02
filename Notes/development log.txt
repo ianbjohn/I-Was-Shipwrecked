@@ -1351,3 +1351,7 @@ Day 173 - 10/30/2018
 		-The map gets loaded correctly when the cave is pitch black
 		-But no door ents get loaded
 		-Discovered that the correct "door pointer" gets loaded and read from correctly when the darkness code is commented out, but when testing darkness the pointer gets set to $0004. The code to load doors branches past doing anything if the high byte is 0. So somehow the pointer isn't getting loaded correctly. Debug from GetSpecialEvent to SetUpEnemies, keep track of the pointer values and Y values (to compare when debugging the darkness version) to see when things begin to go awry.
+		
+Day 174 - 11/1/2018
+	-Found out why there were issues with the cave and doors. The screen daya pointer wasnt getting properly initialized when a screen was both a cave and dark, so a bit of logic needed to be moved around / added to fix this.
+	-The message that the cave is dark comes still pops up with each screen, so this'll need to be fixed next.
