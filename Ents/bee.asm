@@ -22,29 +22,6 @@ BeeAdvanceAnimation:
 	sta ent_anim_timer,x
 BeeAdvanceAnimationDone:
 
-	;Deactivate bee after getting hit
-	lda ent_state,x		;if bee exploded, decrement timer1
-	cmp #7				;explosion
-	bne BeeCheckKnifeCol
-	dec ent_timer1,x
-	lda ent_timer1,x
-	bne @rts
-	;bee will be dead at this point
-	dec num_active_enemies
-	
-	;randomly drop stuff
-	lda random
-	and #%00000011
-	tay
-	lda EnemyItemDrops,y
-	bne @continue
-	jmp DeactivateEnt
-@continue:
-	sta ent_id,x
-	jmp InitEnt
-@rts:
-	rts
-
 BeeCheckKnifeCol:
 	lda ent_state,x
 	cmp #6				;hit

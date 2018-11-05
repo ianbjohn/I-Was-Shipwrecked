@@ -1333,6 +1333,8 @@ Day 170 - 8/10/2018
 	-Made bees able to be killed
 	-Added honey / honeycomb sprites
 	
+	(2 years of being in development)
+	
 Day 171 - 10/24/2018
 	-2 and a half months of no progress? NO BIGGIE!!!!!!!!!!!!!!!!
 	-Made the title music and the shore music a bit slower, which I think makes both tracks sound better
@@ -1353,5 +1355,8 @@ Day 173 - 10/30/2018
 		-Discovered that the correct "door pointer" gets loaded and read from correctly when the darkness code is commented out, but when testing darkness the pointer gets set to $0004. The code to load doors branches past doing anything if the high byte is 0. So somehow the pointer isn't getting loaded correctly. Debug from GetSpecialEvent to SetUpEnemies, keep track of the pointer values and Y values (to compare when debugging the darkness version) to see when things begin to go awry.
 		
 Day 174 - 11/1/2018
-	-Found out why there were issues with the cave and doors. The screen daya pointer wasnt getting properly initialized when a screen was both a cave and dark, so a bit of logic needed to be moved around / added to fix this.
+	-Found out why there were issues with the cave and doors. The screen data pointer wasnt getting properly initialized when a screen was both a cave and dark, so a bit of logic needed to be moved around / added to fix this.
 	-The message that the cave is dark comes still pops up with each screen, so this'll need to be fixed next.
+	
+Day 175 - 11/5/2018
+	-Moved a bit of code around, so that now the player will only be notified that a cave is pitch black when first entering it, and not on every screen.

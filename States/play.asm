@@ -19,27 +19,6 @@ PlayInit:
 	
 	jsr DrawStatusBoard		;need to do this because the status board may get overwritten if the player selects an item in inventory screen
 	jsr ReloadMetaTiles
-	
-	;if the player enters a cave with no torches, let him know that "The cave is pitch black" (This should be separate from the message that tells the player he's out of torches, which happens in the main play code)
-;AlertCavePitchBlack:
-;	lda area
-;	cmp #AREA_CAVE
-;	bne AlertCavePitchBlackDone
-;	lda area_old
-;	cmp #AREA_CAVE
-;	beq AlertCavePitchBlackDone		;only alert player if he just entered a cave from the outside
-;	lda #ITEM_TORCH
-;	jsr GetItemCount
-;	bne AlertCavePitchBlackDone
-	
-;	lda #BANK_MESSAGES
-;	jsr SetPRGBank
-	
-;	lda #MSG_CAVEPITCHBLACK
-;	sta message
-;	lda #STATE_DRAWINGMBOX
-;	sta game_state
-;AlertCavePitchBlackDone:
 
 	pla
 	jsr SetPRGBank

@@ -6,12 +6,14 @@ LoadingScreenMain:
 	;If the game ever just crashes after a screen transition, look here first
 	
 	;If the player was in the middle of walking during a screen transition, set his state to standing so he's not still in the middle of walking when the screen is loaded
-	lda #0					;standing
-	tax						;set ent index to player
-	sta ent_state+0
-	sta ent_anim_timer+0
-	sta ent_anim_frame+0
-	jsr FindEntAnimLengthsAndFrames
+	;Sometimes it does look weird if the player was in the middle of walking, and then for example gets notified that the cave they just entered is pitch black, but I don't think it's a huge deal right now
+	;Maybe move this code to the end of the fade-out state instead
+	;lda #0					;standing
+	;tax						;set ent index to player
+	;sta ent_state+0
+	;sta ent_anim_timer+0
+	;sta ent_anim_frame+0
+	;jsr FindEntAnimLengthsAndFrames
 	
 	;load the metatiles for the screen
 	lda #%00000110				;Have this here just to make sure it'll always happen
@@ -520,8 +522,7 @@ SetUpDoorsDone:
 	lda area
 	cmp area_old
 	beq @musicchangedone
-	sta area_old
-	tax
+	tax						;area_old will get updated at the end
 	ldy GameAreaSongs,x
 	jsr PlaySound
 @musicchangedone:
@@ -556,6 +557,10 @@ SetUpDoorsDone:
 	;eventually, add logic so that this only happens when first entering a cave. Should be similar to the logic used for stopping the music.
 	lda in_cave
 	beq @notincave
+	lda area
+	cmp area_old			;update area
+	beq @notincave
+	sta area_old
 	lda #ITEM_TORCH
 	jsr GetItemCount
 	bne @notincave
@@ -567,6 +572,8 @@ SetUpDoorsDone:
 	rts
 	
 @notincave:
+	lda area
+	sta area_old			;update area
 	lda #STATE_PLAY
 	sta game_state
 	sta game_state_old				;The init state for play is only used for redrawing the screen from RAM when returning from the inventory screen
