@@ -1369,3 +1369,9 @@ Day 177 - 11/9/2018
 	-Made the torch timer count down when in caves
 	-Added messages for a torch going out and for being out of torches
 	-Cave now goes black when the player runs out of torches
+	-45.36Kb of code and data (Not counting CHR)
+	-52.18Kb of code and data (counting CHR)
+	
+Day 178 - 11/10/2018
+	-Forgot to update the palette buffer when loading a dark cave and when running out of torches, so did that. Fade-outs when leaving a dark cave now look as intended
+	-Thought of some ideas to make snakes behave less "dumbly", added them to the ideas file

@@ -159,23 +159,28 @@ LoadPalette:
 	lda #$3F
 	sta vram_buffer+0,x
 	lda #$00
+	sta temp1				;used to keep track of palette buffer position
 	sta vram_buffer+1,x
 	lda #<(Copy12Bytes-1)
 	sta vram_buffer+2,x
 	lda #>(Copy12Bytes-1)
 	sta vram_buffer+3,x
-	ldy #0
-	lda #$0F				;blackness
-@darkness:
-	sta vram_buffer+4,x
-	inx
-	iny
-	cpy #12
-	bne @darkness
 	txa
 	clc
 	adc #4
 	sta vram_buffer_pos
+	ldy #0
+	lda #$0F				;blackness
+@darkness:
+	ldx vram_buffer_pos
+	sta vram_buffer,x
+	inc vram_buffer_pos
+	ldx temp1
+	sta palette_buffer,x
+	inc temp1
+	iny
+	cpy #12
+	bne @darkness
 	lda frame_counter
 	jmp @waitframe
 	;everything after this part works as intended
