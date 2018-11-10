@@ -177,6 +177,10 @@ Title_ReadStart:
 	inc num_obtained_items
 	lda #30
 	sta rounds
+	lda #>TORCH_TIME		;set torch countdown time
+	sta torch_timer+1
+	lda #<TORCH_TIME
+	sta torch_timer+0
 	
 	;make sure the game knows the player is activated
 	lda #1

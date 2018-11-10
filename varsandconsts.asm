@@ -237,7 +237,7 @@
 	door_tr_y			.dsb 1
 	loading_sound		.dsb 1		;prevent corruption from NMI sound code when a sound is being loaded
 	player_dir_old		.dsb 1
-	torch_time			.dsb 2		;# of frames left until current torch goes out
+	torch_timer			.dsb 2		;# of frames left until current torch goes out
 	status_recovery_time	.dsb 2	;how long it takes for whatever status the player has to return to normal
 									;depends on status
 	.ende
@@ -430,8 +430,11 @@
 	MSG_NOTHINGHAPPENED		= $32
 	MSG_MAXITEMCOUNT		= $33
 	MSG_CANTSAVEWHILECRAFTING	= $34
+	MSG_TORCHWENTOUT		= $35
+	MSG_OUTOFTORCHES		= $36
 	
 	EXPLOSION_TIME		= 12			;how many frames an explosion should last
+	TORCH_TIME			= 7200			;2 minutes - how long a torch should last in a cave
 	
 	;player status IDs
 	STATUS_NORMAL		= 0

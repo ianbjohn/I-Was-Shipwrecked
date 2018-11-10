@@ -377,5 +377,79 @@ StatusRecover:
 @done:
 	sta status_recovery_time+0
 StatusRecoverDone:
+
+	;if in a cave or a dark area, and torch count is > 0, count down torch timer
+CountDownTorchTimer:
+	lda area
+	cmp #AREA_CAVE
+	bne CountDownTorchTimerDone
+	lda #ITEM_TORCH
+	jsr GetItemCount
+	beq CountDownTorchTimerDone
+	lda torch_timer+0
+	sec
+	sbc #1
+	bcs @continue
+	lda torch_timer+1
+	sec
+	sbc #1
+	bcc @dectorchcount
+	sta torch_timer+1
+	lda #$FF
+	bne @continue		;w.a.b
+@dectorchcount:
+	lda #>TORCH_TIME			;reset torch timer
+	sta torch_timer+1
+	lda #<TORCH_TIME
+	sta torch_timer+0
+	lda #ITEM_TORCH
+	ldy #1
+	jsr SubtractFromItemCount
+	ldy #SFX_OHSHIT
+	jsr PlaySound
+	lda #ITEM_TORCH				;if count is still > 0, let the player know their torch went out
+	jsr GetItemCount			;otherwise, let the player know that they're out of torches
+	beq @outoftorches
+@torchwentout:
+	lda #MSG_TORCHWENTOUT
+	sta message
+	lda #STATE_DRAWINGMBOX
+	sta game_state
+	rts		
+@outoftorches:
+	;we need to buffer palette changes to make the cave pitch black
+	ldx vram_buffer_pos
+	lda #$3F
+	sta vram_buffer+0,x
+	lda #$00
+	sta vram_buffer+1,x
+	lda #<(Copy12Bytes-1)
+	sta vram_buffer+2,x
+	lda #>(Copy12Bytes-1)
+	sta vram_buffer+3,x
+	ldy #0
+	lda #$0F				;blackness
+@darkness:
+	sta vram_buffer+4,x
+	inx
+	iny
+	cpy #12
+	bne @darkness
+	txa
+	clc
+	adc #4
+	sta vram_buffer_pos
+	lda frame_counter
+@waitframe:
+	cmp frame_counter
+	beq @waitframe
+	lda #MSG_OUTOFTORCHES
+	sta message
+	lda #STATE_DRAWINGMBOX
+	sta game_state
+	rts
+@continue:
+	sta torch_timer+0
+CountDownTorchTimerDone:
 PlayDone:
 	rts

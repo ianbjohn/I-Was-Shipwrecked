@@ -2,9 +2,6 @@
 LoadingScreenMain:
 	;(Be sure to eventually, for each area, have a table of which CHR data is needed, and update the CHR RAM accordingly)
 	
-	;I believe that whenever a new screen is loaded, the ent bank should be loaded in
-	;If the game ever just crashes after a screen transition, look here first
-	
 	;If the player was in the middle of walking during a screen transition, set his state to standing so he's not still in the middle of walking when the screen is loaded
 	;Sometimes it does look weird if the player was in the middle of walking, and then for example gets notified that the cave they just entered is pitch black, but I don't think it's a huge deal right now
 	;Maybe move this code to the end of the fade-out state instead
@@ -79,8 +76,10 @@ MovePlayer:
 	sta ent_hb_x+0
 MovePlayerDone:
 	
-	lda prg_bank
-	pha
+	;I believe that whenever a new screen is loaded, the ent bank should be loaded in
+	;If the game ever just crashes after a screen transition, look here first
+	;lda prg_bank
+	;pha
 	lda #BANK_METATILES
 	jsr SetPRGBank
 	
@@ -515,7 +514,9 @@ SetUpDoors:
 	bne @loop
 SetUpDoorsDone:
 	
-	pla
+	;pla
+	;jsr SetPRGBank
+	lda #BANK_ENTS
 	jsr SetPRGBank
 	
 	;if the area has been changed, play new music

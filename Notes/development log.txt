@@ -1360,3 +1360,12 @@ Day 174 - 11/1/2018
 	
 Day 175 - 11/5/2018
 	-Moved a bit of code around, so that now the player will only be notified that a cave is pitch black when first entering it, and not on every screen.
+	
+Day 176 - 11/6/2018
+	-Made some more progress on the Mountain song - Added some more bassline
+	
+Day 177 - 11/9/2018
+	-Worked more on the torch lighting system
+	-Made the torch timer count down when in caves
+	-Added messages for a torch going out and for being out of torches
+	-Cave now goes black when the player runs out of torches
