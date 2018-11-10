@@ -1375,3 +1375,4 @@ Day 177 - 11/9/2018
 Day 178 - 11/10/2018
 	-Forgot to update the palette buffer when loading a dark cave and when running out of torches, so did that. Fade-outs when leaving a dark cave now look as intended
 	-Thought of some ideas to make snakes behave less "dumbly", added them to the ideas file
+	-Made it so that the cave gets "re-lit" when the player crafts a torch. Turned the code for setting the background palette to blackness, and loading the background palette from the screen data, into subroutines since they're now called from multiple places and would complicate branching otherwise.

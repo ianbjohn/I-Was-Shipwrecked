@@ -641,6 +641,37 @@ InventoryA_CraftItem:
 	lda temp2
 	ldy #1
 	jsr AddToItemCount
+	;if the item that was just crafted was a torch, and the count is now 1, and we're in a cave, load the lit cave palette
+@resetcavepalette:
+	;better commented in loadingscreen.asm
+	lda area
+	cmp #AREA_CAVE
+	bne @resetcavepalettedone
+	lda temp2
+	cmp #ITEM_TORCH
+	bne @resetcavepalettedone
+	jsr GetItemCount
+	cmp #1
+	bne @resetcavepalettedone
+	lda #BANK_METATILES
+	jsr SetPRGBank
+	lda cave_level
+	asl
+	tax
+	lda CaveScreens+0,x
+	sta mt_ptr1+0
+	lda CaveScreens+1,x
+	sta mt_ptr1+1
+	lda screen
+	asl
+	tay
+	lda (mt_ptr1),y
+	sta ptr1+0		;will be used as the pointer for screen data
+	iny
+	lda (mt_ptr1),y
+	sta ptr1+1
+	jsr LoadScreenPalette
+@resetcavepalettedone:
 	ldx temp2
 	lda ReverseCraftItemsMap,x
 	sta temp2					;we're going to need this later too

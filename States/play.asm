@@ -382,14 +382,10 @@ StatusRecoverDone:
 CountDownTorchTimer:
 	lda area
 	cmp #AREA_CAVE
-	beq @continue1				;normal branch too big :(
-	jmp CountDownTorchTimerDone
-@continue1:
+	bne CountDownTorchTimerDone
 	lda #ITEM_TORCH
 	jsr GetItemCount
-	bne @continue2				;normal branch too big :(
-	jmp CountDownTorchTimerDone
-@continue2:
+	beq CountDownTorchTimerDone
 	lda torch_timer+0
 	sec
 	sbc #1
@@ -423,36 +419,7 @@ CountDownTorchTimer:
 @outoftorches:
 	;we need to buffer palette changes to make the cave pitch black
 	;code better documented in loadingscreen.asm
-	ldx vram_buffer_pos
-	lda #$3F
-	sta vram_buffer+0,x
-	lda #$00
-	sta vram_buffer+1,x
-	sta temp1
-	lda #<(Copy12Bytes-1)
-	sta vram_buffer+2,x
-	lda #>(Copy12Bytes-1)
-	sta vram_buffer+3,x
-	txa
-	clc
-	adc #4
-	sta vram_buffer_pos
-	ldy #0
-	lda #$0F				;blackness
-@darkness:
-	ldx vram_buffer_pos
-	sta vram_buffer,x
-	inc vram_buffer_pos
-	ldx temp1
-	sta palette_buffer,x
-	inc temp1
-	iny
-	cpy #12
-	bne @darkness
-	lda frame_counter
-@waitframe:
-	cmp frame_counter
-	beq @waitframe
+	jsr LoadDarkness
 	lda #MSG_OUTOFTORCHES
 	sta message
 	lda #STATE_DRAWINGMBOX

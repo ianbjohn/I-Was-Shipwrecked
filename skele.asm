@@ -1167,6 +1167,86 @@ RedrawMetaTile:
 	jmp SetPRGBank
 	
 	
+LoadDarkness:
+	;Used for both loading a dark cave screen when the player has no torches, and for setting the background palette to pitch black when the player runs out of torches
+	ldx vram_buffer_pos
+	lda #$3F
+	sta vram_buffer+0,x
+	lda #$00
+	sta temp1				;used to keep track of palette buffer position
+	sta vram_buffer+1,x
+	lda #<(Copy12Bytes-1)
+	sta vram_buffer+2,x
+	lda #>(Copy12Bytes-1)
+	sta vram_buffer+3,x
+	txa
+	clc
+	adc #4
+	sta vram_buffer_pos
+	ldy #0
+	lda #$0F				;blackness
+@darkness:
+	ldx vram_buffer_pos
+	sta vram_buffer,x
+	inc vram_buffer_pos
+	ldx temp1
+	sta palette_buffer,x
+	inc temp1
+	iny
+	cpy #12
+	bne @darkness
+	lda frame_counter
+@waitframe:
+	cmp frame_counter
+	beq @waitframe
+	rts
+	
+	.db "LCP"
+LoadScreenPalette:
+	;used for both loading a normal cave palette when loading a screen, and for re-lighting a cave after crafting a torch
+	ldy #0			;position in screen data (Shouldn't be reset until all the screen loading is done)
+	;get the palette address
+	lda (ptr1),y
+	sta mt_ptr1+0
+	iny
+	lda (ptr1),y
+	sta mt_ptr1+1
+	iny
+	sty temp0			;needed for loadingscreen.asm (Advance past the two bytes in screen data)
+	;indirectly unload the palette data from the pointer to the VRAM buffer
+	ldx vram_buffer_pos
+	lda #$3F
+	sta vram_buffer+0,x
+	lda #$00
+	sta temp1				;used to keep track of position in the palette buffer
+	sta vram_buffer+1,x
+	tay
+	lda #<(Copy12Bytes-1)
+	sta vram_buffer+2,x
+	lda #>(Copy12Bytes-1)
+	sta vram_buffer+3,x
+	txa
+	clc
+	adc #4
+	sta vram_buffer_pos
+@loop:	
+	ldx vram_buffer_pos
+	lda (mt_ptr1),y
+	sta vram_buffer,x
+	inc vram_buffer_pos
+	ldx temp1
+	sta palette_buffer,x
+	inc temp1
+	iny
+	cpy #12
+	bne @loop
+	lda frame_counter
+@waitframe:				;wait for VBlank to update palette. This is to prevent the PPU registers from potentially getting corrupted during NMI if, say CHR RAM updates are happening during the main frame
+	cmp frame_counter
+	beq @waitframe
+	rts
+	
+	
 FindFreeEntSlot:
 	;linearly searches slots 2-15, returning the index of the first empty slot (active = 0)
 	;Returns 0 if none are found
