@@ -1376,3 +1376,7 @@ Day 178 - 11/10/2018
 	-Forgot to update the palette buffer when loading a dark cave and when running out of torches, so did that. Fade-outs when leaving a dark cave now look as intended
 	-Thought of some ideas to make snakes behave less "dumbly", added them to the ideas file
 	-Made it so that the cave gets "re-lit" when the player crafts a torch. Turned the code for setting the background palette to blackness, and loading the background palette from the screen data, into subroutines since they're now called from multiple places and would complicate branching otherwise.
+	--(Later in the day)--
+	-Added torch timer to the file data, and it now gets saved, loaded and deleted accordingly
+	-Made drinking unboiled water restore 25 thirst points, made drinking boiled water restore 50 thirst points.
+	-Made eating uncooked meat restore 20 hunger points, made eating cooked meat restore 40 hunger points.

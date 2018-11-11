@@ -414,7 +414,7 @@ FS_ReadA:
 	;no
 	lda #1
 	sta fileselect_status
-	bne FS_ReadSelect			;will always branch
+	jmp FS_ReadSelect
 @yes:
 	DeleteFileData
 	inc game_state_old			;we need to re-init the file select state, so fake a signal that the state changed so it'll get re-inited

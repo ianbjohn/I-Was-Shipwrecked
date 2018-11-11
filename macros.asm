@@ -54,6 +54,10 @@
 	sta file_data_recovery_time+0,y
 	lda status_recovery_time+1
 	sta file_data_recovery_time+1,y
+	lda torch_timer+0
+	sta file_data_torch_timer+0,y
+	lda torch_timer+1
+	sta file_data_torch_timer+1,y
 	;restore Y back to normal
 	pla
 	tay
@@ -149,6 +153,10 @@
 	sta status_recovery_time+0
 	lda file_data_recovery_time+1,y
 	sta status_recovery_time+1
+	lda file_data_torch_timer+0,y
+	sta torch_timer+0
+	lda file_data_torch_timer+1,y
+	sta torch_timer+1
 	;restore Y back to normal
 	pla
 	tay
@@ -235,6 +243,8 @@
 	sta file_data_cave_level,y
 	sta file_data_recovery_time+0,y
 	sta file_data_recovery_time+1,y
+	sta file_data_torch_timer+0,y
+	sta file_data_torch_timer+1,y
 	tya
 	pha					;save Y again since it's gonna get altered again and we're gonna need its original value...again
 	;arrays

@@ -282,6 +282,7 @@
 	file_data_in_cave	.dsb 3
 	file_data_cave_level	.dsb 3
 	file_data_recovery_time	.dsb 6
+	file_data_torch_timer	.dsb 6
 	;arrays
 	file_data_obtained_items	.dsb 3 * ((NUM_TOTAL_ITEMS / 8) + 1)	;stored as such - first bytes of all 3 files, second bytes of all 3 files, etc.
 	file_data_item_count	.dsb 3 * ((NUM_TOTAL_ITEMS / 2) + 1)		;^
@@ -382,7 +383,7 @@
 	MSG_BADFRESHWATER		= 2
 	MSG_NOJAR				= 3
 	MSG_JARNOTEMPTY			= 4
-	MSG_JARFILLUBFRESHWATER	= 5
+	MSG_JARFILLUNFRESHWATER	= 5
 	MSG_CANTCROSS			= 6
 	MSG_JARFOUND			= 7
 	MSG_MEATFOUND			= 8
