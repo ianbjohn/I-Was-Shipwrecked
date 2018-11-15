@@ -156,8 +156,10 @@ LoadPalette:
 	ldy #2
 	sty temp0		;position in screen data (Shouldn't be reset until all the screen loading is done)
 	jsr LoadDarkness ;load black into the VRAM buffer and the palette buffer
+	jmp LoadPaletteDone
 @continue:
 	jsr LoadScreenPalette
+LoadPaletteDone:
 	;Even if no enemies appear on the screen, an enemy sprite palette is still loaded, so the VRAM buffer gets closed up at the end of the routine
 	
 	;Now that that's done, we need to actually disable NMIs

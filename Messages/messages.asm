@@ -52,7 +52,7 @@ Message0:
 	.db SPA,C,R,O,S,S,$FF
 Message1:
 	.db D,R,lA,N,K, SPA, U,N,B,O,I,L,E,D, SPA, W,lA,T,E,R,$2A,$FE
-	.db $2E,1,0, SPA, T,H,I,R,S,T,$2A,$FF
+	.db $2E,2,5, SPA, T,H,I,R,S,T,$2A,$FF
 Message2:
 	.db P,lA,T,H,O,G,E,N,S, SPA, I,N, SPA, W,lA,T,E,R,$2A, SPA, B,E,C,lA,M,E,$FE
 	.db S,I,C,K,$2A,$FF
@@ -98,15 +98,15 @@ Message12:
 	.db $2B,R,E,Q,U,I,R,E,S, SPA, 5, SPA, S,T,I,C,K,S, SPA, $2E, SPA, 1, SPA, F,L,I,N,T,$2A,$2C,$FF
 Message13:
 	.db D,R,lA,N,K, SPA, C,L,E,lA,N, SPA, W,lA,T,E,R,$2A,$FE
-	.db $2E,2,5, SPA, T,H,I,R,S,T,$2A,$FF
+	.db $2E,5,0, SPA, T,H,I,R,S,T,$2A,$FF
 Message14:
 	.db J,lA,R, SPA, I,S, SPA, E,M,P,T,lY,$2A,$FF
 Message15:
 	.db lA,T,E, SPA, U,N,C,O,O,K,E,D, SPA, M,E,lA,T,$2A,$FE
-	.db $2E,1,0, SPA, H,U,N,G,E,R,$2A,$FF
+	.db $2E,2,0, SPA, H,U,N,G,E,R,$2A,$FF
 Message17:
 	.db lA,T,E, SPA, C,O,O,K,E,D, SPA, M,E,lA,T,$2A,$FE
-	.db $2E,2,5, SPA, H,U,N,G,E,R,$2A,$FF
+	.db $2E,4,0, SPA, H,U,N,G,E,R,$2A,$FF
 Message18:
 	.db B,lA,D, SPA, M,E,lA,T,$2A, SPA, B,E,C,lA,M,E, SPA, S,I,C,K,$2A,$FF
 Message19:
@@ -239,7 +239,7 @@ M0R0_ReadA:
 	;drinking unboiled water
 	lda thirst
 	clc
-	adc #10
+	adc #25
 	bcc @norollover
 	lda #255
 @norollover:
@@ -260,7 +260,7 @@ M0R0_ReadA:
 @jarempty:
 	lda #1
 	sta jar_contents
-	lda #MSG_JARFILLUBFRESHWATER
+	lda #MSG_JARFILLUNFRESHWATER
 	bne @done			;will always branch
 @nojar:
 	lda #MSG_NOJAR
@@ -304,7 +304,7 @@ Message0Response1:
 	pla
 	jmp SetPRGBank
 	
-	.db "M0R2"
+	;.db "M0R2"
 Message0Response2:
 	;set game back to normal
 @readBorA:
@@ -362,7 +362,7 @@ M4R0_ReadA:
 	;(put unboiled fresh water in jar)
 	lda #1
 	sta jar_contents
-	lda #MSG_JARFILLUBFRESHWATER
+	lda #MSG_JARFILLUNFRESHWATER
 	sta message
 	lda #STATE_DRAWINGMBOX
 	sta game_state
@@ -413,7 +413,7 @@ M11R0_ReadAorB:
 	beq @rts
 	lda thirst
 	clc
-	adc #25
+	adc #50
 	bcc @skipoverflow
 	lda #255
 @skipoverflow:
@@ -430,14 +430,14 @@ M11R0_ReadAorB:
 	
 Message15Response0:
 	;eating uncooked meat
-	;increase player's health by 10, but randomly make him sick
+	;increase player's health by 20, but randomly make him sick
 M15R0_ReadAorB:
 	lda buttons_pressed
 	and #(BUTTONS_A | BUTTONS_B)
 	beq @rts
 	lda hunger
 	clc
-	adc #10
+	adc #20
 	bcc @skipoverflow
 	lda #255
 @skipoverflow:
@@ -477,7 +477,7 @@ M16R0_ReadAorB:
 	beq @rts
 	lda hunger
 	clc
-	adc #25
+	adc #40
 	bcc @skipoverflow
 	lda #255
 @skipoverflow:
