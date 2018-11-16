@@ -435,7 +435,7 @@
 	MSG_OUTOFTORCHES		= $36
 	
 	EXPLOSION_TIME		= 12			;how many frames an explosion should last
-	TORCH_TIME			= 7200			;2 minutes - how long a torch should last in a cave
+	TORCH_TIME			= $0200			;how long a torch should last in a cave (minutes in high byte, seconds in low byte - 2 minutes)
 	
 	;player status IDs
 	STATUS_NORMAL		= 0

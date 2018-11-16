@@ -7,7 +7,6 @@ PlayerRoutine:
 PlayerDepleteHealth:
 	;this code is better commented in the hunger routine below
 	lda HealthDepleteTimes,x
-	cmp #255
 	beq PlayerDepleteHunger
 	lda deplete_health_timer
 	clc
@@ -30,7 +29,6 @@ PlayerDepleteHunger:
 	;every specific amount amount of time, decrement hunger and thirst (Thirst should deplete faster than hunger)
 	;The amount of time it takes for depletions to happen depends on the status of the player
 	lda HungerDepleteTimes,x
-	cmp #255
 	beq PlayerDepleteThirst
 	lda deplete_hunger_timer
 	clc

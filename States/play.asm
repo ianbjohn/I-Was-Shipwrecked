@@ -155,7 +155,7 @@ UpdateThirst
 	lda thirst
 	cmp thirst_old
 	beq UpdateDay
-	sta hunger_old
+	sta thirst_old
 	sta bcd_value
 	jsr BCD_8
 	ldx vram_buffer_pos
@@ -386,6 +386,9 @@ CountDownTorchTimer:
 	lda #ITEM_TORCH
 	jsr GetItemCount
 	beq CountDownTorchTimerDone
+	;decrement seconds
+	lda clock+0
+	bne CountDownTorchTimerDone
 	lda torch_timer+0
 	sec
 	sbc #1
@@ -395,7 +398,7 @@ CountDownTorchTimer:
 	sbc #1
 	bcc @dectorchcount
 	sta torch_timer+1
-	lda #$FF
+	lda #59
 	bne @continue		;w.a.b
 @dectorchcount:
 	lda #>TORCH_TIME			;reset torch timer

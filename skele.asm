@@ -23,14 +23,14 @@
 HealthDepleteTimes:
 	;sorted by player status
 	;once EXP/leveling up is implemented, treat this as a 2D array of sorts where X is level and Y is status (This might not need to be here, but leave it here for now)
-	;255 means that the status shouldn't affect the thing
+	;0 means that the status shouldn't affect the thing
 	;Might have to end up making these 16-bit, since it may just be too damn hard to get back to normal in such a short time
 	;Look into how these actual conditions (such as poisoning / infections etc) actually affect things like hunger and thirst, if at all
-	.db 255,210,254,235,210
+	.db 000,210,200,235,210
 HungerDepleteTimes:
-	.db 254,235,255,245,240
+	.db 255,235,255,245,240
 ThirstDepleteTimes:
-	.db 240,235,255,235,240
+	.db 240,235,240,235,240
 	
 	.org $C000
 	
@@ -678,6 +678,7 @@ LoadCHRTileToBuffer:
 	jmp SetPRGBank
 	
 	
+	.db "DIMTB"
 DrawInventoryMessageToBuffer:
 	;Kind of a complicated routine, but basically what it does is read characters from a string, printing to the status board until a terminating character is reached. From there, it pads the rest of the status board with blackspace.
 	;Also supports going to the next line with $FE
@@ -695,7 +696,8 @@ DrawInventoryMessageToBuffer:
 	ldy #0
 	ldx vram_buffer_pos
 	lda #$41
--	sta temp0
+@bigloop:	
+	sta temp0
 	sta vram_buffer+1,x			;a tiny little optimization where we set the low byte (big-endian here) first
 	lda #$20
 	sta vram_buffer+0,x
@@ -711,6 +713,8 @@ DrawInventoryMessageToBuffer:
 	beq @fe
 	cmp #$FD
 	beq @fd
+	cmp #$FC
+	beq @fc
 @regular:
 	sta vram_buffer+4,x
 	inx
@@ -738,7 +742,7 @@ DrawInventoryMessageToBuffer:
 	sta vram_buffer+8,x
 	txa
 	clc
-	adc #5				;account for adding 5 bytes to buffer
+	adc #5				;account for adding 5 bytes to the buffer (Once #$FF is reached it'll add the other 4)
 	tax					;make sure X is saved
 	;we can assume that not all 30 bytes will have been drawn at this point (Since # of rounds is always in the bottom left of the status board), so we can just go back to the loop
 	iny
@@ -767,9 +771,42 @@ DrawInventoryMessageToBuffer:
 	lda temp0
 	clc
 	adc #32
-	cmp #$A1
-	bne -
+	cmp #$A1					;Once $FF has been reached, fill the rest of the board with blackspace
+	bne @bigloop
 	rts
+@fc:
+	;draw how much time a torch has before it goes out
+	;convert torch timer to BCD and draw it in minutes:seconds format
+	txa
+	pha					;Save X (BCD routine overwrites it)
+	lda torch_timer+1	;minutes
+	sta bcd_value+0
+	jsr BCD_8
+	pla
+	tax
+	lda #0				;display the tens of the minute (which will always be 0, so we can just hardcode it)
+	sta vram_buffer+4,x
+	lda bcd_ones
+	sta vram_buffer+5,x
+	lda #$2F			; :
+	sta vram_buffer+6,x
+	txa
+	pha
+	lda torch_timer+0	;seconds
+	sta bcd_value+0
+	jsr BCD_8
+	pla
+	tax
+	lda bcd_tens
+	sta vram_buffer+7,x
+	lda bcd_ones
+	sta vram_buffer+8,x
+	txa
+	clc
+	adc #5				;account for adding 5 bytes to the buffer (Once #$FF is reached it'll add the other 4)
+	tax					;make sure X is saved
+	iny
+	jmp @loop
 	
 	
 ClearOAM:

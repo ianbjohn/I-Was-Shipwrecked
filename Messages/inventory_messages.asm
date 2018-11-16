@@ -43,13 +43,15 @@ IM_Coconut:
 IM_Stick:
 	.db SPA, E,Q,U,I,P, SPA,SPA, lA,D,D, SPA, T,O, SPA, C,R,lA,F,T, SPA, Q,U,E,U,E,$FF
 IM_Torch:
-	.db SPA, N,O,T,H,I,N,G,$FF
+	.db SPA, N,O,T,H,I,N,G,$FE
+	.db $FE
+	.db $FC,$FF							;$FC is a special opcode to draw the remaining time a torch has to stay lit
 IM_Tourniquet:
 	.db SPA, U,S,E,$FF
 IM_Gun:
 	.db SPA, E,Q,U,I,P,$FE
 	.db $FE
-	.db R,O,U,N,D,S, $2F, $FD,$FF		;last 2 bytes are special opcodes to draw the tens and ones of the rounds variable as BCD
+	.db R,O,U,N,D,S, $2F, $FD,$FF		;$FD is a special opcode to draw the tens and ones of the rounds variable as BCD
 	
 	
 IML_Knife:

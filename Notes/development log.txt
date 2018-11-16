@@ -1380,3 +1380,9 @@ Day 178 - 11/10/2018
 	-Added torch timer to the file data, and it now gets saved, loaded and deleted accordingly
 	-Made drinking unboiled water restore 25 thirst points, made drinking boiled water restore 50 thirst points.
 	-Made eating uncooked meat restore 20 hunger points, made eating cooked meat restore 40 hunger points.
+	
+Day 179 - 11/15/2018
+	-When I changed the palette loading code in loadingscreen.asm to subroutines, I forgot to jump past the routine to load the palettes normally after the routine to load darkness had been called, so the cave would always be lit. Adding a JMP after the JSR fixed this easily.
+	-Changed the torch timer from a 16-bit frame counter to minutes in the high byte and seconds in the low byte.
+		-When the torch is selected in the inventory screen, the torch timer is now displayed in minutes:seconds format
+	-For some reason (probably cuz I'm just dumb), I had it so that when you're infected your health and hunger weren't affected, so that they'd just stay where they were. Fixed this.
