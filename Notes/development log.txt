@@ -1392,3 +1392,9 @@ Day 180 - 11/16/2018
 	-Added a honeycomb ent to the game, added its item data, message data, metasprite data, etc, to the game
 	-Removed some redundant data in metasprites.asm
 	-Made the jar ent get displayed above the player's head after collecting it. It doesn't really matter since it only gets collected once, but it's better to be consistent among all collectible ents
+	
+	-- Month 7 --
+	
+Day 181 - 11/17/2018
+	-Fixed the jar's code so that it actually does get displayed above the player's head
+	-Discovered a bug, similar to what sometimes happens around the screens with the jar, where the sprite drawing routine breaks
