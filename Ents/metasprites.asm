@@ -6,7 +6,7 @@ EntMetaSprites:
 	;sorted by ent ID
 	.dw PlayerMetaSprites, PlayerWeapon0MetaSprites, SnakeMetaSprites, JarMetaSprites, HeartMetaSprites, MeatMetaSprites, BeehiveMetaSprites, BeeMetaSprites
 	.dw GunMetaSprites, BulletMetaSprites, DoorMetaSprites, CrabMetaSprites, MacheteColMetaSpites, MacheteMetaSprites, StickColMetaSprites, StickMetaSprites
-	.dw StoneMetaSprites, FlintMetaSprites, SpearMetaSprites, ClothMetaSprites, BatMetaSprites, SnakeMetaSprites
+	.dw StoneMetaSprites, FlintMetaSprites, SpearMetaSprites, ClothMetaSprites, BatMetaSprites, SnakeMetaSprites, HoneycombMetaSprites
 
 	
 	;Player
@@ -438,9 +438,10 @@ ExplosionMetaSprite_0:
 	
 	;Jar
 JarMetaSprites:
-	.dw JarMetaSpritesNormal
+	.dw JarMetaSpritesNormal, JarMetaSpritesCollected
 
 JarMetaSpritesNormal:
+JarMetaSpritesCollected:
 	.dw JarMetaSpritesNormalU
 	
 JarMetaSpritesNormalU:
@@ -456,13 +457,10 @@ HeartMetaSprites:
 	.dw HeartMetaSpritesNormal, HeartMetaSpritesCollected
 	
 HeartMetaSpritesNormal:
-	.dw HeartMetaSpritesNormalU, HeartMetaSpritesNormalU, HeartMetaSpritesNormalU, HeartMetaSpritesNormalU
 HeartMetaSpritesCollected:
 	.dw HeartMetaSpritesNormalU, HeartMetaSpritesNormalU, HeartMetaSpritesNormalU, HeartMetaSpritesNormalU
 	
 HeartMetaSpritesNormalU:
-	.dw HeartMetaSpritesNormalU_0
-HeartMetaSpritesCollectedU:
 	.dw HeartMetaSpritesNormalU_0
 	
 HeartMetaSpritesNormalU_0:
@@ -475,7 +473,6 @@ MeatMetaSprites:
 	.dw MeatMetaSpritesNormal, MeatMetaSpritesCollected
 	
 MeatMetaSpritesNormal:
-	.dw MeatMetaSpritesNormalU, MeatMetaSpritesNormalU, MeatMetaSpritesNormalU, MeatMetaSpritesNormalU
 MeatMetaSpritesCollected:
 	.dw MeatMetaSpritesNormalU, MeatMetaSpritesNormalU, MeatMetaSpritesNormalU, MeatMetaSpritesNormalU
 	
@@ -762,7 +759,6 @@ StickColMetaSprites:
 	.dw StickColMetaSpritesNormal,StickColMetaSpritesCollected
 
 StickColMetaSpritesNormal:
-	.dw StickColMetaSpritesNormalU
 StickColMetaSpritesCollected:
 	.dw StickColMetaSpritesNormalU
 	
@@ -811,7 +807,6 @@ StoneMetaSprites:
 	.dw StoneMetaSpritesNormal,StoneMetaSpritesCollected
 	
 StoneMetaSpritesNormal:
-	.dw StoneMetaSpritesNormalU
 StoneMetaSpritesCollected:
 	.dw StoneMetaSpritesNormalU
 	
@@ -828,7 +823,6 @@ FlintMetaSprites:
 	.dw FlintMetaSpritesNormal,FlintMetaSpritesCollected
 	
 FlintMetaSpritesNormal:
-	.dw FlintMetaSpritesNormalU
 FlintMetaSpritesCollected:
 	.dw FlintMetaSpritesNormalU
 	
@@ -891,7 +885,6 @@ ClothMetaSprites:
 	.dw ClothMetaSpritesNormal,ClothMetaSpritesCollected
 	
 ClothMetaSpritesNormal:
-	.dw ClothMetaSpritesNormalU
 ClothMetaSpritesCollected:
 	.dw ClothMetaSpritesNormalU
 	
@@ -944,6 +937,22 @@ BatMetaSpritesFlyingR_1:
 	.db 0,$B2,%00000010,-1
 	
 	
+	;honeycomb
+HoneycombMetaSprites:
+	.dw HoneycombMetaSpritesNormal,HoneycombMetaSpritesCollected
+	
+HoneycombMetaSpritesNormal:
+HoneycombMetaSpritesCollected:
+	.dw HoneycombMetaSpritesNormalU
+	
+HoneycombMetaSpritesNormalU:
+	.dw HoneycombMetaSpritesNormalU_0
+	
+HoneycombMetaSpritesNormalU_0:
+	.db 4
+	.db 0,$76,%00000010,-1
+	
+	
 	;(other ents)
 	
 	
@@ -951,7 +960,7 @@ BatMetaSpritesFlyingR_1:
 EntAnimationLengths:
 	.dw PlayerAnimationLengths, PlayerWeapon0AnimationLengths, SnakeAnimationLengths, JarAnimationLengths, HeartAnimationLengths, MeatAnimationLengths, BeehiveAnimationLengths, BeeAnimationLengths
 	.dw GunAnimationLengths, BulletAnimationLengths, DoorAnimationLengths, CrabAnimationLengths, MacheteColAnimationLengths, MacheteAnimationLengths, StickColAnimationLengths, StickAnimationLengths
-	.dw StoneAnimationLengths, FlintAnimationLengths, SpearAnimationLengths, ClothAnimationLengths, BatAnimationLengths, SnakeAnimationLengths
+	.dw StoneAnimationLengths, FlintAnimationLengths, SpearAnimationLengths, ClothAnimationLengths, BatAnimationLengths, SnakeAnimationLengths, HoneycombAnimationLengths
 	
 	
 	;Player
@@ -977,6 +986,7 @@ StoneAnimationLengths:
 FlintAnimationLengths:
 SpearAnimationLengths:
 ClothAnimationLengths:
+HoneycombAnimationLengths:
 	.db 1,1
 SnakeAnimationLengths:
 	.db 8,4,8
@@ -994,7 +1004,7 @@ BatAnimationLengths:
 EntAnimationFrames:
 	.dw PlayerAnimationFrames, PlayerWeapon0AnimationFrames, SnakeAnimationFrames, JarAnimationFrames, HeartAnimationFrames, MeatAnimationFrames, BeehiveAnimationFrames, BeeAnimationFrames
 	.dw GunAnimationFrames, BulletAnimationFrames, DoorAnimationFrames, CrabAnimationFrames, MacheteColAnimationFrames, MacheteAnimationFrames, StickColAnimationFrames, StickAnimationFrames
-	.dw StoneAnimationFrames, FlintAnimationFrames, SpearAnimationFrames, ClothAnimationFrames, BatAnimationFrames, SnakeAnimationFrames
+	.dw StoneAnimationFrames, FlintAnimationFrames, SpearAnimationFrames, ClothAnimationFrames, BatAnimationFrames, SnakeAnimationFrames, HoneycombAnimationFrames
 	
 
 PlayerAnimationFrames:
@@ -1015,6 +1025,7 @@ StoneAnimationFrames:
 FlintAnimationFrames:
 SpearAnimationFrames:
 ClothAnimationFrames:
+HoneycombAnimationFrames:
 	.db 1,1
 BeehiveAnimationFrames
 SnakeAnimationFrames:
@@ -1032,7 +1043,7 @@ BatAnimationFrames:
 EntHitboxSizes:
 	.dw PlayerHitboxSizes, PlayerWeapon0HitboxSizes, SnakeHitboxSizes, JarHitboxSizes, HeartHitboxSizes, MeatHitboxSizes, BeehiveHitboxSizes, BeeHitboxSizes
 	.dw GunHitboxSizes, BulletHitboxSizes, DoorHitboxSizes, CrabHitboxSizes, MacheteColHitboxSizes, MacheteHitboxSizes, StickColHitboxSizes, StickHitboxSizes
-	.dw StoneHitboxSizes, FlintHitboxSizes, SpearHitboxSizes, ClothHitboxSizes, BatHitboxSizes, SnakeHitboxSizes
+	.dw StoneHitboxSizes, FlintHitboxSizes, SpearHitboxSizes, ClothHitboxSizes, BatHitboxSizes, SnakeHitboxSizes, HoneycombHitboxSizes
 	
 	
 ;Lots of ents use 7x7 and 15x15 for all their states, so these are here to avoid a lot of repeated data
@@ -1071,6 +1082,7 @@ MeatHitboxSizes:
 StoneHitboxSizes:
 FlintHitboxSizes:
 ClothHitboxSizes:
+HoneycombHitboxSizes:
 	.dw HitboxSize7x7, HitboxSize7x7
 BeehiveHitboxSizes:
 DoorHitboxSizes:

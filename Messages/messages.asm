@@ -25,7 +25,8 @@ Messages:
 	.dw Message18, Message19, Message1A, Message1B, Message1C, Message1D, Message1E, Message1F
 	.dw Message20, Message21, Message22, Message23, Message24, Message25, Message26, Message27
 	.dw Message28, Message29, Message2A, Message2B, Message2C, Message2D, Message2E, Message2F
-	.dw Message30, Message31, Message32, Message33, Message34, Message35, Message36
+	.dw Message30, Message31, Message32, Message33, Message34, Message35, Message36, Message37
+	.dw Message38
 MessageResponseNumbers:
 	;sorted by message index
 	.db 3,1,1,1,2,1,1,1
@@ -34,7 +35,8 @@ MessageResponseNumbers:
 	.db 1,1,1,1,1,1,1,1
 	.db 1,1,1,1,1,1,1,1
 	.db 1,1,1,1,1,1,1,1
-	.db 1,1,1,1,1,1,1
+	.db 1,1,1,1,1,1,1,1
+	.db 1
 MessageResponses:
 	;this is a jump table. This way, logic can happen for different responses
 	;(M0R2 is just normal "Okay")
@@ -44,7 +46,8 @@ MessageResponses:
 	.dw Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2
 	.dw Message0Response2,Message0Response2,Message22Response0,Message0Response2,Message22Response0,Message0Response2,Message0Response2,Message0Response2
 	.dw Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2
-	.dw Message0Response2,Message22Response0,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2
+	.dw Message0Response2,Message22Response0,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2,Message0Response2
+	.dw Message0Response2
 	
 Message0:
 	.db T,H,E,R,E, SPA, I,S, SPA, F,R,E,S,H, SPA, W,lA,T,E,R, SPA, H,E,R,E,$2A,$FE
@@ -173,6 +176,10 @@ Message35:
 	.db lY,O,U,R, SPA, T,O,R,C,H, SPA, W,E,N,T, SPA, O,U,T,$2A,$FF
 Message36:
 	.db lY,O,U, SPA, R,lA,N, SPA, O,U,T, SPA, O,F, SPA, T,O,R,C,H,E,S,$2A,$FF
+Message37:
+	.db O,B,T,lA,I,N,E,D, SPA, H,O,N,E,lY,C,O,M,B,$2A,$FF
+Message38:
+	.db lA,T,E, SPA, H,O,N,E,lY,C,O,M,B,$2A, SPA, $2E,1,5, SPA, H,U,N,G,E,R,$2A,$FF
 	
 
 TryCrossWater:
@@ -469,8 +476,8 @@ M15R0_ReadAorB:
 	jmp SetPRGBank
 	
 Message16Response0:
-;cook and then eat meat
-;wait for user to press A or B, and then have the player eat the meat (no homo)
+	;cook and then eat meat
+	;wait for user to press A or B, and then have the player eat the meat (no homo)
 M16R0_ReadAorB:
 	lda buttons_pressed
 	and #(BUTTONS_A | BUTTONS_B)
@@ -498,7 +505,7 @@ Message22Response0:
 	;(Happens after crafting an item) reset inventory system, including the crafting system
 @readBorA:
 	lda buttons_pressed
-	and #(BUTTONS_B | #BUTTONS_A)
+	and #(BUTTONS_B | BUTTONS_A)
 	beq @readBorADone
 	jsr CleanUpMBoxVars
 	jsr CleanUpInventorySystem

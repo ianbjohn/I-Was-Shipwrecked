@@ -204,7 +204,7 @@ EntRoutines:
 	;sorted by ID
 	.dw PlayerRoutine, KnifeRoutine, SnakeRoutine, JarRoutine, HeartRoutine, MeatRoutine, BeehiveRoutine, BeeRoutine
 	.dw GunRoutine, BulletRoutine, DoorRoutine, CrabRoutine, MacheteColRoutine, KnifeRoutine, StickColRoutine, KnifeRoutine
-	.dw StoneRoutine, FlintRoutine, SpearRoutine, ClothRoutine, BatRoutine, SnakeRoutine
+	.dw StoneRoutine, FlintRoutine, SpearRoutine, ClothRoutine, BatRoutine, SnakeRoutine, HoneycombRoutine
 	;.db "ROUTINES"
 RunEnt:
 	ldx ent_index
@@ -383,3 +383,4 @@ DrawEnt:
 	.include "ents/spear.asm"
 	.include "ents/cloth.asm"
 	.include "ents/bat.asm"
+	.include "ents/honeycomb.asm"

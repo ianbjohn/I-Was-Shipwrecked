@@ -149,7 +149,7 @@ EntBGColResponses:
 	;sorted by ent ID
 	.dw PlayerBGColResponses,KnifeBGColResponses,SnakeBGColResponses,BREAK,BREAK,BREAK,BREAK,BREAK
 	.dw BREAK,BREAK,BREAK,CrabBGColResponses,BREAK,MacheteBGColResponses,BREAK,StickBGColResponses
-	.dw BREAK,BREAK,BREAK,BREAK,BREAK,SnakeBGColResponses
+	.dw BREAK,BREAK,BREAK,BREAK,BREAK,SnakeBGColResponses,BREAK
 
 PlayerBGColResponses:
 	;sorted by collision type (consult metatiles.asm for more info)

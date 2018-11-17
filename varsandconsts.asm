@@ -433,6 +433,8 @@
 	MSG_CANTSAVEWHILECRAFTING	= $34
 	MSG_TORCHWENTOUT		= $35
 	MSG_OUTOFTORCHES		= $36
+	MSG_HONEYCOMBFOUND		= $37
+	MSG_ATEHONEYCOMB		= $38
 	
 	EXPLOSION_TIME		= 12			;how many frames an explosion should last
 	TORCH_TIME			= $0200			;how long a torch should last in a cave (minutes in high byte, seconds in low byte - 2 minutes)
@@ -460,6 +462,7 @@
 	ITEM_CLOTH			= 12
 	ITEM_TOURNIQUET		= 13
 	ITEM_GUN			= 14
+	ITEM_HONEYCOMB		= 15
 	
 	;crafted item IDs
 	CR_ITEM_SPEAR		= 0
@@ -497,6 +500,7 @@
 	ENT_CLOTH			= 19
 	ENT_BAT				= 20
 	ENT_POISONSNAKE		= 21
+	ENT_HONEYCOMB		= 22
 	
 	;ent tyes
 	ENT_TYPE_PLAYER		= 0

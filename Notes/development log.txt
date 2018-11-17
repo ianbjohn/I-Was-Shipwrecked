@@ -1386,3 +1386,9 @@ Day 179 - 11/15/2018
 	-Changed the torch timer from a 16-bit frame counter to minutes in the high byte and seconds in the low byte.
 		-When the torch is selected in the inventory screen, the torch timer is now displayed in minutes:seconds format
 	-For some reason (probably cuz I'm just dumb), I had it so that when you're infected your health and hunger weren't affected, so that they'd just stay where they were. Fixed this.
+	
+Day 180 - 11/16/2018
+	-Touched up the coconut sprite a bit
+	-Added a honeycomb ent to the game, added its item data, message data, metasprite data, etc, to the game
+	-Removed some redundant data in metasprites.asm
+	-Made the jar ent get displayed above the player's head after collecting it. It doesn't really matter since it only gets collected once, but it's better to be consistent among all collectible ents

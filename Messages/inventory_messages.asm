@@ -9,16 +9,16 @@
 InventoryMessages:
 	;sorted by item
 	.dw IM_Knife,IM_Jar,IM_Meat,IM_Flint,IM_Coconut,IM_Stick,IM_Aloe,IM_Spear
-	.dw IM_BigBone,IM_Machete,IM_Stone,IM_Torch,IM_Cloth,IM_Tourniquet,IM_Gun
+	.dw IM_BigBone,IM_Machete,IM_Stone,IM_Torch,IM_Cloth,IM_Tourniquet,IM_Gun,IM_Honeycomb
 InventoryMessageLogics:
 	.dw IML_Knife,IML_Jar,IML_Meat,IML_Flint,IML_Coconut,IML_Stick,IML_Aloe,IML_Spear
-	.dw IML_BigBone,IML_Machete,IML_Stone,IML_Torch,IML_Cloth,IML_Tourniquet,IML_Gun
+	.dw IML_BigBone,IML_Machete,IML_Stone,IML_Torch,IML_Cloth,IML_Tourniquet,IML_Gun,IML_Honeycomb
 InventoryMessageChoices:
 	.db 1,4,2,1,1,2,1,1
 	.db 1,1,1,1,1,1,1
 InventoryMessageCursorPositions:
 	.dw IMCP_Knife,IMCP_Jar,IMCP_Meat,IMCP_Flint,IMCP_Coconut,IMCP_Stick,IMCP_Aloe,IMCP_Spear
-	.dw IMCP_BigBone,IMCP_Machete,IMCP_Stone,IMCP_Torch,IMCP_Cloth,IMCP_Tourniquet,IMCP_Gun
+	.dw IMCP_BigBone,IMCP_Machete,IMCP_Stone,IMCP_Torch,IMCP_Cloth,IMCP_Tourniquet,IMCP_Gun,IMCP_Honeycomb
 
 
 IM_Knife:
@@ -52,6 +52,8 @@ IM_Gun:
 	.db SPA, E,Q,U,I,P,$FE
 	.db $FE
 	.db R,O,U,N,D,S, $2F, $FD,$FF		;$FD is a special opcode to draw the tens and ones of the rounds variable as BCD
+IM_Honeycomb:
+	.db SPA, E,lA,T,$FF
 	
 	
 IML_Knife:
@@ -79,6 +81,8 @@ IML_Tourniquet:
 	.dw IML_Tourniquet_0
 IML_Gun:
 	.dw IML_Gun_0
+IML_Honeycomb
+	.dw IML_Honeycomb_0
 	
 	
 IML_Knife_0:
@@ -320,7 +324,7 @@ IML_Spear_0:
 	sta message
 	jmp Inventory_DrawCursor
 	
-	.db "IMLT0"
+
 IML_Torch_0:
 	lda #MSG_NOTHINGHAPPENED
 	sta message
@@ -346,6 +350,29 @@ IML_Tourniquet_0:
 	bne @draw
 @notcut:
 	lda #MSG_NOTCUT
+@draw:
+	sta message
+	jmp Inventory_DrawCursor
+	
+	
+IML_Honeycomb_0:
+	lda #ITEM_HONEYCOMB
+	jsr GetItemCount
+	beq @nohoneycomb
+	lda hunger
+	clc
+	adc #15
+	bcc @skipoverflow
+	lda #255
+@skipoverflow:
+	sta hunger
+	lda #ITEM_HONEYCOMB
+	ldy #1
+	jsr SubtractFromItemCount
+	lda MSG_ATEHONEYCOMB
+	bne @draw
+@nohoneycomb:
+	lda #MSG_OUTOFITEM
 @draw:
 	sta message
 	jmp Inventory_DrawCursor
@@ -380,4 +407,5 @@ IMCP_Cloth:
 IMCP_Aloe:
 IMCP_Torch:
 IMCP_Tourniquet:
+IMCP_Honeycomb:
 	.db 8,16, 64,16

@@ -1528,8 +1528,8 @@ TerrainSpawnCoordinates:
 
 ;Eventually move all this stuff to a separate file (itemdata or something), and to a different bank (The same bank where all the message data and code is. Remember to bankswitch)
 ItemStrings:
-	.dw KnifeString, JarString, MeatString, FlintString, CoconutString, StickString, AloeString
-	.dw SpearString, BigBoneString, MacheteString, StoneString, TorchString, ClothString, TourniquetString, GunString
+	.dw KnifeString, JarString, MeatString, FlintString, CoconutString, StickString, AloeString, SpearString
+	.dw BigBoneString, MacheteString, StoneString, TorchString, ClothString, TourniquetString, GunString, HoneycombString
 WeaponStrings:
 	;Weapon strings need to be different from their item string counterparts, since there needs to be padding instead of a terminating character
 	;only put weapons here. What value the player's weapon is only corresponds to weapons. Converting it to the correct ent index is taken care of elsewhere
@@ -1571,6 +1571,9 @@ TourniquetString:
 	.db I,Q,U,E,T,$FF
 GunString:
 	.db G,U,N,$FF
+HoneycombString:
+	.db H,O,N,E,lY,$FE
+	.db C,O,M,B,$FF
 
 	
 W_KnifeString:
@@ -1590,7 +1593,7 @@ W_GunString:
 ItemHasCount:
 	;Table of flags, sorted by item id (the 0th item is the 0th bit of the 0th byte).
 	;Whether or not each item has a count
-	.db %11111100,%00111100
+	.db %11111100,%10111100
 	
 	
 StatusStrings:
