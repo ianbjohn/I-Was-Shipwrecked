@@ -486,7 +486,7 @@ MeatMetaSpritesNormalU_0:
 	
 	;beehive
 BeehiveMetaSprites:
-	.dw BeehiveMetaSpritesNormal
+	.dw BeehiveMetaSpritesNormal, ExplosionMetaSprites
 	
 BeehiveMetaSpritesNormal:
 	.dw BeehiveMetaSpritesNormalU, BeehiveMetaSpritesNormalU, BeehiveMetaSpritesNormalU, BeehiveMetaSpritesNormalU

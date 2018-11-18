@@ -18,7 +18,6 @@ DecMeatPHIDone:
 	jsr CheckPlayerWeaponCollision
 	beq @checkplayercol_done
 @playercol:
-	;(play item acquisition sound effect)
 	lda #ITEM_MEAT
 	jsr CheckIfItemObtained
 	beq @newitem

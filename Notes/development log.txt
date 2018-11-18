@@ -1397,4 +1397,7 @@ Day 180 - 11/16/2018
 	
 Day 181 - 11/17/2018
 	-Fixed the jar's code so that it actually does get displayed above the player's head
-	-Discovered a bug, similar to what sometimes happens around the screens with the jar, where the sprite drawing routine breaks
+	-Discovered that the bug relating to the jar screen is generalized to screens with special items
+	-Added code to the beehive ent to drop randomly drop honeycomb when it's destroyed
+	-Added code for the honeycomb ent
+	-ISOLATED THE SPECIAL ITEM SCREEN BUG!!!!!!! whatever conditions are set up now, with the save file I currently have will always trigger it when the player enters the screen where the machete was at. We can start debugging now.

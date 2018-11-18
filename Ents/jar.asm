@@ -38,7 +38,6 @@ JarRoutine:
 @checkplayercol_done:
 	rts
 	
-	.db "JSC"
 JarShowCollected:
 	lda ent_timer1,x
 	sec

@@ -21,6 +21,7 @@ StickColData:
 StoneData:
 FlintData:
 ClothData:
+HoneycombData:
 	.db ENT_TYPE_POWERUP, 0, 0
 SnakeData:
 PoisonSnakeData:
@@ -44,5 +45,3 @@ SpearData:
 	.db ENT_TYPE_WEAPON, 10, 120
 BatData:
 	.db ENT_TYPE_ENEMY, 6, 30
-HoneycombData:
-	.db ENT_TYPE_POWERUP, 0, 0

@@ -100,7 +100,7 @@ BeeCheckBeehiveDone:
 BeeForaging:
 	;When a bee is spawned from the beehive, if it starts out foraging, it should be given a random spot in ent_misc1 and ent_misc2 as the X and Y (respectively) of where to go
 	;once it's been to this spot, (ADD A HOVERING STATE WHERE IT'LL HOVER AROUND THE SPOT FOR A FEW SECONDS), either return to the hive or generate coordinates of a new spot to go to.
-	;If the player is within a certain distance of the bee and attacks, the bee should swarm
+	;TODO: If the player is within a certain distance of the bee and attacks, the bee should swarm
 	lda ent_x,x
 	cmp ent_misc1,x
 	bne @movetowardsforagespot
@@ -189,7 +189,7 @@ BeeForaging:
 BeeReturning:
 	;When the bee returns from foraging, the coordinates of the hive should be saved in ent_misc1 and 2 respectively
 	;return to these coordinates
-	;Swarm player if he attacks near the bee, same as in BeeForaging (Make it a helper function or something)
+	;TODO: Swarm player if he attacks near the bee, same as in BeeForaging (Make it a helper function or something)
 	
 	;once at the spot, enter the hive (deactivate)
 	lda ent_x,x
