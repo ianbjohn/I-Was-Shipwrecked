@@ -226,9 +226,11 @@ GetDoorsAddress:
 	iny
 	sty temp4				;save temp0 as it'll get overwritten when enemies are loaded/reloaded (Stack is used to much here already, temp4 was just added for this purpose, so no other routine uses it)
 GetDoorsAddressDone:
+	jmp SetUpEnemies
 	
 	;(This was originally where hard-coded snake ents were spawned)
 	;load new enemies / screen data or reload old enemies / screen data
+	.db "SetUpEnemies"
 SetUpEnemies:
 	ldx #0
 	stx num_active_enemies		;this needs to be cleared and then re-initialized

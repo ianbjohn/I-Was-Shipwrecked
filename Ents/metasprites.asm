@@ -707,9 +707,10 @@ CrabMetaSpritesWalkingU_3:
 	
 	;machete (Both collectable and weapon)
 MacheteColMetaSpites:
-	.dw MacheteColMetaSpritesNormal
+	.dw MacheteColMetaSpritesNormal, MacheteColMetaSpritesCollected
 
 MacheteColMetaSpritesNormal:
+MacheteColMetaSpritesCollected:
 	.dw MacheteColMetaSpritesNormalU
 	
 MacheteColMetaSpritesNormalU:
@@ -1088,7 +1089,7 @@ BeehiveHitboxSizes:
 DoorHitboxSizes:
 MacheteColHitboxSizes:
 StickColHitboxSizes:
-	.dw HitboxSize15x15
+	.dw HitboxSize15x15, HitboxSize15x15
 BeeHitboxSizes:
 	.dw HitboxSize7x7, HitboxSize7x7, HitboxSize7x7, HitboxSize7x7, HitboxSize7x7, HitboxSize7x7, HitboxSize7x7, HitboxSize15x15
 BatHitboxSizes:

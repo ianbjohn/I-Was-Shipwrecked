@@ -1,5 +1,5 @@
 MacheteColRoutine:
-	;deactivate itself automatically if jar_obtained is nonzero
+	;deactivate itself automatically if already obtained
 	lda #ITEM_MACHETE
 	jsr CheckIfItemObtained
 	beq @continue
@@ -7,6 +7,8 @@ MacheteColRoutine:
 	jmp DeactivateEnt
 @continue:
 	ldx ent_index
+	lda ent_state,x
+	bne MacheteColShowCollected
 	;the only thing that needs to happen is check if player (or his weapon) has come in contact with jar
 	;if so, set jar_obtained to 1, and display a message saying that the jar was obtained
 	;sprite collision
@@ -20,7 +22,6 @@ MacheteColRoutine:
 @playercol:
 @playerweaponcol:
 	;a collision happened
-	jsr DeactivateEnt
 	lda #ITEM_MACHETE
 	jsr SetItemAsObtained
 	ldy #SFX_NEWITEMACQUISITION	;play new item acquisition sound effect
@@ -29,5 +30,25 @@ MacheteColRoutine:
 	sta message
 	lda #STATE_DRAWINGMBOX
 	sta game_state
+	ldx ent_index
+	inc ent_state,x
+	lda #30
+	sta ent_timer1,x
 @checkplayercol_done:
+	rts
+	
+MacheteColShowCollected:
+	lda ent_timer1,x
+	sec
+	sbc #1
+	bcs MacheteColShowCollectedDone
+	jmp DeactivateEnt
+MacheteColShowCollectedDone:
+	sta ent_timer1,x
+	lda ent_y+0
+	sec
+	sbc ent_height,x
+	sta ent_y,x
+	lda ent_x+0
+	sta ent_x,x
 	rts

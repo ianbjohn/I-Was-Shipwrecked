@@ -1,8 +1,6 @@
+	.db "JAR"
 JarRoutine:
-	lda ent_state,x
-	beq @continue
-	jmp JarShowCollected
-	;deactivate itself automatically if jar_obtained is nonzero
+;deactivate itself automatically if jar_obtained is nonzero
 	lda #ITEM_JAR
 	jsr CheckIfItemObtained
 	beq @continue
@@ -10,6 +8,8 @@ JarRoutine:
 	jmp DeactivateEnt
 @continue:
 	ldx ent_index
+	lda ent_state,x
+	bne JarShowCollected
 	;the only thing that needs to happen is check if player (or his weapon) has come in contact with jar
 	;if so, set jar_obtained to 1, and display a message saying that the jar was obtained
 	;sprite collision
