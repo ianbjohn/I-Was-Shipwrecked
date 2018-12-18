@@ -1401,3 +1401,14 @@ Day 181 - 11/17/2018
 	-Added code to the beehive ent to drop randomly drop honeycomb when it's destroyed
 	-Added code for the honeycomb ent
 	-ISOLATED THE SPECIAL ITEM SCREEN BUG!!!!!!! whatever conditions are set up now, with the save file I currently have will always trigger it when the player enters the screen where the machete was at. We can start debugging now.
+	
+Day 182 - 12/17/2018
+	-Busy with studying leading up to finals week and finals week, and enjoying a few days of break
+	-Wow, exactly one month of nothing
+	-Fixed some issues with the Jar's code causing it to continue to be spawned after being collected in certain occasions
+	-Added to the collectible machete's code to have it be displayed over the player's head after being collected
+	-Worked on debugging the stupid glitch with sprite drawing breaking.
+		-The loading screen and setting up enemies code seems to work okay (No pointers / temp variables seem to get overwritten or anything)
+		-Haven't been able to see it in action (It never actually happens when I want it to)
+		-Going to look at the ent RAM the next time it happens, as I think it might be invalid ent IDs getting written somehow
+	-Also managed to get a savestate for the wrong ent palettes being loaded, and am going to investigate the palette shifting/loading code again
