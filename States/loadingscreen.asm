@@ -1,5 +1,14 @@
 	.db "LOAD SCREEN"
 LoadingScreenMain:
+	;wait 60 frames in-between screens (Helpful for debugging purposes)
+;	ldx #60
+;@thing1:
+;	lda frame_counter
+;@thing2:
+;	cmp frame_counter
+;	beq @thing2
+;	dex
+;	bne @thing1
 	;(Be sure to eventually, for each area, have a table of which CHR data is needed, and update the CHR RAM accordingly)
 	
 	;If the player was in the middle of walking during a screen transition, set his state to standing so he's not still in the middle of walking when the screen is loaded

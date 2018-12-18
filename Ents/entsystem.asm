@@ -283,6 +283,9 @@ DrawEnt:
 	bne @continue
 	jmp @done
 @continue:
+	lda game_state
+	cmp #STATE_PLAY
+	bne @continue1			;if the ent is in PHI flicker while the game is in a differen't state, draw it anyway
 	lda ent_phi_timer,x
 	and #%00000010
 	beq @continue1			;if ent is in PHI, and is on an even frame, don't draw (causes ent to flicker signaling PHI)

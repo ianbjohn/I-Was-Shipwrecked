@@ -50,9 +50,9 @@ BeehiveCheckKnifeColDone:
 	lda ent_state,x
 	asl
 	tay
-	lda BeeStates+0,y
+	lda BeehiveStates+0,y
 	sta jump_ptr+0
-	lda BeeStates+1,y
+	lda BeehiveStates+1,y
 	sta jump_ptr+1
 	jmp (jump_ptr)
 	

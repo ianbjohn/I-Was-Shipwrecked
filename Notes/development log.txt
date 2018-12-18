@@ -1412,3 +1412,6 @@ Day 182 - 12/17/2018
 		-Haven't been able to see it in action (It never actually happens when I want it to)
 		-Going to look at the ent RAM the next time it happens, as I think it might be invalid ent IDs getting written somehow
 	-Also managed to get a savestate for the wrong ent palettes being loaded, and am going to investigate the palette shifting/loading code again
+	--Later that night--
+	-Finally found what I believe to be the culprit to the sprites breaking. ent_anim_frame somehow isn't getting reset correctly, even though it should be in the ent init code. So when an ent gets drawn it may try to load metasprite data on an animation frame that doesn't exist.
+		-Fixed some issues with the beehive's code and data and got most of the jungle sprite fuckery fixed. Made notes on how to debug this easier if it keeps happening for screens with collectibles on them (Which it seems to have before)

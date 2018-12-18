@@ -1027,8 +1027,8 @@ FlintAnimationFrames:
 SpearAnimationFrames:
 ClothAnimationFrames:
 HoneycombAnimationFrames:
+BeehiveAnimationFrames:
 	.db 1,1
-BeehiveAnimationFrames
 SnakeAnimationFrames:
 	.db 8,8,8,1
 BeeAnimationFrames:
