@@ -1,11 +1,4 @@
 MacheteColRoutine:
-	;deactivate itself automatically if already obtained
-	lda #ITEM_MACHETE
-	jsr CheckIfItemObtained
-	beq @continue
-	ldx ent_index
-	jmp DeactivateEnt
-@continue:
 	ldx ent_index
 	lda ent_state,x
 	bne MacheteColShowCollected

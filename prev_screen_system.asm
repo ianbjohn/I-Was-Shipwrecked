@@ -420,14 +420,22 @@ SpecialEvent:
 	lda SpecialEvents+1,x
 	sta ptr1+1
 	ldy #0
+	lda (ptr1),y			;ID (Loading the palette data will come later)
+	sta temp0
+	jsr CheckIfItemObtained
+	beq @notobtainedyet
+	rts
+@notobtainedyet:
+	ldy #0
+	ldx temp0
+	lda ItemEnts,x
+	sta ent_id+2
+	iny
 	lda (ptr1),y			;X
 	sta ent_x+2				;special event ents wer hard-coded to the last ent slot, but I don't think that's necessary
 	iny
 	lda (ptr1),y			;Y
 	sta ent_y+2
-	iny
-	lda (ptr1),y			;ID (Loading the palette data will come later)
-	sta ent_id+2
 	lda #0
 	sta ent_dir+2
 	lda #1

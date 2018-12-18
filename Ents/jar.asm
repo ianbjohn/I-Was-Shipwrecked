@@ -1,12 +1,5 @@
 	.db "JAR"
 JarRoutine:
-;deactivate itself automatically if jar_obtained is nonzero
-	lda #ITEM_JAR
-	jsr CheckIfItemObtained
-	beq @continue
-	ldx ent_index
-	jmp DeactivateEnt
-@continue:
 	ldx ent_index
 	lda ent_state,x
 	bne JarShowCollected

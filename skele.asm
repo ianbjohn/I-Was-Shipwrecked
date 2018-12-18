@@ -1441,6 +1441,13 @@ WeaponItems:
 	;map each weapon to its respective item ID
 	.db ITEM_KNIFE, ITEM_STICK, ITEM_SPEAR, ITEM_BIGBONE, ITEM_MACHETE, ITEM_GUN
 	
+ItemEnts:
+	;map each item to its respective ent ID
+	;It's unlikely that all of these will need to be used, but better safe than sorry
+	;sorted by item ID
+	.db ENT_KNIFE,ENT_JAR,ENT_MEAT,ENT_FLINT,0,ENT_STICKCOL,0,ENT_SPEAR
+	.db 0,ENT_MACHETECOL,ENT_STONE,0,ENT_CLOTH,0,0,0
+	
 	
 	;palettes
 	;(have an address table for each unique sprite subpalette)

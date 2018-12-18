@@ -127,7 +127,7 @@ SpecialEvents:
 	.dw SpecialEvent0,SpecialEvent1
 	
 SpecialEvent0:
-	;x, y, ent ID, palette
-	.db 160,144, ENT_JAR, $20,$10,$00
+	;item ID, x, y, palette
+	.db ITEM_JAR, 160,144, $20,$10,$00
 SpecialEvent1:
-	.db 224,208, ENT_MACHETECOL, $20,$10,$00
+	.db ITEM_MACHETE, 224,208, $20,$10,$00
