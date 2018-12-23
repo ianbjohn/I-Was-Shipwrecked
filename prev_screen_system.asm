@@ -212,6 +212,8 @@ SwapEntData:
 	;if the ent was active, re-activate it
 	lda ent_active,x
 	beq @activateentdone2
+	lda #0
+	sta ent_dir,x
 	tya
 	pha
 	jsr InitEnt				;this clobbers Y which is why we needed to back it up

@@ -1,107 +1,92 @@
+TitlePalette:
+	.db $38,$11,$21,$30, $38,$0A,$1A,$17, $38,$1A,$29,$3C, $38,$0F,$3C,$30
+	.db $38,$0F,$36,$3C
+	
+TITLEPALETTELENGTH = 20
+
+
+	.db "TITLE"
 TitleInit:
-InitPalette:
-	;start the game off by loading a simple black and white palette for the background (This will cause the status board to be the colors it should be, and when new screens are loaded it'll stay the same)
 	lda #%10010000
 	sta $2000
 	lda #%00000110
 	sta $2001
+	lda #0
+	sta nmi_enabled
+	
+	;load title CHR data
+	lda #BANK_OTHER
+	jsr SetPRGBank
+	lda #<CHR_Title
+	sta mt_ptr1+0
+	lda #>CHR_Title
+	sta mt_ptr1+1
+	lda #$10
+	sta temp1
+	lda #$00
+	sta temp2
+	sta temp3
+	lda #16
+	sta temp4
+	jsr LoadCHR
+	lda #<CHR_TitleSprites
+	sta mt_ptr1+0
+	lda #>CHR_TitleSprites
+	sta mt_ptr1+1
+	lda #$00
+	sta temp1
+	sta temp2
+	lda #192
+	sta temp3
+	lda #1
+	sta temp4
+	jsr LoadCHR
+	
 	lda #1
 	sta nmi_enabled
-	jsr SetUpPalettes
+	
+	;load title palette
+	ldx vram_buffer_pos
+	lda #$3F
+	sta vram_buffer+0,x
+	lda #$00
+	sta vram_buffer+1,x
+	lda #<(Copy20Bytes-1)
+	sta vram_buffer+2,x
+	lda #>(Copy20Bytes-1)
+	sta vram_buffer+3,x
+	ldy #0
+@paletteloop:
+	lda TitlePalette,y
+	sta vram_buffer+4,x
+	inx
+	iny
+	cpy #TITLEPALETTELENGTH
+	bne @paletteloop
+	;txa
+	;clc
+	;adc #4
+	;sta vram_buffer_pos
+	lda #0
+	sta vram_buffer+4,x
+	sta vram_buffer+5,x
+	lda #<(RestoreSP-1)
+	sta vram_buffer+6,x
+	lda #>(RestoreSP-1)
+	sta vram_buffer+7,x
+	txa
+	clc
+	adc #9
+	sta vram_buffer_pos
+	inc vram_update
 	lda frame_counter
 @waitframe:
 	cmp frame_counter
 	beq @waitframe
 	
-	;draw title screen
 	
-	;clear nametable
-	lda #0
-	sta nmi_enabled
-
-	lda $2002
-	lda #$20
-	sta $2006
-	lda #$00
-	sta $2006
-	tax
-	lda #$24
-	ldy #4
--	sta $2007
-	inx
-	bne -
-	dey
-	bne -
-	
-	;clear attributes
-	lda $2002
-	lda #$23
-	sta $2006
-	lda #$C0
-	sta $2006
-	ldx #64
-	lda #$FF
--	sta $2007
-	dex
-	bne -
-	
-	;write the title in the middle of the screen
-	lda $2002
-	lda #$21
-	sta $2006
-	lda #$88
-	sta $2006
-	ldx #0
-WriteTitle:
-	lda Title,x
-	sta $2007
-	inx
-	cpx #17
-	bne WriteTitle
-
-	lda $2002
-	lda #$22
-	sta $2006
-	lda #$A6
-	sta $2006
-	ldx #0
-WritePressStart:
-	lda PressStart,x
-	sta $2007
-	inx
-	cpx #20
-	bne WritePressStart
-
-	lda $2002
-	lda #$23
-	sta $2006
-	lda #$45
-	sta $2006
-	ldx #0
-WriteBonaFideGames:
-	lda BonaFideGames,x
-	sta $2007
-	inx
-	cpx #21
-	bne WriteBonaFideGames
-	
-	lda $2002
-	lda #$23
-	sta $2006
-	lda #$66
-	sta $2006
-	ldx #0
-WriteAllRightsReserved:
-	lda AllRightsReserved,x
-	sta $2007
-	inx
-	cpx #19
-	bne WriteAllRightsReserved
-
 	lda #%00011110
 	sta soft_2001
-	lda #1
-	sta nmi_enabled
 	
 	;set the old area to #$FF so that once the game starts, the correct music will appropriately play
 	lda #$FF
@@ -109,7 +94,6 @@ WriteAllRightsReserved:
 	
 	ldy #SONG_TITLE
 	jmp PlaySound
-	rts
 	
 	
 TitleMain:
@@ -128,20 +112,40 @@ Title_ReadStart:
 	lda #0
 	sta nmi_enabled
 	
-	;init status board attributes
-	lda $2002
-	lda #$23
-	sta $2006
-	lda #$C0
-	sta $2006
-	ldx #8
-	lda #%11111111
--	sta $2007
-	dex
-	bne -
-	beq ++
+	;load main CHR data
+	lda #BANK_GRAPHICS
+	jsr SetPRGBank
+	lda #<CHR_GlobalBG
+	sta mt_ptr1+0
+	lda #>CHR_GlobalBG
+	sta mt_ptr1+1
+	lda #$10
+	sta temp1
+	lda #$00
+	sta temp2
+	sta temp3
+	lda #$05
+	sta temp4
+	jsr LoadCHR
+	lda #<CHR_Sprites
+	sta mt_ptr1+0
+	lda #>CHR_Sprites
+	sta mt_ptr1+1
+	lda #$00
+	sta temp1
+	sta temp2
+	sta temp3
+	lda #$10
+	sta temp4
+	jsr LoadCHR
 	
-	.db "LOAD PLAYER"
+	jsr SetUpPalettes	;set up main palettes
+	lda frame_counter
+@waitframe:
+	cmp frame_counter
+	beq @waitframe
+	
+	;.db "LOAD PLAYER"
 	
 	;activate player
 	;If it's a new game, initialize all these to 0 (or whatever their respective initial values should be)
@@ -158,7 +162,7 @@ Title_ReadStart:
 	adc #8
 	sta ent_hb_y+0
 	
-	lda #100
+	lda #255
 	sta ent_health+0
 	;lsr					;thirst and hunger start out half full
 	sta hunger

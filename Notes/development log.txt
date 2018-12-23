@@ -1415,3 +1415,23 @@ Day 182 - 12/17/2018
 	--Later that night--
 	-Finally found what I believe to be the culprit to the sprites breaking. ent_anim_frame somehow isn't getting reset correctly, even though it should be in the ent init code. So when an ent gets drawn it may try to load metasprite data on an animation frame that doesn't exist.
 		-Fixed some issues with the beehive's code and data and got most of the jungle sprite fuckery fixed. Made notes on how to debug this easier if it keeps happening for screens with collectibles on them (Which it seems to have before)
+	-Changed it so that the loading screen state determines whether or not to draw a special item based on if it's been collected, rather than the ent's code itself. Now those items an be shown above the player's head like normal
+	
+Day 183 - 12/18/2018
+	-Found another sprite-breaking issue involving screens with items on them. This time it had to do with the ent's direction not getting reset while ent data is swapped. Fixed this, and haven't seen the issue since
+	-Issue with the wrong palettes still persists, trying to fix this.
+	-Worked on title screen mockup with PPU colors
+	-Worked on logo CHR
+	
+Day 184 - 12/19/2018
+	-Worked more on the title screen mockup
+		-Almost finished, just need to add more waves/foam to the ocean and convert it to Nesst format
+		
+Day 185 - 12/22/2018
+	-Spent the last few days making the title screen look better, specifically the front palm trees
+	-Converted the title screen to a CHR file
+	-Added the new title / logo CHR files to the game
+	-Game is 57.7Kb
+	-Removed the old title screen stuff
+	-Made the logo CHR data get loaded at the beginning of the game (still need to add a logo state)
+	-Made the title CHR data and palette data get loaded at the title screen

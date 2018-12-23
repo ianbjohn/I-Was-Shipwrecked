@@ -252,7 +252,7 @@ SetUpEnemies:
 	beq @newscreen
 	;this is a screen we've recently visited
 	;(set a flag indicating that this is a screen that's recently been visited (will be needed after a new map's been loaded into RAM, to make any changes necessary))
-	lda enemy_palette_index
+	lda enemy_palette_index				;12/18 - Change this to a BringNthEnemyPalettePtrToTop call if the palette issues keep happening, as this seems weird.
 	sta prev_enemy_palette_index
 	lda prev_screen_enemy_palettes,x
 	sta enemy_palette_index

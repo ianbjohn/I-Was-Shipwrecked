@@ -32,6 +32,36 @@ FileSelectInit:
 	lda #0
 	sta nmi_enabled
 	
+	;clear screen to all black
+FS_ClearScreen:
+	lda $2002
+	lda #$20
+	sta $2006
+	sta $2006
+	ldy #4
+	ldx #0
+	lda #SPA
+@loop:
+	sta $2007
+	inx
+	bne @loop
+	dey
+	bne @loop
+	
+	;clear attributes to all black and white
+FS_ClearAttributes:
+	lda $2002
+	lda #$23
+	sta $2006
+	lda #$C0
+	sta $2006
+	ldx #64
+	lda #$FF
+@loop:
+	sta $2007
+	dex
+	bne @loop
+	
 	;draw the top bar where the player will make decisions for which file to load, and/or what to do with the file
 	lda $2002
 	lda #$20

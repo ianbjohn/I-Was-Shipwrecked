@@ -14,7 +14,6 @@
 	
 	;switchable bank 0
 	.base $8000
-	.db 0
 	;This bank contains code for the entity (ent) system, as well as all the data needed for initializing ents, and for drawing their metasprites
 	.include "ents/entsystem.asm"
 	.include "ents/metasprites.asm"
@@ -37,7 +36,6 @@ ThirstDepleteTimes:
 	
 	;switchable bank 1
 	.base $8000
-	.db 1
 	.include "metatiles.asm"			;includes metatile definitions
 	.include "screens.asm"				;includes screen structure definitions
 										;Will eventually need multiple banks for screen structure data, but at the time of typing this (7/1/17) we're fine on size for this bank
@@ -45,7 +43,6 @@ ThirstDepleteTimes:
 	
 	;switchable bank 2
 	.base $8000
-	.db 2
 	;This bank contains code for the messagebox system, as well as text data for all the messages (Maybe try a simple huffman encoding (or something) scheme for compressing the text if we end up needing to, but I think we'll be okay. Also have to remember that a lot of bytes correspond to different commands for the messagebox system)
 	.include "Messages/messages.asm"
 	.include "Messages/inventory_messages.asm"
@@ -53,8 +50,11 @@ ThirstDepleteTimes:
 	
 	;switchable bank 3
 	.base $8000
-	;put all the actual CHR data here, before the tables and animation definitions and all that
+	;put all the actual CHR data that can fit in here in here, before the tables and animation definitions and all that
 	;BACKGROUND CHR DATA
+CHR_Logo:
+	.incbin "Graphics/CHR/logo_chr.chr"
+	
 CHR_GlobalBG:
 	;textual characters and a few other "global" tiles. (Starts at $1000 in CHR RAM, and has a length of $500 bytes)
 	.incbin "Graphics/CHR/global_bg.chr"
@@ -91,7 +91,6 @@ Animated_CHR_Waves:
 	
 	;switchable bank 4
 	.base $8000
-	.db 4
 	;music (I haven't thought much of the soundtrack so far other than I want it to be ambient and atmospheric. 16kb might be nowhere near enough for both music and the sound engine, so maybe try putting the sound engine in main ROM, or using multiple banks for music data)
 	.include "music/sound_engine.asm"
 	
@@ -99,7 +98,6 @@ Animated_CHR_Waves:
 	
 	;switchable bank 5
 	.base $8000
-	.db 5
 	;events
 	.include "events.asm"
 	
@@ -108,7 +106,10 @@ Animated_CHR_Waves:
 	;switchable bank 6
 	.base $8000
 	;whatever else
-	.db 6
+CHR_Title:
+	.incbin "Graphics/CHR/title_chr.chr"
+CHR_TitleSprites:
+	.incbin "Graphics/CHR/title_sprites.chr"
 	
 	
 	;fixed bank
@@ -186,30 +187,19 @@ SetUPMMC1:
 	;sta game_state
 	;sta game_state_old
 	
-	;load the initial CHR data
+	;(load the logo CHR data)
 	lda #BANK_GRAPHICS
 	jsr SetPRGBank
-	lda #<CHR_GlobalBG
+	lda #<CHR_Logo
 	sta mt_ptr1+0
-	lda #>CHR_GlobalBG
+	lda #>CHR_Logo
 	sta mt_ptr1+1
-	lda #$10
+	lda #$10		;store in PPU location $1000
 	sta temp1
 	lda #$00
 	sta temp2
-	sta temp3
-	lda #$05
-	sta temp4
-	jsr LoadCHR
-	lda #<CHR_Sprites
-	sta mt_ptr1+0
-	lda #>CHR_Sprites
-	sta mt_ptr1+1
-	lda #$00
-	sta temp1
-	sta temp2
-	sta temp3
-	lda #$10
+	sta temp3		;how many bytes to move
+	lda #$04		;1-based
 	sta temp4
 	jsr LoadCHR
 	
@@ -218,7 +208,7 @@ SetUPMMC1:
 	;lda #9
 	;sta cave_level
 	
-	lda #0
+	lda #0					;BANK_ENTS
 	jsr SetPRGBank
 	jsr SelectStateToInit
 	
@@ -498,6 +488,7 @@ ReadControllerDPCM:
 	rts
 	
 	
+	;Used to initialize the main palettes - Player, Powerups/collectibles, HUD
 SetUpPalettes:
 	lda $2002
 	lda #$3F
@@ -505,6 +496,7 @@ SetUpPalettes:
 	lda #$0C
 	sta $2006
 	tay
+	ldy #$0C
 	lda #$0F
 	sta $2007
 	sta $2007
@@ -517,12 +509,13 @@ SetUpPalettes:
 	sta palette_buffer+3,y
 	
 	;set up the first sprite (player / cursor) subpalette)
-	;lda $2002
+	lda $2002
 	lda #$3F
 	sta $2006
 	lda #$11
 	sta $2006
 	tay				;Y is now #$11
+	;ldy #$11
 	ldx #0
 @loop1:
 	lda PlayerPalette,x
@@ -547,6 +540,7 @@ SetUpPalettes:
 	lda #$15
 	sta $2006
 	tax
+	;ldx #$15
 	ldy #0
 @loop2:
 	lda (ptr1),y
@@ -556,15 +550,14 @@ SetUpPalettes:
 	cpy #3
 	bne @loop2
 	
-	
-	
 	;also set up the misc sprite subpalette, might as well do it here
-	;lda $2002
+	lda $2002
 	lda #$3F
 	sta $2006
 	lda #$1D
 	sta $2006
 	tay
+	;ldy #$1D
 	ldx #0
 @loop3:
 	lda MiscSpritePalette,x
@@ -588,7 +581,7 @@ SetUpPalettes:
 LoadCHR:
 	;still a work in progress
 	;This is used to load Big bulks of CHR data, like for cutscenes and area transitions and things of that nature
-	;Where to load from (temp1 and temp2), as well as how much data to load (Should be specified by temp3 and temp4), should all be set before-hand
+	;Where to load the data from (mt_ptr1), where to put the data (temp1 and temp2), as well as how much data to load (Should be specified by temp3 and temp4), should all be set before-hand
 	
 	;lda $2002
 	ldy #0
@@ -678,7 +671,7 @@ LoadCHRTileToBuffer:
 	jmp SetPRGBank
 	
 	
-	.db "DIMTB"
+	;.db "DIMTB"
 DrawInventoryMessageToBuffer:
 	;Kind of a complicated routine, but basically what it does is read characters from a string, printing to the status board until a terminating character is reached. From there, it pads the rest of the status board with blackspace.
 	;Also supports going to the next line with $FE
@@ -1238,7 +1231,7 @@ LoadDarkness:
 	beq @waitframe
 	rts
 	
-	.db "LCP"
+	;.db "LCP"
 LoadScreenPalette:
 	;used for both loading a normal cave palette when loading a screen, and for re-lighting a cave after crafting a torch
 	ldy #0			;position in screen data (Shouldn't be reset until all the screen loading is done)
@@ -1472,6 +1465,10 @@ BG_Palette5:
 BG_Palette6:
 	;cave walls, cave ground, heiroglyphs
 	.db $0F,$00,$10,$30, $0F,$17,$05,$10, $0F,$17,$28,$39
+	
+	
+LogoPalette:
+	.db $0F,$0F,$0F,$39, $0F,$0B,$1B,$2C
 	
 
 PlayerPalette
