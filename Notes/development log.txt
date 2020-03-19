@@ -1435,3 +1435,24 @@ Day 185 - 12/22/2018
 	-Removed the old title screen stuff
 	-Made the logo CHR data get loaded at the beginning of the game (still need to add a logo state)
 	-Made the title CHR data and palette data get loaded at the title screen
+	
+Day 186 - 12/24/2018
+	-Title screen is now finished and in the game
+	
+Day 187 - 3/19/2020
+	-My oh my oh my.....Almost a year and a quarter. Life has happened, I'm almost done with college and will hopefully have more time to work on this once real life starts (We'll see tho).
+		-The world is currently in quite a bit of disarray with the Coronavirus, so my spring break has been extended an extra week and all classes will be online for the rest of the semester. I honestly don't know when I'll get to work on this again - it might be a while but hopefully not over a year :) - but I may have a bit more free time, especially since my part-time job at the library has been suspended indefinitely thanks to the pandemic.
+	-Finally decided that the title screen just looks absolutely terrible, and am going to change it completely at some point
+		-Something a bit more simple, which can hopefully be more detailed, like maybe 2 palm trees and the sun from the perspective of looking up, with the title in-between the palm trees (My art will only get me so far.)
+	-Made some progress on the mountain song at least!!! Added a baseline to one of the sections. Now, all that's left to be added is baseline and accompaniment to basically one more section
+	-Fixed issue with beehive code. It seemed like most of the code was copy-pased from another ent, and so some states had to be changed. This was what was causing the sprite issue, trying to execute code from an ent state that didn't exist
+		-Also, there was another issue I found with the beehive that I fixed. When a beehive is destroyed, it'll sometimes drop a honeycomb, which happens by just changing the ID of the beehive ent slot to the honeycomb ent ID, and then re-initializing the ent. The honeycomb ID was being saved to ent_index,x, which is a zero-page variable used for keeping track of what ent slot is currently being processed/drawn, and shouldn't be indexed itself. Changing this to ent_id,x fixed the problem. Now, when the beehive is destroyed, the bees all swarm towards the player, and keep doing that as there's no other state-changing code afterwards.
+	-The honeycomb sprite data had the wrong tile, so I updated that as well
+	-Updated a few minor things for bee ents
+	-Made it so that when the beehive gets destroyed it fills all empty ent slots with swarming bees
+	-The honeycomb code also had (likely a typo) a variable that accidentally had a # in front of it making it a hard-coded value, which was likely the culprit behind the honeycomb remaining on the screen after being collectedd (If this still happens investigate further)
+		-Also another issue where a STA should have been a LDA and caused the player to move around the screen all weirdly after collecting the honey comb. I guess I copied the code from either heart.asm or meat.asm by hand, idk what was wrong with me.
+	-I discovered in the metasprites file, the hitbox data for the bullet was being stored as words instead of bytes, so a lot of times bullets had a height of 0 pixels.
+	-I also forgot to decrement num_active_enemies when bees get killed.
+	-Removed some old comments and made a couple tiny minor optimizations too
+	-NEXT TIME - NOW THAT THE BEEHIVE CODE HAS BEEN INVESTIGATED AND FIXED, IT'S TIME TO INVESTIGATE THE BEE CODE!

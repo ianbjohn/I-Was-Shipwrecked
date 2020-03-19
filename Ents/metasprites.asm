@@ -504,7 +504,7 @@ BeehiveMetaSpritesNormalU_0:
 	;bee
 BeeMetaSprites:
 	;foraging, returning, guarding hive, swarming, on player attacking, on flower, hit
-	.dw BeeMetaSpritesFlying, BeeMetaSpritesFlying, BeeMetaSpritesNormal, BeeMetaSpritesFlying, BeeMetaSpritesFlying, BeeMetaSpritesFlying, ExplosionMetaSprites
+	.dw BeeMetaSpritesFlying, BeeMetaSpritesFlying, BeeMetaSpritesNormal, BeeMetaSpritesFlying, BeeMetaSpritesFlying, BeeMetaSpritesNormal, ExplosionMetaSprites
 	
 BeeMetaSpritesNormal:
 	.dw BeeMetaSpritesNormalU,BeeMetaSpritesNormalD,BeeMetaSpritesNormalL,BeeMetaSpritesNormalR
@@ -951,7 +951,7 @@ HoneycombMetaSpritesNormalU:
 	
 HoneycombMetaSpritesNormalU_0:
 	.db 4
-	.db 0,$76,%00000010,-1
+	.db 0,$67,%00000010,-1
 	
 	
 	;(other ents)
@@ -1099,7 +1099,7 @@ BatHitboxSizes:
 BulletHitboxSizes:
 	.dw BulletHitboxSizesNormal
 BulletHitboxSizesNormal:
-	.dw 2,15, 2,15, 15,2, 15,2
+	.db 2,15, 2,15, 15,2, 15,2
 	
 	
 GunHitboxSizes:

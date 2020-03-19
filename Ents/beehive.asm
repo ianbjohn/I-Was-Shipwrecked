@@ -3,48 +3,25 @@ BeehiveStates:
 
 	.db "BEEHIVE"
 BeehiveRoutine:
-BeehiveAdvanceAnimation:
-	lda ent_anim_timer,x
-	clc
-	adc #1
-	cmp ent_anim_length,x
-	bcc @continue
-	;set timer back to 0, increment frame
-	lda ent_anim_frame,x
-	clc
-	adc #1
-	cmp ent_anim_frames,x
-	bcc @continue2
-	lda #0					;even if frame didn't get set back to 0, timer needs to be
-@continue2:
-	sta ent_anim_frame,x
-	lda #0
-@continue:
-	sta ent_anim_timer,x
-BeehiveAdvanceAnimationDone:
-
-BeehiveCheckKnifeCol:
+@checkKnifeCol:
 	lda ent_state,x
-	cmp #6				;hit
-	beq BeehiveCheckKnifeColDone
+	cmp #1				;hit
+	beq @checkKnifeColDone
 	lda ent_active+1
-	beq BeehiveCheckKnifeColDone
+	beq @checkKnifeColDone
 	jsr CheckPlayerWeaponCollision
-	beq BeehiveCheckKnifeColDone
+	beq @checkKnifeColDone
 	;set bee HP to 0
 	lda #0
 	sta ent_health,x
 	
 	lda #EXPLOSION_TIME
 	sta ent_timer1,x
-	lda #6
+	lda #1
 	sta ent_state,x
-	lda #0
-	sta ent_anim_timer,x
-	sta ent_anim_frame,x
 	;ldx ent_index
 	jmp FindEntAnimLengthsAndFrames
-BeehiveCheckKnifeColDone:
+@checkKnifeColDone:
 
 	;go to individual code for each state
 	lda ent_state,x
@@ -113,10 +90,52 @@ BeehiveHit:
 	and #%00000001
 	beq @dropnothing
 	lda #ENT_HONEYCOMB
-	sta ent_index,x
-	jmp InitEnt
+	sta ent_id,x
+	lda #0
+	sta ent_state,x
+	sta ent_dir,x
+	jsr InitEnt
+	jmp @spawnbees
 @dropnothing:
-	jmp DeactivateEnt			;For right now I don't think bees should drop anything
+	jsr DeactivateEnt 
+@spawnbees:
+	;Fill any available ent slots with swarming bees
+	;We know that whatever slot the beehive just was will be free now, but it'll be less code to simply just deactivate it and do a standard loop,
+		;rather than copying the overhead of setting up the bee here for one pass
+	;A bit sloppy, but ent initialization only uses temp0, so we'll save the beehive's X and Y to temp1 and temp2 respectively
+	lda ent_x,x
+	sta temp1
+	lda ent_y,x
+	sta temp2
+	ldx #2
+@spawnbeeloop:
+	lda ent_active,x
+	bne @spawnbeesdone
+	lda #ENT_BEE
+	sta ent_id,x
+	lda #3			;swarming
+	sta ent_state,x
+	;The direction doesn't matter here since it'll immediately change to face the player
+	;Give the bees some different positions, which'll also help them not all immediately die from the player's weapon
+	lda random
+	jsr RandomLFSR
+	and #%00001111
+	clc
+	adc temp1
+	sta ent_x,x
+	jsr RandomLFSR
+	and #%00001111
+	clc
+	adc temp2
+	sta ent_y,x
+	lda #1
+	sta ent_active,x
+	jsr InitEnt
+@spawnbeesdone:
+	inx
+	cpx #16
+	bne @spawnbeeloop
+	rts
 @done:
 	sta ent_timer1,x
 	rts

@@ -345,8 +345,6 @@ PlayerReadB:
 	cpx #WEAPON_BULLET
 	bne @notbullet
 	lda rounds
-	;bne @stillhaverounds
-	;jmp PlayerDone		;no rounds left to shoot
 	beq @loadgun
 @stillhaverounds
 	dec rounds

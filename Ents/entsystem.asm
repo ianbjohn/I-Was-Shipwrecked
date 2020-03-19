@@ -1,9 +1,9 @@
 							;--- GLOBAL ROUTINES ---;	
 	
 InitEnt:
-;Make sure when initing an ent that EVERYTHING gets reset, since it doesn't happen when ents deactivate. We don't want an ent to spawn in i.e state 3 on animation frame 2
+;Make sure when initing an ent that EVERYTHING gets reset, since it doesn't happen when ents deactivate. We don't want an ent to spawn in i.e state 3 on animation frame 2 accidentally
 ;State, X, Y, and dir should all be specified before the object is initialized. That way the correct animation frame and hitbox can be loaded depending on state, direction, etc.
-	;X should be loaded with ent_index
+	;X should be loaded with the correct ent index
 	lda ent_id,x
 	asl
 	tay
@@ -52,17 +52,16 @@ InitEnt:
 	sta ent_misc2,x
 	sta ent_misc3,x
 	jsr RandomLFSR
-	;lda random
 	sta ent_time1,x			;for right now, until I get around to adding init routines for ents
 	inc num_active_ents
 	jmp FindEntAnimLengthsAndFrames
 	
 	
 SpawnWeaponEntBasedOnPlayer:
+	;Could be turned into a macro since it's only called once by the player, but I really don't think it's worth the inevitable ungodly branch complexity
 	;position itself based off player's direction
 	;(use the table in main ROM based off weapon ent ID and direction to figure out where to put place the weapon)
-	lda weapon
-	tax
+	txa
 	asl
 	tay					;used indices for the tables we'll use
 	lda ent_health+1

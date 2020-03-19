@@ -1,0 +1,34 @@
+#Executable/debug stuff
+*.exe
+*.lst
+*.ram
+*.bin
+*.deb
+*.nes
+*.bak
+*.nl
+
+#Music/audio
+*.ftm
+*.dmc
+*.mp3
+*.wav
+*.nsf
+*.aiff
+
+#Graphics/images
+*.chr
+*.nss
+*.png
+*.gif
+*.bmp
+
+#Directories
+Tools/
+Graphics/
+Notes/*
+!Notes/development log.txt
+!Notes/bugs.txt
+
+#Specific files
+island_workspace

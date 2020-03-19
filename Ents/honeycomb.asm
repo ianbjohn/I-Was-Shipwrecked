@@ -1,4 +1,5 @@
 	;Code is commented in heart.asm and meat.asm
+	;.db "HonCom"
 HoneycombRoutine:
 	
 DecHoneycombPHI:
@@ -37,7 +38,7 @@ DecHoneycombPHIDone:
 	lda #ITEM_HONEYCOMB
 	ldy #1
 	jsr AddToItemCount
-	ldx #ent_index
+	ldx ent_index
 	inc ent_state,x
 	lda #30
 	sta ent_timer1,x
@@ -73,7 +74,7 @@ HoneycombShowCollected:
 	jmp DeactivateEnt
 HoneycombShowCollectedDone:
 	sta ent_timer1,x
-	sta ent_y+0
+	lda ent_y+0
 	sec
 	sbc ent_height,x
 	sta ent_y,x

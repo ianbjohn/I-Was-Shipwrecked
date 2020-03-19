@@ -110,6 +110,57 @@ CHR_Title:
 	.incbin "Graphics/CHR/title_chr.chr"
 CHR_TitleSprites:
 	.incbin "Graphics/CHR/title_sprites.chr"
+TitleScreen:
+	.incbin "Graphics/title_screen.bin"
+TitleScreenAttribs:
+	.incbin "Graphics/title_screen_attribs.bin"
+	
+TitlePalette:
+	.db $38,$11,$21,$30, $38,$0A,$1A,$17, $38,$1A,$29,$3C, $38,$0F,$3C,$30
+	.db $38,$36,$0F,$30
+	
+TitleScreenSprites:
+	;Y,sprite,attrs,X
+	.db 20,$00,0,0			;sun
+	.db 20,$01,0,8
+	.db 20,$02,0,16
+	.db 28,$03,0,0
+	.db 28,$04,0,8
+	.db 28,$05,0,16
+	.db 36,$06,0,0
+	.db 36,$07,0,8
+	.db 36,$08,0,64			;"I WAS"
+	.db 36,$09,0,80
+	.db 36,$0A,0,88
+	.db 36,$0B,0,96
+	.db 118,$0C,0,108		;"Press Start"
+	.db 118,$0D,0,116
+	.db 118,$0E,0,124
+	.db 118,$0B,0,132
+	.db 118,$0B,0,140
+	.db 130,$0B,0,108
+	.db 130,$0F,0,116
+	.db 130,$0A,0,124
+	.db 130,$0D,0,132
+	.db 130,$0F,0,140
+	.db 200,$10,0,108		;(C)2018 Bona Fide Games
+	.db 200,$11,0,116
+	.db 200,$12,0,124
+	.db 200,$13,0,132
+	.db 200,$14,0,140
+	.db 208,$15,0,92
+	.db 208,$16,0,100
+	.db 208,$17,0,108
+	.db 208,$18,0,116
+	.db 208,$19,0,132
+	.db 208,$1A,0,140
+	.db 208,$1B,0,148
+	.db 208,$1C,0,156
+	.db 216,$1D,0,108
+	.db 216,$18,0,116
+	.db 216,$1E,0,124
+	.db 216,$1C,0,132
+	.db 216,$1F,0,140
 	
 	
 	;fixed bank

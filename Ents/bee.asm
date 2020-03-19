@@ -385,6 +385,7 @@ BeeHit:
 	sec
 	sbc #1
 	bcs @done
+	dec num_active_enemies
 	jmp DeactivateEnt			;For right now I don't think bees should drop anything
 @done:
 	sta ent_timer1,x

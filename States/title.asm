@@ -1,11 +1,8 @@
-TitlePalette:
-	.db $38,$11,$21,$30, $38,$0A,$1A,$17, $38,$1A,$29,$3C, $38,$0F,$3C,$30
-	.db $38,$0F,$36,$3C
-	
 TITLEPALETTELENGTH = 20
+TITLESPRITELENGTH = 160
 
 
-	.db "TITLE"
+	;.db "TITLE"
 TitleInit:
 	lda #%10010000
 	sta $2000
@@ -36,9 +33,9 @@ TitleInit:
 	lda #$00
 	sta temp1
 	sta temp2
-	lda #192
+	lda #0
 	sta temp3
-	lda #1
+	lda #2
 	sta temp4
 	jsr LoadCHR
 	
@@ -63,10 +60,6 @@ TitleInit:
 	iny
 	cpy #TITLEPALETTELENGTH
 	bne @paletteloop
-	;txa
-	;clc
-	;adc #4
-	;sta vram_buffer_pos
 	lda #0
 	sta vram_buffer+4,x
 	sta vram_buffer+5,x
@@ -84,9 +77,42 @@ TitleInit:
 	cmp frame_counter
 	beq @waitframe
 	
+	lda #0
+	sta nmi_enabled
+
+LoadTitleScreen:
+	lda $2002
+	lda #$20
+	sta $2006
+	lda #$00
+	sta $2006
+	tay
+	ldx #4
+	lda #<TitleScreen
+	sta ptr1+0
+	lda #>TitleScreen
+	sta ptr1+1
+@loop:
+	lda (ptr1),y
+	sta $2007
+	iny
+	bne @loop
+	inc ptr1+1
+	dex
+	bne @loop
+	
+LoadTitleSprites:
+	ldx #TITLESPRITELENGTH
+@loop:
+	lda TitleScreenSprites-1,x
+	sta $01FF,x				;page-crosses every time adding a cycle, but counting up and comparing every time will add more
+	dex
+	bne @loop
 	
 	lda #%00011110
 	sta soft_2001
+	lda #1
+	sta nmi_enabled
 	
 	;set the old area to #$FF so that once the game starts, the correct music will appropriately play
 	lda #$FF
