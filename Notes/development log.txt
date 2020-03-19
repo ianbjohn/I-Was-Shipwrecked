@@ -1456,3 +1456,7 @@ Day 187 - 3/19/2020
 	-I also forgot to decrement num_active_enemies when bees get killed.
 	-Removed some old comments and made a couple tiny minor optimizations too
 	-NEXT TIME - NOW THAT THE BEEHIVE CODE HAS BEEN INVESTIGATED AND FIXED, IT'S TIME TO INVESTIGATE THE BEE CODE!
+			--- LATER IN THE DAY ---
+	-FINISHED MOUNTAINS SONG!!!!!
+	-Changed the quenching thirst from unboiled water from +25 to +50, and boiled water from +50 to +75, so it'll be less annoying if players are drinking from a river or something. Also increased hunger energy from uncooked meat from +25 to +50 and +40 to +60 for cooked meat for much the same reason.
+	-Made some notes in ideas about how to better handle game overs

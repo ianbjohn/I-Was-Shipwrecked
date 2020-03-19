@@ -170,7 +170,6 @@ SkipNMI:
 	;(add any more variables deemed necessary to entropy-ize the random counter better. Don't use too many obviously)
 	jsr RandomLFSR			;generate a pseudorandom number each frame
 	
-	;when making the music engine (which'll likely need to use the temp variables), back up temp0-2, since they'll all be used in the load screen routine, which'll likely take several frames
 	lda #1
 	sta nmi_bankswitch
 	lda #%10000000

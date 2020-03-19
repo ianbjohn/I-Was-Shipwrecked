@@ -91,14 +91,14 @@ Animated_CHR_Waves:
 	
 	;switchable bank 4
 	.base $8000
-	;music (I haven't thought much of the soundtrack so far other than I want it to be ambient and atmospheric. 16kb might be nowhere near enough for both music and the sound engine, so maybe try putting the sound engine in main ROM, or using multiple banks for music data)
+	;music (16kb might be nowhere near enough for both music and the sound engine, so maybe try putting the sound engine in main ROM, or using multiple banks for music data)
 	.include "music/sound_engine.asm"
 	
 	.org $C000
 	
 	;switchable bank 5
 	.base $8000
-	;events
+	;events (Probably won't be anywhere near 16kb, so feel free to put other stuff in here if needed)
 	.include "events.asm"
 	
 	.org $C000
@@ -201,7 +201,7 @@ ClrMem:
 	sta $6500,x
 	sta $6600,x
 	sta $6700,x
-	lda #$FE
+	lda #$FE			;move sprites off-screen
 	sta $0200,x
 	inx
 	bne ClrMem
@@ -302,8 +302,8 @@ MainLoop:
 @checkVRAMbuffercontents:
 	lda game_state
 	;cmp game_state_old						;originally only actually performed VRAM updates if the game state had remained unchanged, but ran into problems when changing screens
-	cmp #STATE_GAMEOVER
 	;beq @continue
+	cmp #STATE_GAMEOVER
 	bne @continue
 	ldx #0
 	stx vram_buffer_pos
@@ -335,7 +335,7 @@ MainLoop:
 	
 	;subroutines
 InitStates:
-	.dw TitleInit, IntroInit, PlayInit, PausedInit, GameOverInit, FadeInInit, FadeOutInit, DrawingMBoxInit
+	.dw TitleInit, IntroInit, PlayInit, PausedInit, GameOverInit, FadeOutInit, DrawingMBoxInit
 	.dw WritingMSGInit, MBoxResponseInit, ErasingMBoxInit, InventoryInit, LoadingScreenInit, FileSelectInit, RecipeListInit
 SelectStateToInit:
 	lda game_state
@@ -349,7 +349,7 @@ SelectStateToInit:
 	
 	
 MainStates:
-	.dw TitleMain, IntroMain, PlayMain, PausedMain, GameOverMain, FadeInMain, FadeOutMain, DrawingMBoxMain
+	.dw TitleMain, IntroMain, PlayMain, PausedMain, GameOverMain, FadeOutMain, DrawingMBoxMain
 	.dw WritingMsgMain, MBoxResponseMain, ErasingMBoxMain, InventoryMain, LoadingScreenMain, FileSelectMain, RecipeListMain
 SelectMainState:
 	lda game_state
@@ -389,9 +389,6 @@ PausedInit:
 	sta pause_jingle_timer
 	ldy #SFX_PAUSE
 	jmp PlaySound
-	;rts
-FadeInInit:
-	rts
 FadeOutInit:
 	lda in_cave_new
 	cmp #1
@@ -406,21 +403,18 @@ FadeOutInit:
 MBoxResponseInit:
 LoadingScreenInit:
 IntroMain:
-FadeInMain:
 	rts
 FadeOutMain:
-	;if (++fadeout_timer >= 15) {
-		;if (++fadeout_state < 8) {
-			;for each palette byte {
+	;Standard "Naive" way of fading out - every 15 frames decrease the brightness of the colors, until they're black
+	;if (++fadeout_timer >= 15)
+		;if (++fadeout_state < 8)
+			;for each palette byte
 				;if (palette byte & 0xF0 >= (0x30 - (fadeout_state << 4)))
 					;palette_byte -= fadeout_state << 4;
 				;else
 					;palette_byte = 0x0F;
-			;}
-		;}
 		;else
 			;game_state = STATE_LOADINGSCREEN;
-	;}
 	lda fadeout_timer
 	clc
 	adc #1
@@ -495,7 +489,7 @@ ReadController:
 	;Stores the state of the controller in RAM
 	ldx #1
 	stx $4016
-	stx temp0			;ring counter (IDK I don't really understand this but the code was taken from the wiki)
+	stx temp0			;ring counter (IDK I don't really understand this but the code was taken from the NesDev wiki)
 	dex
 	stx $4016
 	ldx #8
@@ -565,8 +559,7 @@ SetUpPalettes:
 	sta $2006
 	lda #$11
 	sta $2006
-	tay				;Y is now #$11
-	;ldy #$11
+	tay			;where we set the palette latch can also be used to index it
 	ldx #0
 @loop1:
 	lda PlayerPalette,x
@@ -591,7 +584,6 @@ SetUpPalettes:
 	lda #$15
 	sta $2006
 	tax
-	;ldx #$15
 	ldy #0
 @loop2:
 	lda (ptr1),y
@@ -608,7 +600,6 @@ SetUpPalettes:
 	lda #$1D
 	sta $2006
 	tay
-	;ldy #$1D
 	ldx #0
 @loop3:
 	lda MiscSpritePalette,x
@@ -790,7 +781,8 @@ DrawInventoryMessageToBuffer:
 	tax					;make sure X is saved
 	;we can assume that not all 30 bytes will have been drawn at this point (Since # of rounds is always in the bottom left of the status board), so we can just go back to the loop
 	iny
-	jmp @loop
+	bne @loop	;will always branch
+	;jmp @loop
 @fe:
 	iny
 @ff:
@@ -1448,7 +1440,7 @@ PowersOfTwo:
 MultiplesOfThree:
 	.db 0,3,6,9,12,15,18,21
 Primes:
-	.db 1,3,5,7,11,13,17,19
+	.db 1,2,3,5,7,11,13,17
 	
 	
 PrevScreenEntDataAddresses:
@@ -1573,7 +1565,7 @@ SP_PoisonSnake:
 EnemyTerrains:
 	;sorted by ENT INDEX
 	;There are labels for the types of terrain, but it seems unnecessary here. 0 - water, 1 - land, 2 - trees
-	;Again, I originally planned for events to just have events have enemies, so don't let the name confuse you
+	;Again, I originally planned for events to just have enemies, so don't let the name confuse you
 	.db 0,0,1,0,0,0,2,2,0,0,0,1,1,1,1,1
 	.db 1,1,1,1,2,1
 TerrainSpawnCoordinates:
@@ -1716,6 +1708,8 @@ StatusBoard:
 	.db H,U,N,G,E,R,$2F, $FC,$F5,$F4,$F3, $30,2,5,5, SPA, T,H,I,R,S,T,$2F, $FB,$F5,$F4,$F3, $30,2,5,5, SPA, $FE
 	.db W,E,lA,P,O,N,$2F, $FA,$EA,$E9,$E8,$E7,$E6,$E5,$E4,$E3, SPA, D,lA,lY, SPA, $F9,$F7,$F6,$F5,$F4,$F3, $FF
 	
+	
+;Old data from the original temporary title screen, but kept here in case it needs to be used for some reason
 Title:
 	.db I, SPA, W,lA,S, SPA, S,H,I,P,W,R,E,C,K,E,D
 PressStart:

@@ -55,7 +55,7 @@ Message0:
 	.db SPA,C,R,O,S,S,$FF
 Message1:
 	.db D,R,lA,N,K, SPA, U,N,B,O,I,L,E,D, SPA, W,lA,T,E,R,$2A,$FE
-	.db $2E,2,5, SPA, T,H,I,R,S,T,$2A,$FF
+	.db $2E,5,0, SPA, T,H,I,R,S,T,$2A,$FF
 Message2:
 	.db P,lA,T,H,O,G,E,N,S, SPA, I,N, SPA, W,lA,T,E,R,$2A, SPA, B,E,C,lA,M,E,$FE
 	.db S,I,C,K,$2A,$FF
@@ -101,21 +101,21 @@ Message12:
 	.db $2B,R,E,Q,U,I,R,E,S, SPA, 5, SPA, S,T,I,C,K,S, SPA, $2E, SPA, 1, SPA, F,L,I,N,T,$2A,$2C,$FF
 Message13:
 	.db D,R,lA,N,K, SPA, C,L,E,lA,N, SPA, W,lA,T,E,R,$2A,$FE
-	.db $2E,5,0, SPA, T,H,I,R,S,T,$2A,$FF
+	.db $2E,7,5, SPA, T,H,I,R,S,T,$2A,$FF
 Message14:
 	.db J,lA,R, SPA, I,S, SPA, E,M,P,T,lY,$2A,$FF
 Message15:
 	.db lA,T,E, SPA, U,N,C,O,O,K,E,D, SPA, M,E,lA,T,$2A,$FE
-	.db $2E,2,0, SPA, H,U,N,G,E,R,$2A,$FF
+	.db $2E,5,0, SPA, H,U,N,G,E,R,$2A,$FF
 Message17:
 	.db lA,T,E, SPA, C,O,O,K,E,D, SPA, M,E,lA,T,$2A,$FE
-	.db $2E,4,0, SPA, H,U,N,G,E,R,$2A,$FF
+	.db $2E,6,0, SPA, H,U,N,G,E,R,$2A,$FF
 Message18:
 	.db B,lA,D, SPA, M,E,lA,T,$2A, SPA, B,E,C,lA,M,E, SPA, S,I,C,K,$2A,$FF
 Message19:
 	.db G,U,N, SPA, E,Q,U,I,P,P,E,D,$2A,$FF
 Message1A:
-	.db T,H,E, SPA, B,R,U,S,H, SPA, I,S, SPA, T,O,O, SPA, L,lA,R,G,E, SPA, T,O,$FE
+	.db T,H,E, SPA, B,R,U,S,H, SPA, I,S, SPA, T,O,O, SPA, T,H,I,C,K, SPA, T,O,$FE
 	.db B,E, SPA, C,U,T, SPA, W,I,T,H, SPA, lA, SPA, K,N,I,F,E,$2A,$FF
 Message1B:
 	.db O,B,T,lA,I,N,E,D, SPA, M,lA,C,H,E,T,E,$2A,$FF
@@ -246,7 +246,7 @@ M0R0_ReadA:
 	;drinking unboiled water
 	lda thirst
 	clc
-	adc #25
+	adc #50
 	bcc @norollover
 	lda #255
 @norollover:
@@ -328,6 +328,7 @@ M4R0_Cursor_XY:
 	.db 8,32, 24,32
 Message4Response0:
 	;checks to see if player wants to replace contents of jar
+	;NOTE - this may end up not being used, as water might be the only thing that can be put in a jar
 M4R0_ReadB:
 	lda buttons_pressed
 	and #BUTTONS_B
@@ -420,7 +421,7 @@ M11R0_ReadAorB:
 	beq @rts
 	lda thirst
 	clc
-	adc #50
+	adc #75
 	bcc @skipoverflow
 	lda #255
 @skipoverflow:
@@ -437,14 +438,14 @@ M11R0_ReadAorB:
 	
 Message15Response0:
 	;eating uncooked meat
-	;increase player's health by 20, but randomly make him sick
+	;increase (decrease) player's health by 40, but randomly make him sick
 M15R0_ReadAorB:
 	lda buttons_pressed
 	and #(BUTTONS_A | BUTTONS_B)
 	beq @rts
 	lda hunger
 	clc
-	adc #20
+	adc #50
 	bcc @skipoverflow
 	lda #255
 @skipoverflow:
@@ -484,7 +485,7 @@ M16R0_ReadAorB:
 	beq @rts
 	lda hunger
 	clc
-	adc #40
+	adc #60
 	bcc @skipoverflow
 	lda #255
 @skipoverflow:
