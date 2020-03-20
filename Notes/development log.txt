@@ -1468,3 +1468,5 @@ Day 188 - 3/20/2020
 		-Well as it turns out I was forgetting to load random into A before calling random in InitEnt, and this is after setting a bunch of stuff to 0. With the way random works, it'll set the value to $1D if it's 0. This fixed everything, and now bees' movement is much more random!
 			--- LATER IN THE DAY ---
 	-Removed a bunch of unnecessary lines where spawning ents are set to active. This now goes in InitEnt and saves a bit of space. Everything still runs as it should.
+	-The tourniquet string (which is two lines) was getting drawn as corrupted data in the recipe list, so I fixed that.
+	-Fixed some issues with the ClearCraftQueue loop using incorrect registers and not re-loading X when it should have, causing items to have either less or more counts after clearing the craft queue.

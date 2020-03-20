@@ -14,6 +14,9 @@
 -[Discovered 7/25/18] - The game will crash with the player gets a game over. It goes to the game over state ok, but the scroll is all fucked and it goes to the BREAK handler. [Solved 7/26/2018 - Simple problem with stack push / pops in the DeleteFile macro.]
 -[Discovered 8/4/18] - Sometimes (Happened in screen (2,4)) a poison snake will move down across the screen weirdly, seems to have spawned in a solid spot. Check spawn points for this screen. [Solved 8/9/18 - I'd forgotten to define what terrain poisonous snakes are on in the fixed bank]
 -[Discovered 10/24/18] - When entering a cave and then leaving it, the player will spawn in a garbage screen and cause the game to crash when he tries to move and collide with the background. I don't know if this has to do with the cave being dark or not. Comment out the code to make the cave dark and see if it still happens. [Solved 11/1/18 - The screen data pointer wasn't getting properly initialized when a dark cave was loaded.]
+-[Discovered 3/20/20] - when a stick or cloth is added to the craft queue, and then clearing the queue or exiting the menu increases the count of cloth. When this happens, and then a tourniquet is crafted, it won't display it in the recipe list. Check and see if this happens with other items.
+	-Only seems to happen when you get new cloth, but saving and resetting causes the glitch to not happen anymore
+	[Solved 3/2/020] - The ClearCraftQueue loop was checking A instead of X in some spots, and not re-loading X when it should have been, basically causing incorrect item count writes to overflow until eventually cloth was set to 1 higher than it should have been.
 
 
 		UNSOLVED
