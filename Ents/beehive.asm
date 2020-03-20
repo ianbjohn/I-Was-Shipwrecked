@@ -51,8 +51,6 @@ BeehiveNormal
 	beq @done
 	tay					;the bee's potential spot should be in Y, since the beehive's ent index should stay in X
 	ldx ent_index
-	lda #1
-	sta ent_active,y
 	lda #ENT_BEE
 	sta ent_id,y
 	lda ent_x,x			;spawn out of the opening of the hive
@@ -130,8 +128,6 @@ BeehiveHit:
 	clc
 	adc temp2
 	sta ent_y,x
-	lda #1
-	sta ent_active,x
 	jsr InitEnt
 @spawnbeesdone:
 	inx

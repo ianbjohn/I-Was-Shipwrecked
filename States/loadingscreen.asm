@@ -422,8 +422,6 @@ SetUpDoors:
 	iny
 @loop:
 	jsr FindFreeEntSlot	;There should always be a free slot
-	lda #1
-	sta ent_active,x
 	lda (door_ptr),y	;X
 	sta ent_x,x
 	iny

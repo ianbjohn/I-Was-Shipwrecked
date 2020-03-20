@@ -440,8 +440,6 @@ SpecialEvent:
 	sta ent_y+2
 	lda #0
 	sta ent_dir+2
-	lda #1
-	sta ent_active+2
 	lda #BANK_ENTS
 	jsr SetPRGBank
 	ldx #2
@@ -540,8 +538,6 @@ RegularEvent:
 	sta ent_y,x
 	lda #0
 	sta ent_dir,x
-	lda #1
-	sta ent_active,x
 	lda #BANK_ENTS
 	jsr SetPRGBank
 	jsr InitEnt

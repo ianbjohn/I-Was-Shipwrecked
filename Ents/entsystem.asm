@@ -4,6 +4,8 @@ InitEnt:
 ;Make sure when initing an ent that EVERYTHING gets reset, since it doesn't happen when ents deactivate. We don't want an ent to spawn in i.e state 3 on animation frame 2 accidentally
 ;State, X, Y, and dir should all be specified before the object is initialized. That way the correct animation frame and hitbox can be loaded depending on state, direction, etc.
 	;X should be loaded with the correct ent index
+	lda #1
+	sta ent_active,x
 	lda ent_id,x
 	asl
 	tay

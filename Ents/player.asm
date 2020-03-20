@@ -373,8 +373,6 @@ PlayerReadB:
 	ldy #1
 	jsr SubtractFromItemCount
 @continue:
-	lda #1
-	sta ent_active+1
 	ldx weapon
 	lda WeaponEnts,x
 	sta ent_id+1
@@ -391,8 +389,6 @@ PlayerReadB:
 	sta rounds_hud_timer
 @loadgun:
 	;the gun ent can just be put in slot 15 (for right now at least I guess)
-	lda #1
-	sta ent_active+15
 	lda ent_dir+0
 	asl
 	tax
