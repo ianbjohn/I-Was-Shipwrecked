@@ -219,6 +219,7 @@ UpdateDone:
 	;CHR RAM updates
 	;Just waves for right now
 	;I guess this could go after the ents are drawn, but whatever
+	;Eventually, have a better system for CHR updates depending on things like area
 UpdateWaveCHR:
 	lda chr_anim_timer
 	clc

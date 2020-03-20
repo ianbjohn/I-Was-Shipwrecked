@@ -343,6 +343,8 @@ IML_Tourniquet_0:
 	jsr SubtractFromItemCount
 	lda #STATUS_NORMAL
 	sta status
+	ldy #SFX_RECOVERY
+	jsr PlaySound
 	lda #MSG_USEDTOURNIQUET
 	bne @draw
 @notourni:

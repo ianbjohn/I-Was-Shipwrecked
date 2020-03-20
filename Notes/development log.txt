@@ -1462,7 +1462,9 @@ Day 187 - 3/19/2020
 	-NEXT TIME - NOW THAT THE BEEHIVE CODE HAS BEEN INVESTIGATED AND FIXED, IT'S TIME TO INVESTIGATE THE BEE CODE!
 	
 Day 188 - 3/20/2020
-	-Figured out why it takes so long for the beehive to spawn bees - The timer never appears to get set when initializing the ent. So the top 3 priority TODOS now are implement init states for ents (Which shouldn't be too hard but might take a decent amount of time to make sure nothing broke and to debug), move setting ent_active to the init_ent routine (Which also might have involved debugging), and improving the bee AI.
+	-Figured out why it takes so long for the beehive to spawn bees - The timer never appears to get set when initializing the ent. So the top 3 priority TODOS now are implement init states for ents (Which shouldn't be too hard but might take a decent amount of time to make sure nothing broke and to debug), move setting ent_active to the InitEnt routine (Which also might have involved debugging), and improving the bee AI.
 	-As somewhat expected, whenever it's time to spawn a new bee and give it foraging coordinates, the value of random is always the same, $1D, resulting in the same spots every time. Will have to investigate further why this is.
-		-When calling the init_ent routine in the beehive's code to spawn bees, whatever random value random is it always gets set to $1D, which is likely what's causing the spawn pattern for the bees.
-		-Well as it turns out I was forgetting to load random into A before calling random in init_ent, and this is after setting a bunch of stuff to 0. With the way random works, it'll set the value to $1D if it's 0. This fixed everything, and now bees' movement is much more random!
+		-When calling the InitEnt routine in the beehive's code to spawn bees, whatever random value random is it always gets set to $1D, which is likely what's causing the spawn pattern for the bees.
+		-Well as it turns out I was forgetting to load random into A before calling random in InitEnt, and this is after setting a bunch of stuff to 0. With the way random works, it'll set the value to $1D if it's 0. This fixed everything, and now bees' movement is much more random!
+			--- LATER IN THE DAY ---
+	-Removed a bunch of unnecessary lines where spawning ents are set to active. This now goes in InitEnt and saves a bit of space. Everything still runs as it should.
