@@ -1,8 +1,3 @@
-CraftItemsMap:
-	;sorted by craftable item ID
-	;maps craftable items to their regular item counterparts
-	.db ITEM_SPEAR,ITEM_TORCH,ITEM_TOURNIQUET
-	
 ItemRecipes:
 	.dw SpearRecipe,TorchRecipe,TourniquetRecipe
 	
@@ -14,6 +9,7 @@ TourniquetRecipe:
 	.db S,T,I,C,K, SPA, $2E, SPA, C,L,O,T,H,$FF
 
 
+	.db "RLIST"
 RecipeListInit:
 	;Clear screen completely
 	;For however many craftable items have been discovered
@@ -76,13 +72,12 @@ RecipeListInit:
 	bne @drawcrafteditems		;w.a.b
 @crafted:
 	;draw the item string
-	ldx temp0					;the ID of the crafted item that was returned
-	lda CraftItemsMap,x
+	lda temp0					;the ID of the crafted item that was returned
 	asl
 	tax
-	lda ItemStrings+0,x
+	lda RecipeItemStrings+0,x	;in the data section of the main skeleton file
 	sta ptr1+0
-	lda ItemStrings+1,x
+	lda RecipeItemStrings+1,x
 	sta ptr1+1
 	ldy #0
 @drawitemstring:

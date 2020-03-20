@@ -33,7 +33,6 @@ CraftMessages:
 	.db MSG_CRAFTEDSPEAR,MSG_CRAFTEDTORCH,MSG_CRAFTEDTOURNIQUET
 	
 ReverseCraftItemsMap:
-	;the opposite of CraftItemsMap (Located in recipelist.asm)
 	;maps items to their craftable item counterpart
 	.db 0,0,0,0,0,0,0,CR_ITEM_SPEAR,0,0,0,CR_ITEM_TORCH,0,CR_ITEM_TOURNIQUET,0
 	

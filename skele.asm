@@ -1581,6 +1581,10 @@ WeaponStrings:
 	;Weapon strings need to be different from their item string counterparts, since there needs to be padding instead of a terminating character
 	;only put weapons here. What value the player's weapon is only corresponds to weapons. Converting it to the correct ent index is taken care of elsewhere
 	.dw W_KnifeString, W_StickString, W_SpearString, W_BigBoneString, W_MacheteString, W_GunString
+;Craftable items in the recipe list should all be drawn as one line. So far, tourniquet is the only item that needs this unique string
+RecipeItemStrings:
+	;sorted by craftable item ID
+	.dw SpearString, TorchString, R_TourniquetString
 	
 KnifeString:
 	;FF - End
@@ -1635,6 +1639,10 @@ W_MacheteString:
 	.db M,lA,C,H,E,T,E,SPA
 W_GunString:
 	.db SPA,SPA,G,U,N,SPA,SPA,SPA
+	
+	
+R_TourniquetString:
+	.db T,O,U,R,N,I,Q,U,E,T,$FF
 
 	
 ItemHasCount:
