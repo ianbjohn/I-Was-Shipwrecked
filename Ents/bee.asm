@@ -82,7 +82,7 @@ BeeCheckBeehive:
 	cpy #$FF
 	bne BeeCheckBeehiveDone
 	lda #3						;swarming
-	sta ent_state,x
+	sta ent_state,x				;No real need to reload animation data here since it's the same
 BeeCheckBeehiveDone:
 
 	;go to individual code for each state

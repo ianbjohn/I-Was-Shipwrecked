@@ -75,6 +75,8 @@ BeehiveNormal
 	jsr RandomLFSR
 	sta ent_misc2,y
 	;(either guard the hive or forage for food)
+	lda #0				;foraging (for right now)
+	sta ent_state,y
 @done:
 	rts
 	

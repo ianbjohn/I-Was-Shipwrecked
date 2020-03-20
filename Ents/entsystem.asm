@@ -51,6 +51,7 @@ InitEnt:
 	sta ent_misc1,x
 	sta ent_misc2,x
 	sta ent_misc3,x
+	lda random
 	jsr RandomLFSR
 	sta ent_time1,x			;for right now, until I get around to adding init routines for ents
 	inc num_active_ents

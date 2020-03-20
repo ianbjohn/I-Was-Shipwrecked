@@ -1455,8 +1455,14 @@ Day 187 - 3/19/2020
 	-I discovered in the metasprites file, the hitbox data for the bullet was being stored as words instead of bytes, so a lot of times bullets had a height of 0 pixels.
 	-I also forgot to decrement num_active_enemies when bees get killed.
 	-Removed some old comments and made a couple tiny minor optimizations too
-	-NEXT TIME - NOW THAT THE BEEHIVE CODE HAS BEEN INVESTIGATED AND FIXED, IT'S TIME TO INVESTIGATE THE BEE CODE!
 			--- LATER IN THE DAY ---
 	-FINISHED MOUNTAINS SONG!!!!!
 	-Changed the quenching thirst from unboiled water from +25 to +50, and boiled water from +50 to +75, so it'll be less annoying if players are drinking from a river or something. Also increased hunger energy from uncooked meat from +25 to +50 and +40 to +60 for cooked meat for much the same reason.
 	-Made some notes in ideas about how to better handle game overs
+	-NEXT TIME - NOW THAT THE BEEHIVE CODE HAS BEEN INVESTIGATED AND FIXED, IT'S TIME TO INVESTIGATE THE BEE CODE!
+	
+Day 188 - 3/20/2020
+	-Figured out why it takes so long for the beehive to spawn bees - The timer never appears to get set when initializing the ent. So the top 3 priority TODOS now are implement init states for ents (Which shouldn't be too hard but might take a decent amount of time to make sure nothing broke and to debug), move setting ent_active to the init_ent routine (Which also might have involved debugging), and improving the bee AI.
+	-As somewhat expected, whenever it's time to spawn a new bee and give it foraging coordinates, the value of random is always the same, $1D, resulting in the same spots every time. Will have to investigate further why this is.
+		-When calling the init_ent routine in the beehive's code to spawn bees, whatever random value random is it always gets set to $1D, which is likely what's causing the spawn pattern for the bees.
+		-Well as it turns out I was forgetting to load random into A before calling random in init_ent, and this is after setting a bunch of stuff to 0. With the way random works, it'll set the value to $1D if it's 0. This fixed everything, and now bees' movement is much more random!
