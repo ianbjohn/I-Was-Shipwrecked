@@ -331,6 +331,9 @@ MainLoop:
 ClearUnusedOAM:
 	sta $0200,x
 	inx
+	inx
+	inx
+	inx
 	bne ClearUnusedOAM
 	stx oam_index				;oam_index should be 0 now, so we're already to go when the next frame starts
 ClearUnusedOAMDone:

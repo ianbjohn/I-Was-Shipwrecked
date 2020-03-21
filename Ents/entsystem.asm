@@ -279,7 +279,6 @@ UpdateEntHitbox:
 	rts
 	
 	
-	.db "DrawEnts"
 DrawEnts:
 	;Draw the player's weapon first so it'll always be in front of him
 	;Then draw the player
