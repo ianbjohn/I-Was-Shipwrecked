@@ -1475,3 +1475,5 @@ Day 188 - 3/20/2020
 	
 Day 189 - 3/21/2020
 	-Made some metatiles for the clearing section out of the new CHR tiles.
+	-Major overhaul in sprite cycling / ent drawing code. Similar to an idea I had way about about shuffling the order ents are drawn in, I decided to just do that and increment the order theyre drawn instead of trying to do pseudorandom prime addition stuff. The player's weapon is now always in front of him, the player is always in front of enemies (I may end up changing this though if it looks bad, like when crabs pinch the player), and the OAM buffer only needs to clear sprites that weren't used, instead of clearing everything at the start of the frame. So all in all I think code size was reduced and speed was improved, and it looks better when the player's attacking now.
+	-Made the mistake of drawing all the thick grass concept art at the bottom of the shore CHR file, which is only 3 KB, so when I saved none of it got saved and I basically wasted 30 minutes of my life.

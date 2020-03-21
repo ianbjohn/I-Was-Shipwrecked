@@ -32,13 +32,10 @@ PlayInit:
 	
 	;.db "Play"
 PlayMain:
-	CycleSprites
-	
 	;process each active ent
-	lda #0
-	sta ent_index
+	ldx #0
+	stx ent_index
 @entloop:
-	ldx ent_index
 	lda ent_active,x
 	beq @entdone
 	jsr RunEnt
@@ -47,8 +44,8 @@ PlayMain:
 	bne @entloopdone
 @entdone:
 	inc ent_index
-	lda ent_index
-	cmp #MAX_ENTS
+	ldx ent_index
+	cpx #MAX_ENTS
 	bne @entloop
 @entloopdone:
 	
@@ -177,7 +174,6 @@ UpdateThirst
 	clc
 	adc #7
 	sta vram_buffer_pos
-	;weapon
 UpdateDay:
 	lda day+0
 	cmp day_old
@@ -239,21 +235,9 @@ UpdateWaveCHR:
 	lda #0
 UpdateWaveCHRDone:
 	sta chr_anim_timer
-	
-	;if in a cave, and the player has a torch, decrement torch_time, when 0, decrement torch_count, when 0, set BG palette to black and display a message saying 
 
 	;draw each active ent
-	lda #0
-	sta ent_index
-@entdrawloop:
-	jsr DrawEnt
-	inc ent_index
-	lda ent_index
-	cmp #MAX_ENTS
-	bne @entdrawloop
-@entsdrawdone:
-	lda #0
-	sta ent_index
+	jsr DrawEnts
 	
 	;I don't feel like making these ents, but draw the sprites that show how many rounds you have left after shooting gun
 DisplayRoundsHUD:
@@ -283,6 +267,10 @@ DisplayRoundsHUD:
 	clc
 	adc #5
 	sta $0207,x
+	txa
+	clc
+	adc #8
+	sta oam_index			;for right now, I don't think there will be any other sprite updates out of this, so this store can maybe be optimized out
 DisplayRoundsHUDDone:
 	
 	;Potential status changes

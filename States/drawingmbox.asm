@@ -9,24 +9,10 @@ ErasingMBoxInit:
 
 
 DrawingMBoxMain:
-	;only draw ents if we're in the play state
-	;sprite cycling
-	CycleSprites
+	;only draw ents if we were in the play state
 	lda in_inventory_state
 	bne @skipplaystatestuff
-	
-	;draw (but not process) each active ent
-	lda #0
-	sta ent_index
-@entloop:
-	jsr DrawEnt
-	inc ent_index
-	lda ent_index
-	cmp #MAX_ENTS
-	bne @entloop
-@entsdone:
-	lda #0
-	sta ent_index
+	jsr DrawEnts
 @skipplaystatestuff:
 
 	;90 tiles need to be replaced with blank ones. These get loaded into the VRAM buffer, along with where on the screen they should be drawn,

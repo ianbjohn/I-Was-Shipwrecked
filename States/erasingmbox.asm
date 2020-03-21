@@ -7,26 +7,9 @@ StatusBoardRoutines2:
 
 ErasingMBoxMain:
 	;only draw ents if we're in the play state
-	;sprite cycling
 	lda in_inventory_state
 	bne EMB_loop
-	CycleSprites
-	
-	;draw (but not process) each active ent (But don't do this if we're in the inventory state)
-	lda in_inventory_state
-	bne EMB_loop
-	lda #0
-	sta ent_index
-@entloop:
-	jsr DrawEnt
-	inc ent_index
-	lda ent_index
-	cmp #MAX_ENTS
-	bne @entloop
-@entsdone:
-	lda #0
-	sta ent_index
-	
+	jsr DrawEnts
 EMB_loop:
 	;the commands here are different from the commands for the rest of the message box engine
 	ldy mbox_pos

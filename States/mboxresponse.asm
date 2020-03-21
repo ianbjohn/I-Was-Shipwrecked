@@ -1,21 +1,8 @@
 MBoxResponseMain:
-	CycleSprites
-	
 	;draw (but not process) each active ent (But don't do this if we're in the inventory state)
 	lda in_inventory_state
 	bne @endofentstuff
-	lda #0
-	sta ent_index
-@entloop:
-	jsr DrawEnt
-	inc ent_index
-	lda ent_index
-	cmp #MAX_ENTS
-	bne @entloop
-@entsdone:
-	lda #0
-	sta ent_index
-	
+	jsr DrawEnts
 @endofentstuff:
 	lda prg_bank
 	pha

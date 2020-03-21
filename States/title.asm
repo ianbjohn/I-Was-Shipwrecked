@@ -216,6 +216,10 @@ Title_ReadStart:
 	lda #1
 	sta num_active_ents
 	
+	;start shuffling sprites based on ent slot #2
+	lda #2
+	sta ent_draw_index
+	
 	lda #$3F	;(Start at far bottom right corner in real version)
 	sta screen
 	

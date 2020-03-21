@@ -393,8 +393,6 @@ FS_DrawFileDataDone:
 
 	
 FileSelectMain:
-	CycleSprites
-	
 FS_ReadA:
 	lda buttons_pressed
 	and #BUTTONS_A
@@ -593,7 +591,7 @@ FS_ReadRightDone:
 	sta $0200,y
 	tya
 	clc
-	adc #76
+	adc #4
 	sta temp0					;save A (Y) as Y is going to get clobbered in a second
 	;whatever status the file select state is in, use that for where to get sprite position data from
 	lda fileselect_status
@@ -615,7 +613,7 @@ FS_ReadRightDone:
 	sta $0200,y
 	tya
 	clc
-	adc #76
+	adc #4
 	sta oam_index
 	rts
 	
