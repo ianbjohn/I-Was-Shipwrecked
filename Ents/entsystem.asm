@@ -277,23 +277,75 @@ UpdateEntHitbox:
 	adc ent_height,x
 	sta ent_hb_y,x
 	rts
+	
+	
+	.db "DrawEnts"
+DrawEnts:
+	;Draw the player's weapon first so it'll always be in front of him
+	;Then draw the player
+	lda ent_draw_index
+	pha					;need to save since DrawEnt uses ent_draw_index instead of ent_index, and we need to draw the weapon and player first
+	lda #1
+	sta ent_draw_index
+@weapon:
+	lda ent_active+1
+	beq @player
+	lda #1
+	sta ent_draw_index
+	jsr DrawEnt
+@player:
+	dec ent_draw_index
+	jsr DrawEnt
+@others:
+	;Now draw the rest of the ents based on ent_draw_index
+	pla
+	sta ent_draw_index
+	pha					;save again since once everything's drawn, we'll increment for the next frame
+	tax
+	ldy #2
+	sty ent_index		;use as our actual index counter to loop through the rest of the ents
+@entdrawloop:
+	lda ent_active,x
+	beq @continue
+	jsr DrawEnt
+@continue:
+	;increment ent_draw_index, roll over from 16 to 2
+	lda ent_draw_index
+	clc
+	adc #1
+	cmp #MAX_ENTS
+	bcc @rolloverdone
+	lda #2
+@rolloverdone:
+	sta ent_draw_index
+	tax
+	inc ent_index
+	ldy ent_index
+	cpy #MAX_ENTS
+	bne @entdrawloop
+@entsdrawdone:
+	pla
+	clc
+	adc #1
+	cmp #MAX_ENTS
+	bcc @rolloverdone1
+	lda #2
+@rolloverdone1:
+	sta ent_draw_index
+	rts
 
 	
 DrawEnt:
-	ldx ent_index
-	lda ent_active,x
-	bne @continue
-	jmp @done
-@continue:
+	;The current ent is assumed to be active (checked in the play state when the ent draw loop happens to save an unnecessary call)
+	ldx ent_draw_index
 	lda game_state
 	cmp #STATE_PLAY
-	bne @continue1			;if the ent is in PHI flicker while the game is in a differen't state, draw it anyway
+	bne @continue			;if the ent is in PHI flicker while the game is in a differen't state, draw it anyway
 	lda ent_phi_timer,x
 	and #%00000010
-	beq @continue1			;if ent is in PHI, and is on an even frame, don't draw (causes ent to flicker signaling PHI)
+	beq @continue			;if ent is in PHI, and is on an even frame, don't draw (causes ent to flicker signaling PHI)
 	jmp @done
-@continue1:
-	;stx ent_index
+@continue:
 	lda ent_id,x
 	asl
 	tay
@@ -338,7 +390,7 @@ DrawEnt:
 @skipoverflow:
 	sta ent_ptr2+0
 @loop:
-	ldx ent_index
+	ldx ent_draw_index
 	lda ent_x,x
 	clc
 	adc (ent_ptr2),y		;Xoffs
@@ -351,7 +403,7 @@ DrawEnt:
 	lda (ent_ptr2),y		;Attribs
 	sta $0202,x
 	iny
-	ldx ent_index
+	ldx ent_draw_index
 	lda ent_y,x
 	clc
 	adc (ent_ptr2),y		;Yoffs

@@ -7,14 +7,6 @@
 @absdone:
 .endm
 
-.macro CycleSprites
-	;sprite cycling
-	jsr ClearOAM
-	lda oam_index
-	clc
-	adc #76					;76/4=19, prime number
-	sta oam_index
-.endm
 
 .macro SaveFileData
 	;Saves current data to a given file

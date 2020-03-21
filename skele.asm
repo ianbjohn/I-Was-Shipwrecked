@@ -321,6 +321,20 @@ MainLoop:
 	sta vram_buffer+3,x
 	inc vram_update
 @checkVRAMbuffercontentsdone:
+
+	;After all sprites have been drawn we should clear the parts of the OAM buffer that wasn't used for the current frame
+	;Some states such as Title and GameOver don't use oam_index and either have hard-coded sprites or no sprites,
+		;but oam_index should be 0 in these situations and so the loop will be ignored
+	ldx oam_index
+	beq ClearUnusedOAMDone		;if the index was 0, no sprites were drawn in this frame, so we don't have to clear anything
+	lda #$FE
+ClearUnusedOAM:
+	sta $0200,x
+	inx
+	bne ClearUnusedOAM
+	stx oam_index				;oam_index should be 0 now, so we're already to go when the next frame starts
+ClearUnusedOAMDone:
+
 	;add up any other values and store them in the random number
 	
 	;stop tinting screen, everything in this frame is finished
@@ -847,6 +861,7 @@ DrawInventoryMessageToBuffer:
 	
 ClearOAM:
 	ldx #0
+	stx oam_index		;will need to get reset since we're clearing everything
 	lda #$FE
 @loop:
 	sta $0200,x

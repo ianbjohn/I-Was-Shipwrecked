@@ -25,20 +25,7 @@ WritingMsgMain:
 	;only draw ents if we're in the play state
 	lda in_inventory_state
 	bne @skipplaystatestuff
-	CycleSprites
-	
-	;draw (but not process) each active ent
-	lda #0
-	sta ent_index
-@entloop:
-	jsr DrawEnt
-	inc ent_index
-	lda ent_index
-	cmp #MAX_ENTS
-	bne @entloop
-@entsdone:
-	lda #0
-	sta ent_index
+	jsr DrawEnts
 @skipplaystatestuff:
 	
 	lda prg_bank

@@ -506,8 +506,6 @@ InventoryMain:
 	lda #BANK_MESSAGES
 	jsr SetPRGBank
 	
-	CycleSprites
-	
 	;if the player has is in the "item action" substate, we know there was in item in whatever cell was selected
 	lda inventory_status
 	cmp #3
@@ -542,7 +540,7 @@ InventoryMain:
 	sta $0202,x
 	txa
 	clc
-	adc #76
+	adc #4
 	sta oam_index
 	
 Inventory_ReadA:
@@ -1132,7 +1130,7 @@ Inventory_DrawCursor:
 	sta $0202,y
 	tya
 	clc
-	adc #76
+	adc #4
 	sta oam_index
 	
 InventoryMain_Done:

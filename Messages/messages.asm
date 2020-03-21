@@ -230,7 +230,7 @@ M0R0_ReadBDone:
 	sta $0200,y
 	tya
 	clc
-	adc #76
+	adc #4
 	sta oam_index
 M0R0_ReadA:
 	lda buttons_pressed
@@ -353,7 +353,7 @@ M4R0_ReadBDone:
 	sta $0200,y
 	tya
 	clc
-	adc #76
+	adc #4
 	sta oam_index
 M4R0_ReadA:
 	lda buttons_pressed
@@ -401,7 +401,7 @@ M9R0_ReadBDone:
 	sta $0200,y
 	tya
 	clc
-	adc #76
+	adc #4
 	sta oam_index
 M9R0_ReadA:
 	lda buttons_pressed

@@ -26,8 +26,9 @@
 	chr_anim_frame		.dsb 1		;Used for tile animation
 	chr_anim_timer		.dsb 1
 	;sprite cycling
-	oam_index			.dsb 1		;Only 8 sprites can be displayed on a scanline, so this helps cycle the order they're drawn to make them flicker
-	;numspritesactive	.dsb 1		;Reset at start of frame, INCd whenever a sprite is drawn. Once everything has been drawn, everything else is cleared
+	oam_index			.dsb 1		;where in our OAM buffer we are, increment every time a sprite is drawn
+	ent_draw_index		.dsb 1		;Player weapon and player are drawn first, then the other 14 ents are drawn, with the order cycling each frame
+									;gets incremented at the end of each frame after all sprites have been drawn, rolling over from 16 to 2
 	howmuchoamtodraw	.dsb 1		;when drawing a metasprite, how many sprites it has * 4
 	;BCD (Binary-coded decimal)
 	bcd_value			.dsb 2		;value that will get turned into BCD (8 or 16 bit)

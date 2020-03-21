@@ -1,18 +1,5 @@
 PausedMain:
-	CycleSprites
-	
-	;draw (but not process)each active ent
-	lda #0
-	sta ent_index
-@entloop:
-	jsr DrawEnt
-	inc ent_index
-	lda ent_index
-	cmp #MAX_ENTS
-	bne @entloop
-@entsdone:
-	lda #0
-	sta ent_index
+	jsr DrawEnts
 	
 	;wait for select or start button to be pressed to resume game
 Paused_CheckExit:
