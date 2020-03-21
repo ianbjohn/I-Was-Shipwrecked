@@ -1470,3 +1470,8 @@ Day 188 - 3/20/2020
 	-Removed a bunch of unnecessary lines where spawning ents are set to active. This now goes in InitEnt and saves a bit of space. Everything still runs as it should.
 	-The tourniquet string (which is two lines) was getting drawn as corrupted data in the recipe list, so I fixed that.
 	-Fixed some issues with the ClearCraftQueue loop using incorrect registers and not re-loading X when it should have, causing items to have either less or more counts after clearing the craft queue.
+	-Started working on the possible intro for the clearing music
+	-Started expanding the final map, added a few ground/grass tiles for the clearing area, as well as the clearing palette.
+	
+Day 189 - 3/21/2020
+	-Made some metatiles for the clearing section out of the new CHR tiles.

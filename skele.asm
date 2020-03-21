@@ -1508,6 +1508,10 @@ BG_Palette5:
 BG_Palette6:
 	;cave walls, cave ground, heiroglyphs
 	.db $0F,$00,$10,$30, $0F,$17,$05,$10, $0F,$17,$28,$39
+BG_Palette7:
+	;clearing
+	;green as UBC, dirt/rocks, grass/rock/water, thick grass
+	.db $2A,$17,$27,$37, $2A,$19,$10,$21, $2A,$09,$1A,$17
 	
 	
 LogoPalette:
