@@ -4,13 +4,15 @@ MeatRoutine:
 	;So much so in fact that this routine is used for all of them
 		;We simply map the ent ID to the corresponding item ID, display the corresponding "found" message", and accomplish the same thing
 
+	;countdown / flicker logic better explained in heart.asm
 DecMeatPHI:
 	lda ent_state,x
 	beq @continue
 	jmp MeatShowCollected
 @continue:
-	dec ent_phi_timer,x
+	lda ent_phi_timer,x
 	beq DecMeatPHIDone
+	dec ent_phi_timer,x
 DecMeatPHIDone:
 
 	;collect if player or his weapon touches item
@@ -21,7 +23,8 @@ DecMeatPHIDone:
 	jsr CheckPlayerWeaponCollision
 	beq @checkplayercol_done
 @playercol:
-	lda EntItems,x
+	ldy ent_id,x
+	lda EntItems,y
 	jsr CheckIfItemObtained
 	beq @newitem
 	ldy #SFX_HEARTCOLLECTED		;just play the normal item acquisition sfx if item's already been obtained
@@ -29,25 +32,29 @@ DecMeatPHIDone:
 	jmp @continue
 @newitem:
 	;let the player know what they got
-	lda EntItems,x
+	ldx ent_index
+	ldy ent_id,x
+	lda EntItems,y
 	jsr SetItemAsObtained
 	ldy #SFX_NEWITEMACQUISITION	;play new item acquisition sound effect
 	jsr PlaySound
 	ldx ent_index
-	ldy EntItems,x
-	lda ItemFoundMsgs,y
+	ldy ent_id,x
+	ldx EntItems,y
+	lda ItemFoundMsgs,x
 	sta message
 	lda #STATE_DRAWINGMBOX
 	sta game_state
 @continue:
 	;add #1 to the count
 	ldx ent_index
-	lda EntItems,x
+	ldy ent_id,x
+	lda EntItems,y
 	ldy #1
 	jsr AddToItemCount
 	ldx ent_index
 	inc ent_state,x			;animation stuff will be the same
-	lda #30					;display over player's head for 30 frames
+	lda #30
 	sta ent_timer1,x
 	rts
 @checkplayercol_done:
@@ -63,15 +70,9 @@ DecMeatPHIDone:
 	lda frame_counter
 	and #%00000001
 	bne @incrementtimer1done
-@continue2:
-	lda ent_timer1,x
-	clc
-	adc #1
-	bcc @skipoverflow2
+	inc ent_timer1,x
+	bne @incrementtimer1done
 	DeactivateEnt
-	rts
-@skipoverflow2:
-	sta ent_timer1,x
 @incrementtimer1done:
 	rts
 	

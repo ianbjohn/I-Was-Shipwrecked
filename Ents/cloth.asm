@@ -18,7 +18,8 @@ ClothRoutine:
 	jsr CheckPlayerWeaponCollision
 	beq @checkplayercol_done
 @playercol:
-	lda EntItems,x
+	ldy ent_id,x
+	lda EntItems,y
 	jsr CheckIfItemObtained
 	beq @newitem
 	ldy #SFX_HEARTCOLLECTED
@@ -26,34 +27,34 @@ ClothRoutine:
 	jmp @continue2
 @newitem:
 	ldx ent_index
-	lda EntItems,x
+	ldy ent_id,x
+	lda EntItems,y
 	jsr SetItemAsObtained
 	ldy #SFX_NEWITEMACQUISITION	;play new item acquisition sound effect
 	jsr PlaySound
 	ldx ent_index
-	ldy EntItems,x
-	lda ItemFoundMsgs,y
+	ldy ent_id,x
+	ldx EntItems,y
+	lda ItemFoundMsgs,x
 	sta message
 	lda #STATE_DRAWINGMBOX
 	sta game_state
 @continue2:
 	ldx ent_index
-	lda EntItems,x
+	ldy ent_id,x
+	lda EntItems,y
 	ldy #1
 	jsr AddToItemCount
 	ldx ent_index
-	inc ent_state,x
-	;jsr FindEntAnimLengthsAndFrames
+	inc ent_state,x			;animation data will be the same
 	lda #30
 	sta ent_timer1,x
 @checkplayercol_done:
 	rts
 
 ClothShowCollected:
-	lda ent_timer1,x
-	sec
-	sbc #1
-	bcs ClothShowCollectedDone
+	dec ent_timer1,x
+	bne ClothShowCollectedDone
 	DeactivateEnt
 	rts
 ClothShowCollectedDone:

@@ -11,8 +11,9 @@ DecHeartPHI:
 	beq @continue
 	jmp HeartShowCollected			;show over player's head for 30 frames
 @continue:
-	dec ent_phi_timer,x
+	lda ent_phi_timer,x
 	beq DecHeartPHIDone
+	dec ent_phi_timer,x
 DecHeartPHIDone:
 	
 	;collect if player or his weapon touches item
@@ -36,7 +37,7 @@ DecHeartPHIDone:
 	jsr PlaySound
 	ldx ent_index
 	inc ent_state,x				;animation data will be the same
-	lda #30
+	lda #30						;now use timer1 to display over player's head for 30 frames
 	sta ent_timer1,x
 	rts
 @checkplayercol_done:
@@ -54,15 +55,9 @@ DecHeartPHIDone:
 	lda frame_counter
 	and #%00000001				;dec the timer every other frame, since 255 frames only lasts ~4.25 seconds (The ent should stay active longer)
 	bne @incrementtimer1done
-@continue:
-	lda ent_timer1,x
-	clc
-	adc #1
-	bcc @skipoverflow2
+	inc ent_timer1,x
+	bne @incrementtimer1done
 	DeactivateEnt
-	rts
-@skipoverflow2:
-	sta ent_timer1,x
 @incrementtimer1done:
 	rts
 	
