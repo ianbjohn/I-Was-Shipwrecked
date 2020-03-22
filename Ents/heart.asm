@@ -6,12 +6,14 @@ HeartRoutine:
 		;if it has, deactivate the object
 	;otherwise, we're done
 	
+	;a bit confusing but basically the item is active for 512 frames (timer1 increases every other frame),
+		;the last 120 of which of which it'll flicker (phi_timer decreases)
 DecHeartPHI:
 	lda ent_state,x
 	beq @continue
 	jmp HeartShowCollected			;show over player's head for 30 frames
 @continue:
-	lda ent_phi_timer,x
+	lda ent_phi_timer,x				;stays at 0 until timer1 reaches 195 (explained below)
 	beq DecHeartPHIDone
 	dec ent_phi_timer,x
 DecHeartPHIDone:
