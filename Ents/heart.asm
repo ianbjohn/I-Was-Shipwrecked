@@ -18,7 +18,7 @@ DecHeartPHI:
 	dec ent_phi_timer,x
 DecHeartPHIDone:
 	
-	;check the jar file for more info on this collision code
+	;collect if player or his weapon touches item
 	jsr CheckPlayerCollision
 	bne @playercol
 	lda ent_active+1
@@ -38,9 +38,8 @@ DecHeartPHIDone:
 	ldy #SFX_HEARTCOLLECTED		;play item acquisition sound effect
 	jsr PlaySound
 	ldx ent_index
-	inc ent_state,x
-	;jsr FindEntAnimLengthsAndFrames
-	lda #30
+	inc ent_state,x				;animation data will be the same
+	lda #30						;now use timer1 to display over player's head for 30 frames
 	sta ent_timer1,x
 	rts
 @checkplayercol_done:
@@ -58,27 +57,18 @@ DecHeartPHIDone:
 	lda frame_counter
 	and #%00000001				;dec the timer every other frame, since 255 frames only lasts ~4.25 seconds (The ent should stay active longer)
 	bne @incrementtimer1done
-@continue:
-	lda ent_timer1,x
-	clc
-	adc #1
-	bcc @skipoverflow2
+	inc ent_timer1,x
+	bne @incrementtimer1done
 	DeactivateEnt
-	rts
-@skipoverflow2:
-	sta ent_timer1,x
 @incrementtimer1done:
 	rts
 	
 HeartShowCollected:
-	lda ent_timer1,x
-	sec
-	sbc #1
-	bcs HeartShowCollectedDone
+	dec ent_timer1,x
+	bne HeartShowCollectedDone
 	DeactivateEnt
 	rts
 HeartShowCollectedDone:
-	sta ent_timer1,x
 	lda ent_y+0
 	sec
 	sbc ent_height,x

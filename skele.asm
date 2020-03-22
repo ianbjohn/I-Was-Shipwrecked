@@ -1498,8 +1498,22 @@ ItemEnts:
 	;map each item to its respective ent ID
 	;It's unlikely that all of these will need to be used, but better safe than sorry
 	;sorted by item ID
-	.db ENT_KNIFE,ENT_JAR,ENT_MEAT,ENT_FLINT,0,ENT_STICKCOL,0,ENT_SPEAR
-	.db 0,ENT_MACHETECOL,ENT_STONE,0,ENT_CLOTH,0,0,0
+	.db ENT_KNIFE, ENT_JAR, ENT_MEAT, ENT_FLINT, 0, ENT_STICKCOL, 0, ENT_SPEAR
+	.db 0, ENT_MACHETECOL, ENT_STONE, 0, ENT_CLOTH, 0, 0, ENT_HONEYCOMB
+	
+EntItems:
+	;The above table, but in reverse - map each ent to its corresponding item ID
+	;obviously only applies to ents that actually represent items
+	;again, not all will be used, but they still need to be defined so might as well define them
+	.db 0, ITEM_KNIFE, 0, ITEM_JAR, 0, ITEM_MEAT, 0, 0
+	.db 0, 0, 0, 0, ITEM_MACHETE, 0, ITEM_STICK, 0
+	.db ITEM_STONE, ITEM_FLINT, 0, ITEM_CLOTH, 0, 0, ITEM_HONEYCOMB
+	
+ItemFoundMsgs:
+	;sorted by item ID
+	;since many collectibles share the same code, all that needs to be different is what message to display
+	.db 0, MSG_JARFOUND, MSG_MEATFOUND, MSG_FLINTFOUND, 0, MSG_STICKFOUND, 0, 0
+	.db 0, MSG_MACHETEFOUND, MSG_STONEFOUND, 0, MSG_CLOTHFOUND, 0, 0, MSG_HONEYCOMBFOUND
 	
 	
 	;palettes

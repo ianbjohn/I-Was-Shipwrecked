@@ -1,5 +1,10 @@
 MeatRoutine:
+	;The idea here is extremely similar to other collectibles such as:
+		;honeycomb
+	;So much so in fact that this routine is used for all of them
+		;We simply map the ent ID to the corresponding item ID, display the corresponding "found" message", and accomplish the same thing
 
+	;countdown / flicker logic better explained in heart.asm
 DecMeatPHI:
 	lda ent_state,x
 	beq @continue
@@ -10,37 +15,45 @@ DecMeatPHI:
 	dec ent_phi_timer,x
 DecMeatPHIDone:
 
-	jsr CheckPlayerCollision		;check jar file for more info on this code
+	;collect if player or his weapon touches item
+	jsr CheckPlayerCollision
 	bne @playercol
 	lda ent_active+1
 	beq @checkplayercol_done
 	jsr CheckPlayerWeaponCollision
 	beq @checkplayercol_done
 @playercol:
-	lda #ITEM_MEAT
+	ldy ent_id,x
+	lda EntItems,y
 	jsr CheckIfItemObtained
 	beq @newitem
-	ldy #SFX_HEARTCOLLECTED		;just play the normal item acquisition sfx if meat's already been obtained
+	ldy #SFX_HEARTCOLLECTED		;just play the normal item acquisition sfx if item's already been obtained
 	jsr PlaySound
 	jmp @continue
 @newitem:
-	;let the player know they got meat
-	lda #ITEM_MEAT
+	;let the player know what they got
+	ldx ent_index
+	ldy ent_id,x
+	lda EntItems,y
 	jsr SetItemAsObtained
 	ldy #SFX_NEWITEMACQUISITION	;play new item acquisition sound effect
 	jsr PlaySound
-	lda #MSG_MEATFOUND
+	ldx ent_index
+	ldy ent_id,x
+	ldx EntItems,y
+	lda ItemFoundMsgs,x
 	sta message
 	lda #STATE_DRAWINGMBOX
 	sta game_state
 @continue:
-	;add #1 to the count of meat
-	lda #ITEM_MEAT
+	;add #1 to the count
+	ldx ent_index
+	ldy ent_id,x
+	lda EntItems,y
 	ldy #1
 	jsr AddToItemCount
 	ldx ent_index
-	inc ent_state,x
-	;jsr FindEntAnimLengthsAndFrames
+	inc ent_state,x			;animation stuff will be the same
 	lda #30
 	sta ent_timer1,x
 	rts
@@ -57,27 +70,18 @@ DecMeatPHIDone:
 	lda frame_counter
 	and #%00000001
 	bne @incrementtimer1done
-@continue2:
-	lda ent_timer1,x
-	clc
-	adc #1
-	bcc @skipoverflow2
+	inc ent_timer1,x
+	bne @incrementtimer1done
 	DeactivateEnt
-	rts
-@skipoverflow2:
-	sta ent_timer1,x
 @incrementtimer1done:
 	rts
 	
 MeatShowCollected:
-	lda ent_timer1,x
-	sec
-	sbc #1
-	bcs MeatShowCollectedDone
+	dec ent_timer1,x
+	bne MeatShowCollectedDone
 	DeactivateEnt
 	rts
 MeatShowCollectedDone:
-	sta ent_timer1,x
 	lda ent_y+0
 	sec
 	sbc ent_height,x
