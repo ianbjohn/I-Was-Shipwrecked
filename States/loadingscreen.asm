@@ -16,8 +16,6 @@ LoadingScreenMain:
 	;lda #0					;standing
 	;tax						;set ent index to player
 	;sta ent_state+0
-	;sta ent_anim_timer+0
-	;sta ent_anim_frame+0
 	;jsr FindEntAnimLengthsAndFrames
 	
 	;load the metatiles for the screen

@@ -1,5 +1,3 @@
-
-
 ClothRoutine:
 	;The idea here is extremely similar to other collectibles such as:
 		;flint, jar, machete, stick, stone
@@ -58,7 +56,6 @@ ClothShowCollected:
 	DeactivateEnt
 	rts
 ClothShowCollectedDone:
-	sta ent_timer1,x
 	lda ent_y+0
 	sec
 	sbc ent_height,x

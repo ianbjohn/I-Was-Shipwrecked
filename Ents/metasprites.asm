@@ -442,6 +442,7 @@ JarMetaSprites:
 
 JarMetaSpritesNormal:
 JarMetaSpritesCollected:
+	;Special event ents like jars are guaranteed to always be facing "up", and don't need definitions for other directions
 	.dw JarMetaSpritesNormalU
 	
 JarMetaSpritesNormalU:
@@ -761,7 +762,7 @@ StickColMetaSprites:
 
 StickColMetaSpritesNormal:
 StickColMetaSpritesCollected:
-	.dw StickColMetaSpritesNormalU
+	.dw StickColMetaSpritesNormalU, StickColMetaSpritesNormalU, StickColMetaSpritesNormalU, StickColMetaSpritesNormalU
 	
 StickColMetaSpritesNormalU:
 	.dw StickColMetaSpritesNormalU_0
@@ -809,7 +810,7 @@ StoneMetaSprites:
 	
 StoneMetaSpritesNormal:
 StoneMetaSpritesCollected:
-	.dw StoneMetaSpritesNormalU
+	.dw StoneMetaSpritesNormalU, StoneMetaSpritesNormalU, StoneMetaSpritesNormalU, StoneMetaSpritesNormalU
 	
 StoneMetaSpritesNormalU:
 	.dw StoneMetaSpritesNormalU_0
@@ -825,7 +826,7 @@ FlintMetaSprites:
 	
 FlintMetaSpritesNormal:
 FlintMetaSpritesCollected:
-	.dw FlintMetaSpritesNormalU
+	.dw FlintMetaSpritesNormalU, FlintMetaSpritesNormalU, FlintMetaSpritesNormalU, FlintMetaSpritesNormalU
 	
 FlintMetaSpritesNormalU:
 	.dw FlintMetaSpritesNormalU_0
@@ -887,7 +888,7 @@ ClothMetaSprites:
 	
 ClothMetaSpritesNormal:
 ClothMetaSpritesCollected:
-	.dw ClothMetaSpritesNormalU
+	.dw ClothMetaSpritesNormalU, ClothMetaSpritesNormalU, ClothMetaSpritesNormalU, ClothMetaSpritesNormalU
 	
 ClothMetaSpritesNormalU:
 	.dw ClothMetaSpritesNormalU_0
@@ -902,7 +903,7 @@ BatMetaSprites:
 	.dw BatMetaSpritesPerched,BatMetaSpritesFlying,BatMetaSpritesGliding,ExplosionMetaSprites
 	
 BatMetaSpritesPerched:
-	.dw BatMetaSpritesPerchedU
+	.dw BatMetaSpritesPerchedU, BatMetaSpritesPerchedU, BatMetaSpritesPerchedU, BatMetaSpritesPerchedU
 BatMetaSpritesFlying:
 	.dw BatMetaSpritesFlyingL,BatMetaSpritesFlyingR
 BatMetaSpritesGliding:
@@ -944,7 +945,7 @@ HoneycombMetaSprites:
 	
 HoneycombMetaSpritesNormal:
 HoneycombMetaSpritesCollected:
-	.dw HoneycombMetaSpritesNormalU
+	.dw HoneycombMetaSpritesNormalU, HoneycombMetaSpritesNormalU, HoneycombMetaSpritesNormalU, HoneycombMetaSpritesNormalU
 	
 HoneycombMetaSpritesNormalU:
 	.dw HoneycombMetaSpritesNormalU_0

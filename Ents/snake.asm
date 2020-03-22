@@ -30,25 +30,7 @@ SnakeCheckDead:
 SnakeCheckDeadDone:
 	
 	;animation timer stuff
-SnakeAdvanceAnimation:
-	lda ent_anim_timer,x
-	clc
-	adc #1
-	cmp ent_anim_length,x
-	bcc @continue
-	;set timer back to 0, increment frame
-	lda ent_anim_frame,x
-	clc
-	adc #1
-	cmp ent_anim_frames,x
-	bcc @continue2
-	lda #0					;even if frame didn't get set back to 0, timer needs to be
-@continue2:
-	sta ent_anim_frame,x
-	lda #0
-@continue:
-	sta ent_anim_timer,x
-SnakeAdvanceAnimationDone:
+	jsr EntAdvanceAnimation
 
 	;if snake's PHI timer is not 0, decrement it
 SnakeDecPHI:
@@ -97,9 +79,6 @@ SnakeKnifeCol:
 	sta ent_timer1,x
 	lda #3				;HIT
 	sta ent_state,x
-	lda #0
-	sta ent_anim_timer,x
-	sta ent_anim_frame,x
 	jmp FindEntAnimLengthsAndFrames
 SnakeCheckKnifeColDone:
 
@@ -140,9 +119,6 @@ SnakeCheckHit:
 	sta ent_phi_timer,x
 	lda #2				;RETREATING
 	sta ent_state,x
-	lda #0
-	sta ent_anim_timer,x
-	sta ent_anim_frame,x
 	jmp FindEntAnimLengthsAndFrames
 @rts:
 	rts

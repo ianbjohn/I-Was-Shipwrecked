@@ -163,8 +163,8 @@
 	ent_width			.dsb MAX_ENTS
 	ent_height			.dsb MAX_ENTS
 	ent_dir				.dsb MAX_ENTS	;up, down, left, right
-	ent_anim_frame		.dsb MAX_ENTS
-	ent_anim_timer		.dsb MAX_ENTS
+	ent_anim_frame		.dsb MAX_ENTS	;counts up since animation frames need to happen sequentially
+	ent_anim_timer		.dsb MAX_ENTS	;counts down to 0, then resets to ent_anim_length
 	ent_anim_length		.dsb MAX_ENTS
 	ent_anim_frames		.dsb MAX_ENTS
 	ent_phi_timer		.dsb MAX_ENTS	;if at 0, ent is not in post-hit invincibility
