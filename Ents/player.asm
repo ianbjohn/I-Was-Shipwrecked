@@ -1,4 +1,3 @@
-	.db "PLAYER"
 PlayerRoutine:
 	lda ent_dir+0
 	sta player_dir_old
@@ -305,7 +304,6 @@ PlayerReadA:
 	jsr HandlePlayerInteraction
 	jmp PlayerDone
 	
-	.db "READB"
 PlayerReadB:
 	;Pressing B makes the player use his weapon
 	lda buttons_pressed
@@ -404,6 +402,8 @@ PlayerReadB:
 	sta ent_y+15
 	lda ent_dir+0
 	sta ent_dir+15
+	lda #0
+	sta ent_state+15
 	ldx #15
 	jsr InitEnt
 	;change the gun's state to normal if no rounds
@@ -411,7 +411,7 @@ PlayerReadB:
 	bne @skipgun
 	lda #1			;gun's normal state (Don't draw explosion since no bullet was fired)
 	sta ent_state+15
-	;jsr FindEntAnimLengthsAndFrames
+	;jsr FindEntAnimLengthsAndFrames	;The same as exploding
 @skipgun:
 	;set active timer for the weapon
 	lda #16

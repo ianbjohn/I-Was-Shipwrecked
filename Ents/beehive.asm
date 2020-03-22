@@ -1,7 +1,17 @@
 BeehiveStates:
 	.dw BeehiveNormal, BeehiveHit
+	
+	
+BeehiveInit:
+	lda random
+	jsr RandomLFSR
+	and #%00111111
+	clc
+	adc #1				;wait anywhere from 1-64 frames before trying to spawn a new bee
+	sta ent_timer1,x
+	jmp FindEntAnimLengthsAndFrames
+	
 
-	.db "BEEHIVE"
 BeehiveRoutine:
 @checkKnifeCol:
 	lda ent_state,x
@@ -19,7 +29,6 @@ BeehiveRoutine:
 	sta ent_timer1,x
 	lda #1
 	sta ent_state,x
-	;ldx ent_index
 	jmp FindEntAnimLengthsAndFrames
 @checkKnifeColDone:
 
@@ -39,7 +48,7 @@ BeehiveNormal
 	;When the hive spawns a new bee from the entrance (Which should be on a timer and depend on how many other bees are currently active) the bee should either guard the hive or forage for food
 	dec ent_timer1,x	;foo variable that's set to 1 once a bee is spawned
 	bne @done
-	;stx beehive_ent_slot
+	stx beehive_ent_slot
 	lda random
 	jsr RandomLFSR
 	and #%00111111
@@ -62,28 +71,22 @@ BeehiveNormal
 	adc #12
 	sta ent_y,y
 	tya
-	pha					;save bee's index as it'll get clobbered
 	tax
-	jsr InitEnt
-	pla
-	tay
-	lda random
-	jsr RandomLFSR
-	sta ent_misc1,y
-	jsr RandomLFSR
-	sta ent_misc2,y
-	;(either guard the hive or forage for food)
-	lda #0				;foraging (for right now)
-	sta ent_state,y
+	;either guard hive or forage for food (just forage for right now)
+	lda #0
+	sta ent_state,x		;direction can be whatever since it'll go to the foraging spot
+	jmp InitEnt
 @done:
 	rts
 	
 	
 BeehiveHit:
-	lda ent_timer1,x
-	sec
-	sbc #1
-	bcs @done
+	dec ent_timer1,x
+	bne @done
+	;Set beehive slot to 0 since it's gone now
+	lda #0
+	sta beehive_ent_slot
+	dec num_active_enemies
 	;1/2 chance, drop honeycomb
 	lda random
 	jsr RandomLFSR
@@ -93,7 +96,6 @@ BeehiveHit:
 	sta ent_id,x
 	lda #0
 	sta ent_state,x
-	sta ent_dir,x
 	jsr InitEnt
 	jmp @spawnbees
 @dropnothing:
@@ -133,7 +135,5 @@ BeehiveHit:
 	inx
 	cpx #16
 	bne @spawnbeeloop
-	rts
 @done:
-	sta ent_timer1,x
 	rts

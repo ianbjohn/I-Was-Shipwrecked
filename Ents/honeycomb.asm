@@ -1,5 +1,4 @@
 	;Code is commented in heart.asm and meat.asm
-	;.db "HonCom"
 HoneycombRoutine:
 	
 DecHoneycombPHI:

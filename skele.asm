@@ -730,7 +730,6 @@ LoadCHRTileToBuffer:
 	jmp SetPRGBank
 	
 	
-	;.db "DIMTB"
 DrawInventoryMessageToBuffer:
 	;Kind of a complicated routine, but basically what it does is read characters from a string, printing to the status board until a terminating character is reached. From there, it pads the rest of the status board with blackspace.
 	;Also supports going to the next line with $FE
@@ -1292,7 +1291,7 @@ LoadDarkness:
 	beq @waitframe
 	rts
 	
-	;.db "LCP"
+
 LoadScreenPalette:
 	;used for both loading a normal cave palette when loading a screen, and for re-lighting a cave after crafting a torch
 	ldy #0			;position in screen data (Shouldn't be reset until all the screen loading is done)

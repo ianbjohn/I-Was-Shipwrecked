@@ -217,7 +217,6 @@ SubtractFromItemCount:
 	rts
 	
 	
-	;.db "CRIT"
 CraftItem:
 	;takes what's in the crafting queue, adds it up, does a few other basic hashing operations, and searches a table to see if such an item is valid (0 = not valid)
 	;if it is valid, either add to the item's count or mark it as obtained
@@ -257,7 +256,7 @@ CraftItem:
 								;If it is, get the ID of that item, either set it to obtained or increase the count of it, and draw a message saying that the item was crafted
 	rts
 	
-	;.db "CCQ"
+
 ClearCraftQueue:
 	;Clears the craft queue and adds all the items that were in it back to where they were in the inventory system
 	;If the player leaves the inventory screen, or clears the craft queue manually, all the items in the queue need to be put back into the main inventory

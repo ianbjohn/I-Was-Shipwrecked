@@ -9,7 +9,6 @@ TourniquetRecipe:
 	.db S,T,I,C,K, SPA, $2E, SPA, C,L,O,T,H,$FF
 
 
-	.db "RLIST"
 RecipeListInit:
 	;Clear screen completely
 	;For however many craftable items have been discovered

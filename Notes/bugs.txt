@@ -17,6 +17,7 @@
 -[Discovered 3/20/20] - when a stick or cloth is added to the craft queue, and then clearing the queue or exiting the menu increases the count of cloth. When this happens, and then a tourniquet is crafted, it won't display it in the recipe list. Check and see if this happens with other items.
 	-Only seems to happen when you get new cloth, but saving and resetting causes the glitch to not happen anymore
 	[Solved 3/2/020] - The ClearCraftQueue loop was checking A instead of X in some spots, and not re-loading X when it should have been, basically causing incorrect item count writes to overflow until eventually cloth was set to 1 higher than it should have been.
+-[Discovered 3/22/20] - When attacking snakes, the sprites will sometimes break. Happens after the explosion state I need to re-write snake AI anyway, so if the glitch persists after doing that I'll look into it further (Since this hasn't happened with any other state machine-based enemies). [Solved a few hours later] - After coding the beehive and bee AI, bees can be spawned with different states, and so state now needs to be set manually before calling InitEnt. A lot of code isn't doing this (yet), so when an enemy drops an item it can potentially be in a state it's not programmed for, causing garbage sprites to be loaded and drawn.
 
 
 		UNSOLVED
@@ -30,4 +31,4 @@
 	-Actually, the jar does get spawned when returning normally, so I have no idea what is causing all this
 	-[Update 11/17/18] - Seems to happen for screens with collectibles on them in general. Very hard to replicate it seems.
 	-[Update 12/17/18] - There were some issues with the beehive's code and data, so sprite fuckery should be fixed for that.
-		-The whole time I've been playing, I haven't come across any sprite breaking on collectible screens. But if it happens in the future, step through the ent drawing routine, as that's what worked for me this time [Beehive issues fixed 3/19/20, don't know why they were in this section though/]
+		-The whole time I've been playing, I haven't come across any sprite breaking on collectible screens. But if it happens in the future, step through the ent drawing routine, as that's what worked for me this time [Beehive issues fixed 3/19/20, don't know why they were in this section though]

@@ -3,9 +3,20 @@ BASE_FLYING_VELOCITY = $0500
 STOP_FLYING_VELOCITY = -BASE_FLYING_VELOCITY
 
 
-	;.db "CRAB"
 CrabStates:
 	.dw CrabMoving,CrabStill,CrabGrabbing,CrabFlying,CrabHit
+	
+	
+CrabInit:
+	lda random
+	jsr RandomLFSR
+	and #%00111000
+	ora #%00000111
+	clc
+	adc #1
+	sta ent_timer1,x		;Need an initial time to move randomly
+	jmp FindEntAnimLengthsAndFrames
+	
 	
 CrabRoutine:
 CrabCheckDead:
@@ -25,16 +36,8 @@ CrabCheckDead:
 	jmp DeactivateEnt
 @continue:
 	sta ent_id,x
-	;change from a 16x16 hitbox to an 8x8 hitbox
-	;get rid of this code once hitbox widths and heights are determined by ent states and kept in RAM
-	;lda ent_x,x
-	;clc
-	;adc #7
-	;sta ent_hb_x,x
-	;lda ent_y,x
-	;clc
-	;adc #7
-	;sta ent_hb_y,x
+	lda #0
+	sta ent_state,x
 	jmp InitEnt
 CrabCheckDeadDone:
 
@@ -139,10 +142,7 @@ CrabCheckPlayerColDone:
 
 
 CrabMoving:
-	lda ent_timer1,x
-	clc
-	adc #1
-	cmp ent_time1,x
+	dec ent_timer1,x
 	bne @continue
 	lda #1				;still
 	sta ent_state,x
@@ -150,12 +150,11 @@ CrabMoving:
 	jsr RandomLFSR
 	and #%00111000
 	ora #%00000111
-	sta ent_time1,x
-	lda #0
+	clc
+	adc #1
 	sta ent_timer1,x
 	jmp FindEntAnimLengthsAndFrames
 @continue:
-	sta ent_timer1,x
 	lda ent_dir,x
 	beq @up
 	cmp #1
@@ -257,10 +256,7 @@ CrabStill:
 				;Else
 					;set direction to right
 		;reset timer
-	lda ent_timer1,x
-	clc
-	adc #1
-	cmp ent_time1,x
+	dec ent_timer1,x
 	bne @done
 	lda #0			;MOVING
 	sta ent_state,x
@@ -305,13 +301,15 @@ CrabStill:
 	and #%00000011
 	sta ent_dir,x
 @movementdone:
+	;reset timer
 	lda random
+	jsr RandomLFSR
 	and #%00111000
 	ora #%00000111
-	sta ent_time1,x
-	lda #0
-@done:
+	clc
+	adc #1
 	sta ent_timer1,x
+@done:
 	rts
 	
 
@@ -469,25 +467,22 @@ CrabFlying:
 	jmp EntCheckBGColBL
 	;rts
 @doneflying:
-	lda #0
-	sta ent_timer1
 	lda random
 	jsr RandomLFSR
-	and #%00111000
-	ora #%00000111
-	sta ent_time1,x
+	clc
+	adc #1
+	sta ent_timer1,x
 	lda #1					;still
 	sta ent_state,x
 	jmp FindEntAnimLengthsAndFrames
 	
 	
 CrabHit:
-	lda ent_timer1,x
-	sec
-	sbc #1
-	bcs @done
+	dec ent_timer1,x
+	bne @done
+	lda ent_health,x
+	beq @done
 	lda #0
-	sta ent_timer1,x
 	lda #60
 	sta ent_phi_timer,x
 	lda #1				;still
@@ -496,8 +491,9 @@ CrabHit:
 	jsr RandomLFSR
 	and #%00111000
 	ora #%00000111
-	sta ent_time1,x
+	clc
+	adc #1
+	sta ent_timer1,x
 	jmp FindEntAnimLengthsAndFrames
 @done:
-	sta ent_timer1,x
 	rts

@@ -254,7 +254,6 @@ IML_Machete_0:
 	jmp Inventory_DrawCursor			;since these technically aren't subroutines, we need a JMP instead of an RTS
 	
 	
-	;.db "IMLS0"
 IML_Stick_0:
 	lda weapon
 	cmp #WEAPON_STICK

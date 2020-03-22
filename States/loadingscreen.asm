@@ -1,4 +1,3 @@
-	.db "LOAD SCREEN"
 LoadingScreenMain:
 	;wait 60 frames in-between screens (Helpful for debugging purposes)
 ;	ldx #60
@@ -239,7 +238,6 @@ GetDoorsAddressDone:
 	
 	;(This was originally where hard-coded snake ents were spawned)
 	;load new enemies / screen data or reload old enemies / screen data
-	.db "SetUpEnemies"
 SetUpEnemies:
 	ldx #0
 	stx num_active_enemies		;this needs to be cleared and then re-initialized
@@ -431,6 +429,8 @@ SetUpDoors:
 	pha					;we have enough info to spawn the ent, but Y will get clobbered, and we still need to set direction and other things
 	lda #ENT_DOOR
 	sta ent_id,x
+	lda #0
+	sta ent_state,x
 	lda #BANK_ENTS
 	jsr SetPRGBank
 	jsr InitEnt

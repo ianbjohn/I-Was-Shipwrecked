@@ -1,7 +1,17 @@
-							;--- GLOBAL ROUTINES ---;	
+							;--- GLOBAL ROUTINES ---;
+EntInitRoutines:
+	;sorted by ID
+	.dw RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, BeehiveInit, BeeInit
+	.dw RegularEntInit, RegularEntInit, RegularEntInit, CrabInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit
+	.dw RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit
+	
+RegularEntInit:
+	;For most ents, nothing unique really needs to be done at spawn time, so we can just go ahead and load the animation data
+	;X should have ent index
+	jmp FindEntAnimLengthsAndFrames
 	
 InitEnt:
-;Make sure when initing an ent that EVERYTHING gets reset, since it doesn't happen when ents deactivate. We don't want an ent to spawn in i.e state 3 on animation frame 2 accidentally
+;Make sure when initing an ent that ALL STANDARD VARIABLES get reset, since it doesn't happen when ents deactivate. We don't want an ent to spawn in i.e state 3 on animation frame 2 accidentally
 ;State, X, Y, and dir should all be specified before the object is initialized. That way the correct animation frame and hitbox can be loaded depending on state, direction, etc.
 	;X should be loaded with the correct ent index
 	lda #1
@@ -29,10 +39,8 @@ InitEnt:
 	;PHI
 	lda (ent_ptr1),y
 	sta ent_phi_time,x
-	;anything that always gets set to 0 when an ent is initialized can go here
+	;anything important that always gets set to 0 when an ent is initialized can go here
 	lda #0
-;InitWeapon:				;this is here to save redundant code for spawning weapons
-	sta ent_state,x
 	sta ent_xsp,x
 	sta ent_ysp,x
 	sta ent_hb_xsp,x
@@ -48,16 +56,17 @@ InitEnt:
 	sta ent_phi_timer,x
 	sta ent_anim_timer,x
 	sta ent_anim_frame,x
-	sta ent_timer1,x
-	sta ent_timer2,x
-	sta ent_misc1,x
-	sta ent_misc2,x
-	sta ent_misc3,x
-	lda random
-	jsr RandomLFSR
-	sta ent_time1,x			;for right now, until I get around to adding init routines for ents
+	;Things like timers and misc variables are unique to each ent, and if they are used they should be initialized in the ent's init code
 	inc num_active_ents
-	jmp FindEntAnimLengthsAndFrames
+	;Go to the ent's specific init code
+	lda ent_id,x
+	asl
+	tay
+	lda EntInitRoutines+0,y
+	sta jump_ptr+0
+	lda EntInitRoutines+1,y
+	sta jump_ptr+1
+	jmp (jump_ptr)
 	
 	
 SpawnWeaponEntBasedOnPlayer:
@@ -200,14 +209,14 @@ CheckPlayerWeaponCollision:
 @nocollision:
 	lda #0
 	rts
-	
+
 	
 EntRoutines:
 	;sorted by ID
 	.dw PlayerRoutine, KnifeRoutine, SnakeRoutine, JarRoutine, HeartRoutine, MeatRoutine, BeehiveRoutine, BeeRoutine
 	.dw GunRoutine, BulletRoutine, DoorRoutine, CrabRoutine, MacheteColRoutine, KnifeRoutine, StickColRoutine, KnifeRoutine
 	.dw StoneRoutine, FlintRoutine, SpearRoutine, ClothRoutine, BatRoutine, SnakeRoutine, HoneycombRoutine
-	;.db "ROUTINES"
+	
 RunEnt:
 	ldx ent_index
 	lda ent_id,x

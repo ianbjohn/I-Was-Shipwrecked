@@ -1,6 +1,19 @@
 BeeStates:
 	.dw BeeForaging, BeeReturning, BeeGuarding, BeeSwarming, BeeAttacking, BeeOnFlower, BeeHit
 	
+	
+BeeInit:
+	lda random
+	jsr RandomLFSR
+	sta ent_misc1,x
+	jsr RandomLFSR
+	sta ent_misc2,x
+	;(either guard the hive or forage for food)
+	lda #0				;foraging (for right now)
+	sta ent_state,x
+	jmp FindEntAnimLengthsAndFrames
+	
+	
 BeeRoutine:
 BeeAdvanceAnimation:
 	lda ent_anim_timer,x
@@ -78,9 +91,8 @@ BeeCheckBeehive:
 	lda ent_state,x
 	cmp #6				;hit
 	beq BeeCheckBeehiveDone
-	jsr FindBeehiveSlot
-	cpy #$FF
-	bne BeeCheckBeehiveDone
+	lda beehive_ent_slot
+	bne BeeCheckBeehiveDone		;if not 0, the beehive is still there
 	lda #3						;swarming
 	sta ent_state,x				;No real need to reload animation data here since it's the same
 BeeCheckBeehiveDone:
@@ -96,7 +108,6 @@ BeeCheckBeehiveDone:
 	jmp (jump_ptr)
 	
 	
-	.db "BEEFORAGE"
 BeeForaging:
 	;When a bee is spawned from the beehive, if it starts out foraging, it should be given a random spot in ent_misc1 and ent_misc2 as the X and Y (respectively) of where to go
 	;once it's been to this spot, (ADD A HOVERING STATE WHERE IT'LL HOVER AROUND THE SPOT FOR A FEW SECONDS), either return to the hive or generate coordinates of a new spot to go to.
@@ -114,7 +125,7 @@ BeeForaging:
 @return:
 	lda #1				;returning
 	sta ent_state,x
-	jsr FindBeehiveSlot
+	ldy beehive_ent_slot
 	lda ent_x,y
 	clc
 	adc #4				;return to beehive entrance
@@ -381,29 +392,9 @@ BeeOnFlower:
 	;once timer hits 0, either pick a new spot to forage or return to hive
 
 BeeHit:
-	lda ent_timer1,x
-	sec
-	sbc #1
-	bcs @done
+	dec ent_timer1,x
+	bne @done
 	dec num_active_enemies
 	jmp DeactivateEnt			;For right now I don't think bees should drop anything
-@done:
-	sta ent_timer1,x
-	rts
-	
-	
-FindBeehiveSlot:
-	;searches the list of ents for the beehive
-	;returns the index in Y
-	;if it can't find it, return #$FF (This'll signal that it's been destroyed somehow and that the bee should swarm)
-	ldy #15
-@loop:
-	lda ent_id,y
-	cmp #ENT_BEEHIVE
-	beq @done
-	dey
-	cpy #1
-	bne @loop
-	ldy #$FF
 @done:
 	rts

@@ -1,4 +1,3 @@
-	.db "FILE SELECT"
 FileCursorPositionsX:
 	.db 40,120,200
 	

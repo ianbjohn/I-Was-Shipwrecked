@@ -23,6 +23,8 @@ BatCheckDead:
 	jmp DeactivateEnt
 @continue:
 	sta ent_id,x
+	lda #0
+	sta ent_state,x
 	jmp InitEnt
 BatCheckDeadDone:
 
@@ -189,7 +191,6 @@ BatPerched:
 	rts
 	
 	
-	;.db "BATFLY"
 BatFlying:
 BatGliding:
 	;basically the same state, but I wanna give some animation variety and have the bat only flap its wings if its flying upward.
@@ -408,7 +409,7 @@ BatNotSlowingDown:
 @done:
 	jmp DecTimer1	
 	
-	;.db "BSD"
+	
 BatSlowDown:
 	lda ent_xvel,x
 	bne @subtract
@@ -465,7 +466,7 @@ BatSlowDown:
 	;lda ent_xacc,x
 	;sta ent_xvel			;uncomment is acceleration is changed to >255
 	
-	;.db "DT1"
+
 DecTimer1:
 	dec ent_timer1,x
 	;change bat's state to flying or gliding, depending on where bat is vertically relative to player's vertical midpoint
@@ -496,24 +497,18 @@ DecTimer1:
 	
 	
 BatHit:
-	lda ent_timer1,x
-	sec
-	sbc #1
-	bcs @done
-	lda #0
-	sta ent_timer1,x
+	dec ent_timer1,x
+	bne @done
 	lda #60
 	sta ent_phi_timer,x
 	lda #1					;flying
 	sta ent_state,x
 	jmp FindEntAnimLengthsAndFrames
 @done:
-	sta ent_timer1,x
 	rts
 	
 	
 	;helper functions
-	;.db "BACC"
 BatAccelerate:
 	lda ent_xvel,x
 	cmp #>BAT_MAX_VEL

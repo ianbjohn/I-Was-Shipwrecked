@@ -1,4 +1,3 @@
-	.db "JAR"
 JarRoutine:
 	ldx ent_index
 	lda ent_state,x

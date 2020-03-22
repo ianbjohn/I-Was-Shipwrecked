@@ -1477,3 +1477,12 @@ Day 189 - 3/21/2020
 	-Made some metatiles for the clearing section out of the new CHR tiles.
 	-Major overhaul in sprite cycling / ent drawing code. Similar to an idea I had way about about shuffling the order ents are drawn in, I decided to just do that and increment the order theyre drawn instead of trying to do pseudorandom prime addition stuff. The player's weapon is now always in front of him, the player is always in front of enemies (I may end up changing this though if it looks bad, like when crabs pinch the player), and the OAM buffer only needs to clear sprites that weren't used, instead of clearing everything at the start of the frame. So all in all I think code size was reduced and speed was improved, and it looks better when the player's attacking now.
 	-Made the mistake of drawing all the thick grass concept art at the bottom of the shore CHR file, which is only 3 KB, so when I saved none of it got saved and I basically wasted 30 minutes of my life.
+	
+Day 190 - 3/22/2020
+	-Started adding "init" routines for each ent. For many, this is just a simple jump to fetching animation data, but some are more complicated and need unique things to happen when they spawn.
+	-Removed some unnecessary ent system variables and ent code by having timers count down
+	-Added a few todos and ideas that I though of in their respective files
+	-Removed yet some more old comments from various files
+		-There was a bunch of text data above various labels for debugging purposes, but consulting the .lst file makes looking up addresses way easier, so these aren't needed anymore.
+		-I forgot that since ents can now be spawned with arbitrary states, a lot of old code assumes that the state will be 0 when it now won't be, which causing some ents to be loaded in states they aren't programmed for, breaking the game. Fixed all of that
+	-Made it so that when ents are loaded / reloaded on a screen, they start in random directions

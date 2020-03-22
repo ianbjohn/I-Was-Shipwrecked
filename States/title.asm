@@ -2,7 +2,6 @@ TITLEPALETTELENGTH = 20
 TITLESPRITELENGTH = 160
 
 
-	;.db "TITLE"
 TitleInit:
 	lda #%10010000
 	sta $2000
@@ -171,8 +170,7 @@ Title_ReadStart:
 	cmp frame_counter
 	beq @waitframe
 	
-	;.db "LOAD PLAYER"
-	
+
 	;activate player
 	;If it's a new game, initialize all these to 0 (or whatever their respective initial values should be)
 	;Once we get to the file select state, if a save is loaded, these values will get overwritten

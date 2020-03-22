@@ -1,4 +1,3 @@
-	;.db "DOOR"
 DoorRoutine:
 	;Doors are unique in that it should interact with the player's background collision hitbox
 	lda ent_y+0

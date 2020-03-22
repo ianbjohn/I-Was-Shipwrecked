@@ -104,7 +104,6 @@ BringNthScreenScreenDataPtrToTop:
 	rts
 	
 	
-	;.db "SWAP"
 SwapEntData:
 	;performed when re-entering a screen that's been recently visited
 	;the main ent data needs to go to the saved ent data slot corresponding to the first pointer in the list,
@@ -159,7 +158,14 @@ SwapEntData:
 	
 	;if the ent was active, re-activate it
 	lda ent_active,x
+	;Give ent a random direction, set state to 0 (Since it isn't saved)
 	beq @activateentdone
+	lda random
+	jsr RandomLFSR
+	and #%00000011
+	sta ent_dir,x
+	lda #0
+	sta ent_state,x
 	tya
 	pha
 	jsr InitEnt				;this clobbers Y which is why we needed to back it up
@@ -212,8 +218,12 @@ SwapEntData:
 	;if the ent was active, re-activate it
 	lda ent_active,x
 	beq @activateentdone2
-	lda #0
+	lda random
+	jsr RandomLFSR
+	and #%00000011
 	sta ent_dir,x
+	lda #0
+	sta ent_state,x
 	tya
 	pha
 	jsr InitEnt				;this clobbers Y which is why we needed to back it up
@@ -275,7 +285,6 @@ SwapScreenData:
 	rts
 	
 	
-	.db "OVERWRITE"
 OverwriteEntData:
 	;performed when going to a new screen - main ent RAM (which was for the last screen) is copied to the ent WRAM pointed to by the first pointer in the list
 	;This could probably be a macro since for right now I think its only gonna only need to be in the bigass load screen routine
@@ -411,8 +420,7 @@ SpawnNewEnts:
 
 	lda screen_special
 	beq RegularEvent
-	;bne SpecialEvent
-	;.db "SPECIAL"
+
 SpecialEvent:
 	lda special_event
 	asl
@@ -438,14 +446,16 @@ SpecialEvent:
 	iny
 	lda (ptr1),y			;Y
 	sta ent_y+2
+	lda random
 	lda #0
 	sta ent_dir+2
+	sta ent_state+2
 	lda #BANK_ENTS
 	jsr SetPRGBank
 	ldx #2
 	jmp InitEnt
 	
-	;.db "REG"
+
 RegularEvent:
 	;use the spawn coordinates and event data to randomly generate enemies
 	lda area			;sorted by area, then difficulty
@@ -536,8 +546,12 @@ RegularEvent:
 	lda (event_ptr),y		;Y			;(IF 0, DISREGARD, AND MOVE ON) (It would be a hassle at this point (having made >20 screens already) to have Y first :(. Also, Y needs to be incremented beforehand so that the next potential pair is properly loaded)
 	beq @loop2end
 	sta ent_y,x
-	lda #0
+	lda random
+	jsr RandomLFSR
+	and #%00000011
 	sta ent_dir,x
+	lda #0
+	sta ent_state,x
 	lda #BANK_ENTS
 	jsr SetPRGBank
 	jsr InitEnt

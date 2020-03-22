@@ -1,4 +1,3 @@
-	;.db "KNIFE"
 KnifeRoutine:
 	;check if timer has run out, and deactivate if it has
 @checktimerzero:

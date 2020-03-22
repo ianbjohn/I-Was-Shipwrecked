@@ -79,7 +79,6 @@ CleanUpInventorySystem:
 	rts
 	
 	
-	;.db "INVENTORY"
 InventoryInit:
 	jsr ClearOAM
 
@@ -499,7 +498,7 @@ InventoryAButtonActions:
 	;sorted by inventory_status
 	.dw InventoryA_Normal, InventoryA_Save, Inventory_ReadB, InventoryA_ItemAction, InventoryA_CraftItem, InventoryA_ClearCraftQueue, InventoryA_ViewList
 	
-	;.db "INVMAIN"
+
 InventoryMain:
 	lda prg_bank
 	pha
@@ -620,7 +619,7 @@ InventoryA_Save:
 	jsr PlaySound
 	jmp Inventory_DrawCursor
 	
-	;.db "ACRIT"
+
 InventoryA_CraftItem:
 	jsr CraftItem
 	lda CraftTable,x

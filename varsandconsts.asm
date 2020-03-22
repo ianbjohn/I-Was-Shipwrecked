@@ -171,10 +171,8 @@
 	ent_phi_timer		.dsb MAX_ENTS	;if at 0, ent is not in post-hit invincibility
 	ent_phi_time		.dsb MAX_ENTS
 	ent_timer1			.dsb MAX_ENTS	;Used for various different things depending on the ent
-	ent_time1			.dsb MAX_ENTS
-	ent_timer2			.dsb MAX_ENTS	;Used for various different things depending on the ent
-	ent_time2			.dsb MAX_ENTS
-	ent_misc1			.dsb MAX_ENTS
+	ent_timer2			.dsb MAX_ENTS	;^
+	ent_misc1			.dsb MAX_ENTS	;Other stuff unique to each ent
 	ent_misc2			.dsb MAX_ENTS
 	ent_misc3			.dsb MAX_ENTS
 	;Make sure less than $0300 bytes (48 variables, assuming the # of ents is kept at 16) are utilized by the ent system, so nothing spills into page 7.
@@ -223,7 +221,7 @@
 	paused_stream_statuses	.dsb 5	;save which of the 4 BGM streams were enabled (These will almost always, but not always, be all 1)
 	near_death_alert_timer	.dsb 1	;if health, hunger or thirst are below 30, alert the player every 256 frames / ~4.25 seconds
 	player_near_death	.dsb 1
-	;beehive_ent_slot	.dsb 1
+	beehive_ent_slot	.dsb 1
 	rounds_hud_x		.dsb 1
 	rounds_hud_y		.dsb 1
 	rounds_hud_timer	.dsb 1

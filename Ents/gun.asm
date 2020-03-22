@@ -1,4 +1,3 @@
-	;.db "GUN"
 GunRoutine:
 	lda ent_state+15			;this part's here so that the gun, if out of rounds, still gets drawn the entire time the player's attacking (I use that word sparingly here)
 	bne @continue

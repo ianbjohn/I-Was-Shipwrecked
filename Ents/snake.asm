@@ -1,5 +1,3 @@
-	.db "SNAKE"
-
 	;Turn this into more of what you'd think of as a "State Machine", with indirect subroutines and whatnot
 	;Better AI might be:
 		;every 5 seconds or so, move either up or down if the player is respectively above or below the snake, and the same thing for left or right (Decide randomly to move horizontal or vertical)
@@ -25,16 +23,8 @@ SnakeCheckDead:
 	jmp DeactivateEnt
 @continue:
 	sta ent_id,x
-	;change from a 16x16 hitbox to an 8x8 hitbox
-	;get rid of this code once hitbox widths and heights are determined by ent states and kept in RAM
-	;lda ent_x,x
-	;clc
-	;adc #7
-	;sta ent_hb_x,x
-	;lda ent_y,x
-	;clc
-	;adc #7
-	;sta ent_hb_y,x
+	lda #0
+	sta ent_state,x
 	jmp InitEnt
 SnakeCheckDeadDone:
 	
@@ -144,7 +134,6 @@ SnakeCheckHit:
 	cmp #3				;HIT
 	bne SnakeCheckAttack
 	dec ent_timer1,x
-	lda ent_timer1,x
 	bne @rts
 	lda #60
 	sta ent_phi_timer,x
@@ -153,7 +142,6 @@ SnakeCheckHit:
 	lda #0
 	sta ent_anim_timer,x
 	sta ent_anim_frame,x
-	;ldx ent_index
 	jmp FindEntAnimLengthsAndFrames
 @rts:
 	rts

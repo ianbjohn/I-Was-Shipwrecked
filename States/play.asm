@@ -29,8 +29,7 @@ PlayInit:
 	sta nmi_enabled
 	rts
 	
-	
-	;.db "Play"
+
 PlayMain:
 	;process each active ent
 	ldx #0
@@ -334,7 +333,7 @@ StatusChangeJungle:
 	;rts
 StatusChangeDone:
 	
-	;.db "STARE"
+
 StatusRecover:
 	;recover back to normal if the player has waited a given number of frames
 	ldx status
