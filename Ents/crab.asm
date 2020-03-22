@@ -42,25 +42,7 @@ CrabCheckDead:
 	jmp InitEnt
 CrabCheckDeadDone:
 
-CrabAdvanceAnimation:
-	lda ent_anim_timer,x
-	clc
-	adc #1
-	cmp ent_anim_length,x
-	bcc @continue
-	;set timer back to 0, increment frame
-	lda ent_anim_frame,x
-	clc
-	adc #1
-	cmp ent_anim_frames,x
-	bcc @continue2
-	lda #0					;even if frame didn't get set back to 0, timer needs to be
-@continue2:
-	sta ent_anim_frame,x
-	lda #0
-@continue:
-	sta ent_anim_timer,x
-CrabAdvanceAnimationDone:
+	jsr EntAdvanceAnimation
 
 CrabDecPHI:
 	lda ent_phi_timer,x
@@ -106,9 +88,6 @@ CrabKnifeCol:
 	sta ent_timer1,x
 	lda #4				;HIT
 	sta ent_state,x
-	lda #0
-	sta ent_anim_timer,x
-	sta ent_anim_frame,x
 	jmp FindEntAnimLengthsAndFrames
 CrabCheckKnifeColDone:
 

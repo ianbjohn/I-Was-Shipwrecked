@@ -29,24 +29,7 @@ BatCheckDead:
 	jmp InitEnt
 BatCheckDeadDone:
 
-BatAdvanceAnimation:
-	lda ent_anim_timer,x
-	clc
-	adc #1
-	cmp ent_anim_length,x
-	bcc @continue
-	lda ent_anim_frame,x
-	clc
-	adc #1
-	cmp ent_anim_frames,x
-	bcc @continue2
-	lda #0
-@continue2:
-	sta ent_anim_frame,x
-	lda #0
-@continue:
-	sta ent_anim_timer,x
-BatAdvanceAnimationDone:
+	jsr EntAdvanceAnimation
 
 BatDecPHI:
 	lda ent_phi_timer,x
@@ -82,9 +65,6 @@ BatKnifeCol:
 	sta ent_timer1,x
 	lda #3				;hit
 	sta ent_state,x
-	lda #0
-	sta ent_anim_timer,x
-	sta ent_anim_frame,x
 	jmp FindEntAnimLengthsAndFrames
 BatCheckKnifeColDone:
 

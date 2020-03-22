@@ -1488,3 +1488,7 @@ Day 190 - 3/22/2020
 	-Made it so that when ents are loaded / reloaded on a screen, they start in random directions
 	-Removed the num_active_ents variable, as its original intention is basically fulfilled by FindEntSlot, so there should never be more than 16 ents trying to be activated at one time
 	-Was able to get rid of a bunch of code by turning many of the collectible item routines into a few. Ones that are dropped by enemies and can disappear now just run the meat ent code, and ones that don't disappear run the cloth code. All that needs to be different is the item updates and the message that gets displayed, so these can be looked up from tables.
+	-Made some more code improvements by having animation and PHI timers count down as well.
+	-Made the ents' advance animation code a general routine to save some code space
+		-Made the player's code slightly more complicated, but didn't seem to be much of a performance hit.
+	-A couple collectibles such as flint and stone only had metasprite definitions for one direction, so I fixed this.

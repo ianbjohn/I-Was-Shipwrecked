@@ -54,8 +54,6 @@ InitEnt:
 	sta ent_yacc,x
 	sta ent_yacc_sp,x
 	sta ent_phi_timer,x
-	sta ent_anim_timer,x
-	sta ent_anim_frame,x
 	;Things like timers and misc variables are unique to each ent, and if they are used they should be initialized in the ent's init code
 	;Go to the ent's specific init code
 	lda ent_id,x
@@ -220,6 +218,7 @@ FindEntAnimLengthsAndFrames:
 	;Metasprite definitions and the animation lengths and frames are stored separately. Only need to fetch these when an ent's state is changed
 	;Despite the routine's name, hitbox data is also fetched here, as it can change when an ent's state changes. 
 	;X should be loaded with the correct ent index
+	
 	;length
 	lda ent_id,x
 	asl
@@ -232,6 +231,7 @@ FindEntAnimLengthsAndFrames:
 	ldy ent_state,x
 	lda (ent_ptr1),y
 	sta ent_anim_length,x
+	sta ent_anim_timer,x
 	;frames
 	ldy temp0
 	lda EntAnimationFrames+0,y
@@ -241,6 +241,8 @@ FindEntAnimLengthsAndFrames:
 	ldy ent_state,x
 	lda (ent_ptr1),y
 	sta ent_anim_frames,x
+	lda #0
+	sta ent_anim_frame,x
 	ldy temp0
 UpdateEntHitbox:
 	;hitbox size
@@ -273,6 +275,25 @@ UpdateEntHitbox:
 	clc
 	adc ent_height,x
 	sta ent_hb_y,x
+	rts
+	
+	
+EntAdvanceAnimation:
+	;count down the animation timer, resetting it when it reaches 0
+	;Then count up the frame, setting to 0 when it reaches the last frame
+	dec ent_anim_timer,x
+	bne EntAdvanceAnimationDone
+	lda ent_anim_length,x
+	sta ent_anim_timer,x
+	lda ent_anim_frame,x
+	clc
+	adc #1
+	cmp ent_anim_frames,x
+	bcc @overflowdone
+	lda #0
+@overflowdone:
+	sta ent_anim_frame,x
+EntAdvanceAnimationDone:
 	rts
 	
 	

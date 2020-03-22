@@ -118,30 +118,10 @@ PlayNearDeathAlert:
 	ldy #SFX_PLAYERNEARDEATH
 	jsr PlaySound
 PlayNearDeathAlertDone:
-	
-	;restore X with ent_index
-	ldx ent_index
 
 	;animation timer stuff
-PlayerAdvanceAnimation:
-	lda ent_anim_timer+0
-	clc
-	adc #1
-	cmp ent_anim_length+0
-	bcc @continue
-	;set timer back to 0, increment frame
-	lda ent_anim_frame+0
-	clc
-	adc #1
-	cmp ent_anim_frames+0
-	bcc @continue2
-	lda #0					;even if frame didn't get set back to 0, timer needs to be
-@continue2:
-	sta ent_anim_frame+0
-	lda #0
-@continue:
-	sta ent_anim_timer+0
-PlayerAdvanceAnimationDone:
+	ldx #0
+	jsr EntAdvanceAnimation
 	
 	;if the player is attacking, and the timer at $0700 is 0, set the state to standing
 	;The player should remain attacking for 16 frames, and then go back. However, depending on the weapon (Whether its a stabbing weapon or a projectile) it will decide when another weapon can spawn
@@ -323,16 +303,8 @@ PlayerReadB:
 @attackactual:
 	lda #2
 	sta ent_state+0
-	;Since a hitbox update may happen, and in which case it needs to happen now, we need to call the update hitbox subroutine (Which is part of the update anim length/frame routine)
-	;lda ent_id+0
-	;tax					;put here JUST IN CASE!!! The routine needs X to have ent_index. Uppon debugging, X seems to always be 0 when called by the player, but I don't wanna take any chances
-	;asl
-	;tay
-	lda #0
-	sta ent_anim_timer+0
-	sta ent_anim_frame+0
-	tay						;the player's ID will always be 0
-	jsr UpdateEntHitbox
+	ldx #0
+	jsr FindEntAnimLengthsAndFrames
 	;MAP WEAPONS TO ITEMS, CHECK IF THAT ITEM HAS A COUNT
 		;IF SO
 			;IF IT'S 0, AND THE WEAPON'S A GUN, PLAY THE EMPTY CLIP SOUND EFFECT
@@ -456,7 +428,6 @@ PlayerReadStart:
 	
 	
 PlayerReadUp:
-;{
 	;if the player is attacking, he shouldn't be walking
 	lda ent_state+0
 	cmp #2
@@ -537,12 +508,18 @@ PlayerReadUp:
 	sec
 	sbc #16
 	sta ent_y+0
-	lda #1			;walking
+	;if the player just started walking, load the new animation data
+	lda ent_state+0
+	cmp #1			;walking
+	beq @walkingup
+	lda #1
 	sta ent_state+0
+	ldx #0
+	jsr FindEntAnimLengthsAndFrames
+@walkingup:
 	jmp PlayerReadLeft			;too far to branch :( (Don't bother moving player down if he's already moved up)
-;}
+
 PlayerReadDown:
-;{
 	lda buttons
 	and #BUTTONS_DOWN
 	bne @continue
@@ -617,11 +594,15 @@ PlayerReadDown:
 	sec
 	sbc #16
 	sta ent_y+0
+	lda ent_state+0
+	cmp #1
+	beq PlayerReadLeft
 	lda #1
 	sta ent_state+0
-;}
+	ldx #0
+	jsr FindEntAnimLengthsAndFrames
+
 PlayerReadLeft:
-;{
 	lda buttons
 	and #BUTTONS_LEFT
 	bne @continue
@@ -691,12 +672,17 @@ PlayerReadLeft:
 @bgcoldone:
 	pla
 	sta ent_y+0
+	lda ent_state+0
+	cmp #1
+	beq @walkingleft
 	lda #1
 	sta ent_state+0
-	bne PlayerDone			;will always branch (Don't bother moving the player right if we've already moved left)
-;}
+	ldx #0
+	jsr FindEntAnimLengthsAndFrames
+@walkingleft:
+	jmp PlayerDone
+
 PlayerReadRight:
-;{
 	lda buttons
 	and #BUTTONS_RIGHT
 	bne @continue
@@ -766,12 +752,17 @@ PlayerReadRight:
 @bgcoldone:
 	pla
 	sta ent_y+0
+	lda ent_state+0
+	cmp #1
+	beq PlayerDone
 	lda #1
 	sta ent_state+0
-;}
+	ldx #0
+	jsr FindEntAnimLengthsAndFrames
 PlayerDone:
 	
 	;stop the player from walking if neither left nor right nor up nor down on the d-pad was pressed
+	;or if the play
 	lda ent_state+0
 	cmp #1
 	bne @done
@@ -780,8 +771,7 @@ PlayerDone:
 	bne @done
 	lda #0					;standing
 	sta ent_state+0
-	sta ent_anim_timer+0
-	sta ent_anim_frame+0
-@done:
 	ldx #0		;ent index for the player will always be 0
 	jmp FindEntAnimLengthsAndFrames
+@done:
+	rts
