@@ -44,7 +44,8 @@ StickShowCollected:
 	sec
 	sbc #1
 	bcs StickShowCollectedDone
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 StickShowCollectedDone:
 	sta ent_timer1,x
 	lda ent_y+0

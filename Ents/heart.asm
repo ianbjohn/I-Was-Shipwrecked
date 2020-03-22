@@ -61,7 +61,8 @@ DecHeartPHIDone:
 	clc
 	adc #1
 	bcc @skipoverflow2
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 @skipoverflow2:
 	sta ent_timer1,x
 @incrementtimer1done:
@@ -72,7 +73,8 @@ HeartShowCollected:
 	sec
 	sbc #1
 	bcs HeartShowCollectedDone
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 HeartShowCollectedDone:
 	sta ent_timer1,x
 	lda ent_y+0

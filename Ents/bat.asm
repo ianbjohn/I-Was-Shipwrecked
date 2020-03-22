@@ -20,7 +20,8 @@ BatCheckDead:
 	tay
 	lda EnemyItemDrops,y
 	bne @continue
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 @continue:
 	sta ent_id,x
 	lda #0

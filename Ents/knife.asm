@@ -3,7 +3,8 @@ KnifeRoutine:
 @checktimerzero:
 	lda player_weapon_active_timer
 	bne @checktimerzerodone
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 @checktimerzerodone:
 	lda ent_dir+1
 	beq @up

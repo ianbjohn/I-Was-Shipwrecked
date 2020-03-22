@@ -59,7 +59,8 @@ DecHoneycombPHIDone:
 	clc
 	adc #1
 	bcc @skipoverflow2
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 @skipoverflow2:
 	sta ent_timer1,x
 @incrementtimer1done:
@@ -70,7 +71,8 @@ HoneycombShowCollected:
 	sec
 	sbc #1
 	bcs HoneycombShowCollectedDone
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 HoneycombShowCollectedDone:
 	sta ent_timer1,x
 	lda ent_y+0

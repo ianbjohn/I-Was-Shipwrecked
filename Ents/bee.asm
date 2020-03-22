@@ -209,7 +209,8 @@ BeeReturning:
 	lda ent_y,x
 	cmp ent_misc2,x
 	bne @movetowardshive
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 @movetowardshive:
 @horiz:
 	lda ent_x,x
@@ -395,6 +396,6 @@ BeeHit:
 	dec ent_timer1,x
 	bne @done
 	dec num_active_enemies
-	jmp DeactivateEnt			;For right now I don't think bees should drop anything
+	DeactivateEnt			;For right now I don't think bees should drop anything
 @done:
 	rts

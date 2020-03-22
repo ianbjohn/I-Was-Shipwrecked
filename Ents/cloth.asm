@@ -44,7 +44,8 @@ ClothShowCollected:
 	sec
 	sbc #1
 	bcs ClothShowCollectedDone
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 ClothShowCollectedDone:
 	sta ent_timer1,x
 	lda ent_y+0

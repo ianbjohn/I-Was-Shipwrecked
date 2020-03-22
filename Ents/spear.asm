@@ -10,7 +10,8 @@ SpearRight:
 	clc
 	adc #4
 	bcc @stillonscreen
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 @stillonscreen:
 	sta ent_hb_x,x
 	lda ent_x,x
@@ -25,7 +26,8 @@ SpearUp:
 	sbc #4
 	cmp #40				;top screen border
 	bcs @stillonscreen
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 @stillonscreen:
 	sta ent_y,x
 	lda ent_hb_y,x
@@ -40,7 +42,8 @@ SpearDown:
 	adc #4
 	cmp #217			;bottom screen border
 	bcc @stillonscreen
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 @stillonscreen:
 	sta ent_hb_y,x
 	lda ent_y,x
@@ -54,7 +57,8 @@ SpearLeft:
 	sec
 	sbc #4
 	bcs @stillonscreen
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 @stillonscreen:
 	sta ent_x,x
 	lda ent_hb_x,x

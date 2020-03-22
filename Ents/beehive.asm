@@ -99,7 +99,7 @@ BeehiveHit:
 	jsr InitEnt
 	jmp @spawnbees
 @dropnothing:
-	jsr DeactivateEnt 
+	DeactivateEnt 
 @spawnbees:
 	;Fill any available ent slots with swarming bees
 	;We know that whatever slot the beehive just was will be free now, but it'll be less code to simply just deactivate it and do a standard loop,

@@ -18,7 +18,6 @@
 	game_state_old		.dsb 1
 	nmi_bankswitch		.dsb 1		;if an NMI bankswitch occurred during bankswitching in the main thread. In which case, some extra logic is needed
 	ent_index			.dsb 1		;which ent is currently being processed
-	num_active_ents		.dsb 1		;make sure this is set to 1 (player ent should always be active in the play state) when loading a new screen, before any other ents are loaded
 	num_active_enemies	.dsb 1		;can only save when @ 0
 	;bank switching
 	prg_bank			.dsb 1		;which bank of program ROM we're currently working with

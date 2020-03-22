@@ -12,7 +12,8 @@ GunRoutine:
 	lda ent_state+0
 	cmp #2			;player attacking?
 	beq GunAdvanceAnimation
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 	
 GunAdvanceAnimation:
 	lda ent_anim_timer+15

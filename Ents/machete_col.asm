@@ -35,7 +35,8 @@ MacheteColShowCollected:
 	sec
 	sbc #1
 	bcs MacheteColShowCollectedDone
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 MacheteColShowCollectedDone:
 	sta ent_timer1,x
 	lda ent_y+0

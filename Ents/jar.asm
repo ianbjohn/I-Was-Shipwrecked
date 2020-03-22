@@ -35,7 +35,8 @@ JarShowCollected:
 	sec
 	sbc #1
 	bcs JarShowCollectedDone
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 JarShowCollectedDone:
 	sta ent_timer1,x
 	lda ent_y+0

@@ -241,8 +241,6 @@ GetDoorsAddressDone:
 SetUpEnemies:
 	ldx #0
 	stx num_active_enemies		;this needs to be cleared and then re-initialized
-	inx
-	stx num_active_ents			;the player is the only ent active when first setting up a screen
 	;here we'll either reload enemies from another screen, or generate all new enemies
 	jsr CheckIfPreviousScreen
 	stx temp0			;we might need whatever was returned from the above call, so we gotta save it

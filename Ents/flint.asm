@@ -44,7 +44,8 @@ FlintShowCollected:
 	sec
 	sbc #1
 	bcs FlintShowCollectedDone
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 FlintShowCollectedDone:
 	sta ent_timer1,x
 	lda ent_y+0

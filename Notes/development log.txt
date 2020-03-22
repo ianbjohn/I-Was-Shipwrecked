@@ -1486,3 +1486,4 @@ Day 190 - 3/22/2020
 		-There was a bunch of text data above various labels for debugging purposes, but consulting the .lst file makes looking up addresses way easier, so these aren't needed anymore.
 		-I forgot that since ents can now be spawned with arbitrary states, a lot of old code assumes that the state will be 0 when it now won't be, which causing some ents to be loaded in states they aren't programmed for, breaking the game. Fixed all of that
 	-Made it so that when ents are loaded / reloaded on a screen, they start in random directions
+	-Removed the num_active_ents variable, as its original intention is basically fulfilled by FindEntSlot, so there should never be more than 16 ents trying to be activated at one time

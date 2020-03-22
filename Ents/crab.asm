@@ -33,7 +33,8 @@ CrabCheckDead:
 	tay
 	lda EnemyItemDrops,y
 	bne @continue			;if SOMETHING should be dropped, then do it. Otherwise, just deactivate whatever ent this is
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 @continue:
 	sta ent_id,x
 	lda #0

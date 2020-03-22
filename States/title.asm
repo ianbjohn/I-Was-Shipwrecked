@@ -210,9 +210,6 @@ Title_ReadStart:
 	lda #<TORCH_TIME
 	sta torch_timer+0
 	
-	;make sure the game knows the player is activated
-	lda #1
-	sta num_active_ents
 	
 	;start shuffling sprites based on ent slot #2
 	lda #2

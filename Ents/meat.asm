@@ -62,7 +62,8 @@ DecMeatPHIDone:
 	clc
 	adc #1
 	bcc @skipoverflow2
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 @skipoverflow2:
 	sta ent_timer1,x
 @incrementtimer1done:
@@ -73,7 +74,8 @@ MeatShowCollected:
 	sec
 	sbc #1
 	bcs MeatShowCollectedDone
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 MeatShowCollectedDone:
 	sta ent_timer1,x
 	lda ent_y+0

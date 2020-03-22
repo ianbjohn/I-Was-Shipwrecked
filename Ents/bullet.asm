@@ -1,6 +1,6 @@
 BULLET_SPEED = 15
 
-	.db "BULLET"
+
 BulletRoutine:
 	lda ent_dir+1
 	beq MoveBulletUp
@@ -14,7 +14,8 @@ MoveBulletRight:
 	adc #BULLET_SPEED
 	;cmp #240			;add this if the bullet still manages to wrap around and kill ents on the other side of the screen
 	bcc @continue
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 @continue:
 	sta ent_x+1
 	lda ent_hb_x+1
@@ -28,7 +29,8 @@ MoveBulletLeft:
 	sbc #BULLET_SPEED
 	;cmp #16
 	bcs @continue
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 @continue:
 	sta ent_x+1
 	lda ent_hb_x+1
@@ -42,7 +44,8 @@ MoveBulletDown:
 	adc #BULLET_SPEED
 	;cmp #240
 	bcc @continue
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 @continue:
 	sta ent_y+1
 	lda ent_hb_y+1
@@ -56,7 +59,8 @@ MoveBulletUp:
 	sbc #BULLET_SPEED
 	;cmp #16
 	bcs @continue
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 @continue:
 	sta ent_y+1
 	lda ent_hb_y+1

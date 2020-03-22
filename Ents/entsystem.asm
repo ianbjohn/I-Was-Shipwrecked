@@ -57,7 +57,6 @@ InitEnt:
 	sta ent_anim_timer,x
 	sta ent_anim_frame,x
 	;Things like timers and misc variables are unique to each ent, and if they are used they should be initialized in the ent's init code
-	inc num_active_ents
 	;Go to the ent's specific init code
 	lda ent_id,x
 	asl
@@ -130,20 +129,9 @@ SpawnWeaponEntBasedOnPlayer:
 @done:
 	ldx #1
 	jmp InitEnt
-
-
-DeactivateEnt:
-	;X should be loaded with ent_index
-	;a subroutine saves more bytes than just having this code everywhere, even though it's so short
-	lda #0
-	sta ent_active,x
-	dec num_active_ents
-	rts
 	
 	
 DeactivateAllEntsExceptPlayer:
-	ldx #1
-	stx num_active_ents
 	lda #0
 @loop:
 	sta ent_active,x

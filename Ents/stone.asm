@@ -44,7 +44,8 @@ StoneShowCollected:
 	sec
 	sbc #1
 	bcs StoneShowCollectedDone
-	jmp DeactivateEnt
+	DeactivateEnt
+	rts
 StoneShowCollectedDone:
 	sta ent_timer1,x
 	lda ent_y+0

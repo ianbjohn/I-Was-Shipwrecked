@@ -8,6 +8,13 @@
 .endm
 
 
+.macro DeactivateEnt
+	;X should be loaded with ent_index
+	lda #0
+	sta ent_active,x
+.endm
+
+
 .macro SaveFileData
 	;Saves current data to a given file
 	;A, X and Y clobbered
