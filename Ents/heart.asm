@@ -11,12 +11,11 @@ DecHeartPHI:
 	beq @continue
 	jmp HeartShowCollected			;show over player's head for 30 frames
 @continue:
-	lda ent_phi_timer,x
-	beq DecHeartPHIDone
 	dec ent_phi_timer,x
+	beq DecHeartPHIDone
 DecHeartPHIDone:
 	
-	;check the jar file for more info on this collision code
+	;collect if player or his weapon touches item
 	jsr CheckPlayerCollision
 	bne @playercol
 	lda ent_active+1
@@ -36,8 +35,7 @@ DecHeartPHIDone:
 	ldy #SFX_HEARTCOLLECTED		;play item acquisition sound effect
 	jsr PlaySound
 	ldx ent_index
-	inc ent_state,x
-	;jsr FindEntAnimLengthsAndFrames
+	inc ent_state,x				;animation data will be the same
 	lda #30
 	sta ent_timer1,x
 	rts
@@ -69,14 +67,11 @@ DecHeartPHIDone:
 	rts
 	
 HeartShowCollected:
-	lda ent_timer1,x
-	sec
-	sbc #1
-	bcs HeartShowCollectedDone
+	dec ent_timer1,x
+	bne HeartShowCollectedDone
 	DeactivateEnt
 	rts
 HeartShowCollectedDone:
-	sta ent_timer1,x
 	lda ent_y+0
 	sec
 	sbc ent_height,x

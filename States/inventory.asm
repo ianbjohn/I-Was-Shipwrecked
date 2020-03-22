@@ -16,7 +16,7 @@ InventoryListString:
 	
 ItemCraftable:
 	;sorted by item ID
-	.db 0,0,0,1,0,1,0,0,0,0,1,0,1,0,0
+	.db 0,0,0,1,0,1,0,0,0,0,1,0,1,0,0,0
 	
 CraftTable:
 	;when the player crafts an item, it uses what's in the crafting queue and hashes it to get a value between 0-63.
@@ -34,7 +34,7 @@ CraftMessages:
 	
 ReverseCraftItemsMap:
 	;maps items to their craftable item counterpart
-	.db 0,0,0,0,0,0,0,CR_ITEM_SPEAR,0,0,0,CR_ITEM_TORCH,0,CR_ITEM_TOURNIQUET,0
+	.db 0,0,0,0,0,0,0,CR_ITEM_SPEAR,0,0,0,CR_ITEM_TORCH,0,CR_ITEM_TOURNIQUET,0,0
 	
 	
 ChangeWeaponPalette:

@@ -1,5 +1,11 @@
+
+
 ClothRoutine:
-	;similar to meat's code
+	;The idea here is extremely similar to other collectibles such as:
+		;flint, jar, machete, stick, stone
+	;So much so in fact that this routine is used for all of them
+		;We simply map the ent ID to the corresponding item ID, display the corresponding "found" message", and accomplish the same thing
+		
 	lda ent_state,x
 	beq @continue
 	jmp ClothShowCollected
@@ -12,23 +18,27 @@ ClothRoutine:
 	jsr CheckPlayerWeaponCollision
 	beq @checkplayercol_done
 @playercol:
-	lda #ITEM_CLOTH
+	lda EntItems,x
 	jsr CheckIfItemObtained
 	beq @newitem
 	ldy #SFX_HEARTCOLLECTED
 	jsr PlaySound
 	jmp @continue2
 @newitem:
-	lda #ITEM_CLOTH
+	ldx ent_index
+	lda EntItems,x
 	jsr SetItemAsObtained
 	ldy #SFX_NEWITEMACQUISITION	;play new item acquisition sound effect
 	jsr PlaySound
-	lda #MSG_CLOTHFOUND
+	ldx ent_index
+	ldy EntItems,x
+	lda ItemFoundMsgs,y
 	sta message
 	lda #STATE_DRAWINGMBOX
 	sta game_state
 @continue2:
-	lda #ITEM_CLOTH
+	ldx ent_index
+	lda EntItems,x
 	ldy #1
 	jsr AddToItemCount
 	ldx ent_index

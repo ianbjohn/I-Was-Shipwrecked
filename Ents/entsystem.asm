@@ -201,9 +201,9 @@ CheckPlayerWeaponCollision:
 	
 EntRoutines:
 	;sorted by ID
-	.dw PlayerRoutine, KnifeRoutine, SnakeRoutine, JarRoutine, HeartRoutine, MeatRoutine, BeehiveRoutine, BeeRoutine
-	.dw GunRoutine, BulletRoutine, DoorRoutine, CrabRoutine, MacheteColRoutine, KnifeRoutine, StickColRoutine, KnifeRoutine
-	.dw StoneRoutine, FlintRoutine, SpearRoutine, ClothRoutine, BatRoutine, SnakeRoutine, HoneycombRoutine
+	.dw PlayerRoutine, KnifeRoutine, SnakeRoutine, ClothRoutine, HeartRoutine, MeatRoutine, BeehiveRoutine, BeeRoutine
+	.dw GunRoutine, BulletRoutine, DoorRoutine, CrabRoutine, ClothRoutine, KnifeRoutine, ClothRoutine, KnifeRoutine
+	.dw ClothRoutine, ClothRoutine, SpearRoutine, ClothRoutine, BatRoutine, SnakeRoutine, MeatRoutine
 	
 RunEnt:
 	ldx ent_index
@@ -420,7 +420,6 @@ DrawEnt:
 	.include "ents/player.asm"
 	.include "ents/knife.asm"	
 	.include "ents/snake.asm"
-	.include "ents/jar.asm"
 	.include "ents/heart.asm"
 	.include "ents/meat.asm"
 	.include "ents/beehive.asm"
@@ -429,11 +428,6 @@ DrawEnt:
 	.include "ents/gun.asm"
 	.include "ents/door.asm"
 	.include "ents/crab.asm"
-	.include "ents/machete_col.asm"
-	.include "ents/stick_col.asm"
-	.include "ents/stone.asm"
-	.include "ents/flint.asm"
 	.include "ents/spear.asm"
 	.include "ents/cloth.asm"
 	.include "ents/bat.asm"
-	.include "ents/honeycomb.asm"
