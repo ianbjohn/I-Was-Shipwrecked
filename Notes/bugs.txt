@@ -32,3 +32,13 @@
 	-[Update 11/17/18] - Seems to happen for screens with collectibles on them in general. Very hard to replicate it seems.
 	-[Update 12/17/18] - There were some issues with the beehive's code and data, so sprite fuckery should be fixed for that.
 		-The whole time I've been playing, I haven't come across any sprite breaking on collectible screens. But if it happens in the future, step through the ent drawing routine, as that's what worked for me this time [Beehive issues fixed 3/19/20, don't know why they were in this section though]
+-[Discovered 3/25/20] - In the version of FCEUX I'm using (2.2.3), the cursor is still sometimes visible on the status board
+	-There's a screen on the shore with incorrect attributes
+	-When trying to eat honeycomb, it says it's out of the item and then decreases the count
+	-When leaving a screen of swarming bees and then returning, the bees won't be swarming anymore
+		-Probably need to add a beehive check to the previous screen system, which shouldn't be hard since it's just one variable.
+	-The tiles on the first line, above the status board, seem to get drawn on the second screen. Not a huge deal since that part won't be shown on NTSC screens, but might be worth looking into.
+	-The machete when facing down isn't properly aligned horizontally.
+	-The player doesn't flicker when walking into thornbushes
+	-The very top left screen of the island doesn't seem to be defined properly
+	-Becoming poisoned by a snake doesn't seem to do anything if you're already infected
