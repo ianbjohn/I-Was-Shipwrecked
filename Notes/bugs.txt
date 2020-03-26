@@ -28,7 +28,17 @@
 -[Discovered 8/9/18] - Sometimes when going up from the screen with the jar, the crabs will still have the jar palette. Seems to happen after the jar has been collected, but can also happen when going back to a previously visited screen. LOOK INTO THIS.
 -[Discovered 8/9/18] - When going to the screen with the jar on it, and then returning, the jar will sometimes be gone. This seems to suggest that special items aren't saved by the previous screen system, or that the code to load special items isn't executed if the screen's been previously visited.
 	-Also when returning to the jar screen after leaving a screen with a messed up palette, sprites would then degenerate. I don't know why this happens either.
-	-Actually, the jar does get spawned when returning normally, so I have no idea what is causing all this
+	-Actually, the jar does get spawned when returning normally, so I have no idea what is causing all 
 	-[Update 11/17/18] - Seems to happen for screens with collectibles on them in general. Very hard to replicate it seems.
-	-[Update 12/17/18] - There were some issues with the beehive's code and data, so sprite fuckery should be fixed for that.
-		-The whole time I've been playing, I haven't come across any sprite breaking on collectible screens. But if it happens in the future, step through the ent drawing routine, as that's what worked for me this time [Beehive issues fixed 3/19/20, don't know why they were in this section though]
+	-[Update 3/26/20] - The jar disappearing and re-appearing seems to be fairly reproducable. Seems to have to do with the previous screen system's collectable item respawn code. I still don't know the culprit of the palettes being wrong yet though.
+-[Discovered 3/25/20] - In the version of FCEUX I'm using (2.2.3), the cursor is still sometimes visible on the status board. Apparent in Mesen as well, so it's clearly stuff I need to fix
+	-There's a screen on the shore with incorrect attributes
+	-When trying to eat honeycomb, it says it's out of the item and then decreases the count
+	-When leaving a screen of swarming bees and then returning, the bees won't be swarming anymore
+		-Probably need to add a beehive check to the previous screen system, which shouldn't be hard since it's just one variable.
+	-The tiles on the first line, above the status board, seem to get drawn on the second screen. Not a huge deal since that part won't be shown on NTSC screens, but might be worth looking into.
+	-The machete when facing down isn't properly aligned horizontally.
+	-The player doesn't flicker when walking into thornbushes
+	-The very top left screen of the island doesn't seem to be defined properly
+	-Becoming poisoned by a snake doesn't seem to do anything if you're already infected
+	-Crabs on one of the shore screens below the jungle entrance seem to have bad spawn points, as they seem to clip through the trees sometimes
