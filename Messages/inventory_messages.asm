@@ -370,7 +370,7 @@ IML_Honeycomb_0:
 	lda #ITEM_HONEYCOMB
 	ldy #1
 	jsr SubtractFromItemCount
-	lda MSG_ATEHONEYCOMB
+	lda #MSG_ATEHONEYCOMB
 	bne @draw
 @nohoneycomb:
 	lda #MSG_OUTOFITEM

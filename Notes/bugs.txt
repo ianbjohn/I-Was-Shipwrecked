@@ -31,11 +31,12 @@
 	-Actually, the jar does get spawned when returning normally, so I have no idea what is causing all 
 	-[Update 11/17/18] - Seems to happen for screens with collectibles on them in general. Very hard to replicate it seems.
 	-[Update 3/26/20] - The jar disappearing and re-appearing seems to be fairly reproducable. Seems to have to do with the previous screen system's collectable item respawn code. I still don't know the culprit of the palettes being wrong yet though.
--[Discovered 3/25/20] - When trying to eat honeycomb, it says it's out of the item and then decreases the count
-	-When leaving a screen of swarming bees and then returning, the bees won't be swarming anymore
+-[Discovered 3/25/20] - When leaving a screen of swarming bees and then returning, the bees won't be swarming anymore
 		-Probably need to add a beehive check to the previous screen system, which shouldn't be hard since it's just one variable.
 	-The machete when facing down isn't properly aligned horizontally.
 	-The player doesn't flicker when walking into thornbushes
 	-The very top left screen of the island doesn't seem to be defined properly
 	-Becoming poisoned by a snake doesn't seem to do anything if you're already infected
 	-Crabs on one of the shore screens below the jungle entrance seem to have bad spawn points, as they seem to clip through the trees sometimes
+		-Seems to sometimes happen with snakes too in the jungle. If witnessed again, find out what screen it was
+	-On screens with beehive and bees, num_active_enemies isn't always 0 when it should be

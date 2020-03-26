@@ -118,7 +118,8 @@ RecipeListInit:
 	sta $2006
 	lda temp3
 	sta $2006
-	inc temp1
+	inc temp4					;ready to check the next craftable item
+	inc temp1					;increment our counter
 	bne @drawcrafteditems		;w.a.b
 @drawcrafteditemsdone:
 
