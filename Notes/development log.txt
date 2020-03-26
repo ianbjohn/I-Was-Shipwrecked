@@ -1496,3 +1496,5 @@ Day 190 - 3/22/2020
 Day 191 - 3/25/2020
 	-I am currently in the process of moving the project over to my new computer running Ubuntu, and am having a very frustrating time trying to set up Mesen. (FCEUX acts funky)
 	-Discovered a bunch of new bugs, but a lot of them seem like they'll (hopefully) be easy to fix.
+	-Converted the assemble script to a shell script
+	-Fixed the issue with screen 6,2 having a wrong attribute
