@@ -505,7 +505,7 @@ InventoryMain:
 	lda #BANK_MESSAGES
 	jsr SetPRGBank
 	
-	;if the player has is in the "item action" substate, we know there was in item in whatever cell was selected
+	;if the player is in the "item action" substate, we know there was an item in whatever cell was selected
 	lda inventory_status
 	cmp #3
 	bne Inventory_ReadA:
@@ -602,6 +602,9 @@ InventoryA_ItemAction:
 	sta game_state
 	lda #0
 	sta inventory_status
+	jsr ClearOAM			;With the new way sprites are handled each frame, OAM only gets cleared if oam_index is > 0 (This way it's not just re-writing a bunch of 0s each frame)
+								;However that also means that since since no ents are drawn in this state overwrite the cursor sprites, the OAM stays as it is
+							;So we need to clear the item action cursor we drew earlier so it won't be in front of the message that's about to get drawn.
 	jmp (jump_ptr)			;each routine should, instead of RTS, JMP back to Inventory_DrawCursor
 	
 InventoryA_Save:

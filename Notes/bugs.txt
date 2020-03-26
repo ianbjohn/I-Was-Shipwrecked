@@ -31,12 +31,9 @@
 	-Actually, the jar does get spawned when returning normally, so I have no idea what is causing all 
 	-[Update 11/17/18] - Seems to happen for screens with collectibles on them in general. Very hard to replicate it seems.
 	-[Update 3/26/20] - The jar disappearing and re-appearing seems to be fairly reproducable. Seems to have to do with the previous screen system's collectable item respawn code. I still don't know the culprit of the palettes being wrong yet though.
--[Discovered 3/25/20] - In the version of FCEUX I'm using (2.2.3), the cursor is still sometimes visible on the status board. Apparent in Mesen as well, so it's clearly stuff I need to fix
-	-There's a screen on the shore with incorrect attributes
-	-When trying to eat honeycomb, it says it's out of the item and then decreases the count
+-[Discovered 3/25/20] - When trying to eat honeycomb, it says it's out of the item and then decreases the count
 	-When leaving a screen of swarming bees and then returning, the bees won't be swarming anymore
 		-Probably need to add a beehive check to the previous screen system, which shouldn't be hard since it's just one variable.
-	-The tiles on the first line, above the status board, seem to get drawn on the second screen. Not a huge deal since that part won't be shown on NTSC screens, but might be worth looking into.
 	-The machete when facing down isn't properly aligned horizontally.
 	-The player doesn't flicker when walking into thornbushes
 	-The very top left screen of the island doesn't seem to be defined properly

@@ -1502,3 +1502,6 @@ Day 192 - 3/26/2020
 	-started working on the newly-discovered bugs, which'll take priority over stuff for right now (Besides the previous screen system issues, which is a can of worms I really don't wanna open right now)
 	-Converted the assemble script to a shell script
 	-Fixed the issue with screen 6,2 having a wrong attribute
+	-Fixed the issue with 0s at the top row of the screen (At the start of the file select state, the address was getting set to start drawing on the 2nd row, since NTSC screens don't show the first one, but a whole screen was still being drawn causing the first row of the other screen to be drawn.) Since Mesen seems to show the entire 256x240p screen by default, I figured it wouldn't be a big deal to just clear the whole screen.
+	-Fixed the issue with the cursor sprite still being drawn in front of the message board (Since the ent drawing code got changed, there were no ents to be drawn to overwrite the sprites, but oam_index was 0 so OAM still wasn't being cleared)
+	-Fixed an issue where when a bee would return to the hive and get deactivated, num_active_enemies wasn't getting decremented correctly.

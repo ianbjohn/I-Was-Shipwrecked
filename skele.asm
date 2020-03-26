@@ -322,7 +322,7 @@ MainLoop:
 	inc vram_update
 @checkVRAMbuffercontentsdone:
 
-	;After all sprites have been drawn we should clear the parts of the OAM buffer that wasn't used for the current frame
+	;After all sprites have been drawn we should clear the parts of the OAM buffer that weren't used for the current frame
 	;Some states such as Title and GameOver don't use oam_index and either have hard-coded sprites or no sprites,
 		;but oam_index should be 0 in these situations and so the loop will be ignored
 	ldx oam_index

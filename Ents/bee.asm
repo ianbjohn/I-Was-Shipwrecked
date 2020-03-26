@@ -187,6 +187,7 @@ BeeReturning:
 	lda ent_y,x
 	cmp ent_misc2,x
 	bne @movetowardshive
+	dec num_active_enemies
 	DeactivateEnt
 	rts
 @movetowardshive:

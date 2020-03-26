@@ -36,6 +36,7 @@ FS_ClearScreen:
 	lda $2002
 	lda #$20
 	sta $2006
+	lda #$00
 	sta $2006
 	ldy #4
 	ldx #0
