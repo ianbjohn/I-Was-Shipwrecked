@@ -1473,10 +1473,11 @@ WeaponEnts:
 	
 	
 WeaponSpawnPositionOffsetsUp:
+	;Sorted by weapon, (x,y) pairs relative from player
 	.db 3,7, 3,31, 3,39, 3,23, 3,15, 0,2
 WeaponSpawnPositionOffsetsDown:
 	;only need X positions here
-	.db 5, 5, 5, 5, 4, 7
+	.db 5, 5, 5, 5, 5, 7
 WeaponSpawnPositionOffsetsLeft:
 	.db 7,7, 31,7, 39,7, 23,7, 15,7, 2,10	;right spawn positions have the same Y's so we can just read the Y component of these pairs
 	

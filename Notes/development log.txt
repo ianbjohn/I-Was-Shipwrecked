@@ -1506,3 +1506,5 @@ Day 192 - 3/26/2020
 	-Fixed the issue with the cursor sprite still being drawn in front of the message board (Since the ent drawing code got changed, there were no ents to be drawn to overwrite the sprites, but oam_index was 0 so OAM still wasn't being cleared)
 	-Fixed an issue where when a bee would return to the hive and get deactivated, num_active_enemies wasn't getting decremented correctly. However, num_active enemies is still not always 0 when it should be on screens with bees for some reason, going to have to look into this further.
 	-Fixed an issue with the recipe list not correctly displaying crafted item recipes. The variable used for keeping track of which craftable item should be checked wasn't getting incremented with each pass of the loop, so it would keep displaying the same item multiple times.
+	-Fixed the issue with the machete metasprite facing down being drawn one pix off to the left
+	-Made sure that correct hitbox data for the player is loaded at the start of a new game / when loading a file (Was hard-coded in the title state, but then not updated when loading a new file, which could cause issues with collision)

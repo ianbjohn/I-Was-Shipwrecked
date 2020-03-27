@@ -33,10 +33,12 @@
 	-[Update 3/26/20] - The jar disappearing and re-appearing seems to be fairly reproducable. Seems to have to do with the previous screen system's collectable item respawn code. I still don't know the culprit of the palettes being wrong yet though.
 -[Discovered 3/25/20] - When leaving a screen of swarming bees and then returning, the bees won't be swarming anymore
 		-Probably need to add a beehive check to the previous screen system, which shouldn't be hard since it's just one variable.
-	-The machete when facing down isn't properly aligned horizontally.
 	-The player doesn't flicker when walking into thornbushes
 	-The very top left screen of the island doesn't seem to be defined properly
 	-Becoming poisoned by a snake doesn't seem to do anything if you're already infected
 	-Crabs on one of the shore screens below the jungle entrance seem to have bad spawn points, as they seem to clip through the trees sometimes
 		-Seems to sometimes happen with snakes too in the jungle. If witnessed again, find out what screen it was
 	-On screens with beehive and bees, num_active_enemies isn't always 0 when it should be
+[Discovered 3/26/20] - When there are several bats on the screen, sometimes the player still takes a hit after they're flying away from him
+	-Hopefully shouldn't be too hard to debug, break whenever the player damage SFX is playing
+	-MIGHT have been fixed after the player hitbox loading stuff got added, but maybe not

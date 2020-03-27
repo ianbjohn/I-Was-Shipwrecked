@@ -129,6 +129,13 @@
 	sta ent_x+0
 	lda file_data_y,y
 	sta ent_y+0
+	;Set up player animation / hitbox data here (Animation data isn't super necessary, but set it up here just in case)
+	tya
+	pha
+	ldx #0
+	jsr FindEntAnimLengthsAndFrames
+	pla
+	tay
 	lda file_data_health,y
 	sta ent_health+0
 	lda file_data_hunger,y

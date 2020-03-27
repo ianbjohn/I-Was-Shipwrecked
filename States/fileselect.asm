@@ -424,6 +424,7 @@ FS_ReadA:
 	jmp @erase
 @load:
 	;play
+	;The $8000 bank should already be loaded to BANK_ENTS
 	LoadFileData
 	lda #STATE_LOADINGSCREEN
 	sta game_state

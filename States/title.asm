@@ -132,6 +132,8 @@ Title_ReadStart:
 @continue:
 	
 	;initialize everything for a new game
+	;Kinda confusing since a lot of stuff happens in the FileSelect state after starting a new / loading an old file
+		;But the rule of thumb is that general non-file-specific stuff can happen here
 	lda #%00000110
 	sta $2001
 	lda #0
@@ -174,17 +176,17 @@ Title_ReadStart:
 	;activate player
 	;If it's a new game, initialize all these to 0 (or whatever their respective initial values should be)
 	;Once we get to the file select state, if a save is loaded, these values will get overwritten
+	lda #BANK_ENTS
+	jsr SetPRGBank
 ++	lda #1
 	sta ent_active+0
 	lda #128
 	sta ent_x+0
 	lda #112
 	sta ent_y+0
-	clc					;yes, the hitbox sizes are defined elsewhere, but they're initialized here as hard-coded instead of going through the effort of indirectly loading them
-	adc #15
-	sta ent_hb_x+0
-	adc #8
-	sta ent_hb_y+0
+	;Set up player animation / hitbox data here (Animation data isn't super necessary, but set it up here just in case)
+	ldx #0
+	jsr FindEntAnimLengthsAndFrames
 	
 	lda #255
 	sta ent_health+0
