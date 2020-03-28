@@ -1516,3 +1516,5 @@ Day 193 - 3/28/2020
 	-Fixed issue with the top-left-most screen not always being defined and drawn. The array of previously-visited screens was getting initialized with all 0s, but since that screen IS ID 0, starting a new game and going to it would try and "reload" it, but there isn't anything to reload since it actually hasn't been visited yet.
 		-Also made a few improvements to the loading screen code, just removing some unnecessary stuff.
 	-Fixed the issue with poisonous snakes not actually poisoning the player when it says they are. Had to actually set the player's status to poisoned, and then fetch the recovery time.
+	-Fixed some spawn points in the shore and jungle that were actually where solid background objects were, causing ents to Mega Man-style zip out of them if they spawned there
+		-There's probably other issues on differen't screens that I haven't noticed yet, and at some point I need to review the entire map and make sure they're all correct, which isn't going to be fun
