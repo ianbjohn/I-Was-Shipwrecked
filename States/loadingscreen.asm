@@ -125,17 +125,12 @@ MovePlayerDone:
 LoadPalette:
 	lda in_cave
 	bne @cave
-	lda #<(IslandScreens)
-	sta mt_ptr1+0
-	lda #>(IslandScreens)
-	sta mt_ptr1+1
 	lda screen
 	asl
-	tay
-	lda (mt_ptr1),y
+	tax
+	lda IslandScreens+0,x
 	sta ptr1+0		;will be used as the pointer for screen data
-	iny
-	lda (mt_ptr1),y
+	lda IslandScreens+1,x
 	sta ptr1+1
 	bne @continue		;will always branch
 @cave:
@@ -232,7 +227,6 @@ GetDoorsAddress:
 	iny
 	sty temp4				;save temp0 as it'll get overwritten when enemies are loaded/reloaded (Stack is used to much here already, temp4 was just added for this purpose, so no other routine uses it)
 GetDoorsAddressDone:
-	jmp SetUpEnemies
 	
 	;(This was originally where hard-coded snake ents were spawned)
 	;load new enemies / screen data or reload old enemies / screen data

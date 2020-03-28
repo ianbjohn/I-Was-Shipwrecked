@@ -4,6 +4,8 @@ ptr2 = message_ptr		;since we work with 2 structs here, we need 2 pointers. Mess
 
 CheckIfPreviousScreen:
 	;screen should have been stored in previous_screen, and subsequently updated to now have the ID of the new screen
+	;This is gonna be a bit tricky if we end up having 256 screens, but an idea I have is - when starting the game, set the array to $FF if the player is near the first screen, and $00 if he isn't
+		;For right now they're just set to $FF since that screen ID isn't used yet
 	lda screen
 	ldx #0
 -	cmp prev_screen_ids,x

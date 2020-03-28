@@ -1513,3 +1513,5 @@ Day 193 - 3/28/2020
 	-Made a tiny optimization to a few item routines that use temp0, pushing A to the stack was redundant.
 	-Fixed the issue with the player not flickering when touching thornbushes. According to clearUnusedOAM, there was nothing to clear when the player was on a PHI frame, so his sprites would stay in OAM
 		-Added a flag that gets set when oam_index is seen to be 0 in ClearUnusedOAM, so that it'll still clear any old sprites but won't keep redundantly clearing after if nothing is getting drawn
+	-Fixed issue with the top-left-most screen not always being defined and drawn. The array of previously-visited screens was getting initialized with all 0s, but since that screen IS ID 0, starting a new game and going to it would try and "reload" it, but there isn't anything to reload since it actually hasn't been visited yet.
+		-Also made a few improvements to the loading screen code, just removing some unnecessary stuff.

@@ -132,8 +132,6 @@ Title_ReadStart:
 @continue:
 	
 	;initialize everything for a new game
-	;Kinda confusing since a lot of stuff happens in the FileSelect state after starting a new / loading an old file
-		;But the rule of thumb is that general non-file-specific stuff can happen here
 	lda #%00000110
 	sta $2001
 	lda #0
@@ -171,7 +169,13 @@ Title_ReadStart:
 @waitframe:
 	cmp frame_counter
 	beq @waitframe
-	
+
+	;Might as well do this here, but set the array of visited screens to all $FFs (Until we have 256 screens, in which case a better solution is proposed in loadingscreen.asm)
+	lda #$FF
+	sta prev_screen_ids+0
+	sta prev_screen_ids+1
+	sta prev_screen_ids+2
+	sta prev_screen_ids+3
 
 	;activate player
 	;If it's a new game, initialize all these to 0 (or whatever their respective initial values should be)
