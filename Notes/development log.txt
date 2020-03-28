@@ -1510,4 +1510,4 @@ Day 192 - 3/26/2020
 	-Made sure that correct hitbox data for the player is loaded at the start of a new game / when loading a file (Was hard-coded in the title state, but then not updated when loading a new file, which could cause issues with collision)
 
 	Day 193 - 3/28/2020
-		-Made a tiny optimization to a few optimizations routine that use temp0, pushing A to the stack was redundant.
+		-Made a tiny optimization to a few item routines that use temp0, pushing A to the stack was redundant.
