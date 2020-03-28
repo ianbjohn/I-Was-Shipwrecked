@@ -26,6 +26,8 @@
 	chr_anim_timer		.dsb 1
 	;sprite cycling
 	oam_index			.dsb 1		;where in our OAM buffer we are, increment every time a sprite is drawn
+	nothing_to_clear	.dsb 1		;When it's time to clear unused OAM, but oam_index is still 0, there might have been stuff leftover from last frame
+										;This flag lets us clear OAM once, but then make sure we aren't redundantly clearing it after. Set to 0 when oam_index isn't 0 and 1 after clearing
 	ent_draw_index		.dsb 1		;Player weapon and player are drawn first, then the other 14 ents are drawn, with the order cycling each frame
 									;gets incremented at the end of each frame after all sprites have been drawn, rolling over from 16 to 2
 	howmuchoamtodraw	.dsb 1		;when drawing a metasprite, how many sprites it has * 4
@@ -83,6 +85,7 @@
 	rounds				.dsb 1
 	player_still_alive	.dsb 1		;if this is 0, enemies shouldn't be able to attack the player (differnet from ent_active+0 because the player still needs to be animated dying, but his code shouldn't be run)
 	;screen stuff
+	;Might not be generic enough to warrant zero-page, but we have plenty of space still
 	island_part			.dsb 1		;0 - on island, 1 - in a cave
 	screen				.dsb 1
 	area				.dsb 1

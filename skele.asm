@@ -325,16 +325,29 @@ MainLoop:
 	;After all sprites have been drawn we should clear the parts of the OAM buffer that weren't used for the current frame
 	;Some states such as Title and GameOver don't use oam_index and either have hard-coded sprites or no sprites,
 		;but oam_index should be 0 in these situations and so the loop will be ignored
-	ldx oam_index
-	beq ClearUnusedOAMDone		;if the index was 0, no sprites were drawn in this frame, so we don't have to clear anything
-	lda #$FE
 ClearUnusedOAM:
+	;I believe the title is the only place that has hard-coded sprites drawn in the init state. So we can just skip over this if we're in there
+	lda game_state
+	beq ClearUnusedOAMDone		;title state is 0 conveniently
+	ldx oam_index
+	beq @checkNothingToClear
+	;stuff was drawn, so other stuff needs to be cleared. Make sure our flag is 0 then
+	lda #0
+	sta nothing_to_clear
+	beq @startClearing			;will always branch
+@checkNothingToClear:
+	;No sprites were drawn during the frame, so check and see if OAM should be cleared
+	lda nothing_to_clear
+	bne ClearUnusedOAMDone		;old OAM already cleared, no need to clear it again
+@startClearing:
+	lda #$FE
+@loop:
 	sta $0200,x
 	inx
 	inx
 	inx
 	inx
-	bne ClearUnusedOAM
+	bne @loop
 	stx oam_index				;oam_index should be 0 now, so we're already to go when the next frame starts
 ClearUnusedOAMDone:
 
@@ -432,6 +445,7 @@ FadeOutMain:
 					;palette_byte = 0x0F;
 		;else
 			;game_state = STATE_LOADINGSCREEN;
+	jsr DrawEnts
 	lda fadeout_timer
 	clc
 	adc #1
@@ -864,6 +878,8 @@ DrawInventoryMessageToBuffer:
 ClearOAM:
 	ldx #0
 	stx oam_index		;will need to get reset since we're clearing everything
+	lda #1
+	sta nothing_to_clear
 	lda #$FE
 @loop:
 	sta $0200,x

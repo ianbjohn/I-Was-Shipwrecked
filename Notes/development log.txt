@@ -1509,5 +1509,7 @@ Day 192 - 3/26/2020
 	-Fixed the issue with the machete metasprite facing down being drawn one pix off to the left
 	-Made sure that correct hitbox data for the player is loaded at the start of a new game / when loading a file (Was hard-coded in the title state, but then not updated when loading a new file, which could cause issues with collision)
 
-	Day 193 - 3/28/2020
-		-Made a tiny optimization to a few item routines that use temp0, pushing A to the stack was redundant.
+Day 193 - 3/28/2020
+	-Made a tiny optimization to a few item routines that use temp0, pushing A to the stack was redundant.
+	-Fixed the issue with the player not flickering when touching thornbushes. According to clearUnusedOAM, there was nothing to clear when the player was on a PHI frame, so his sprites would stay in OAM
+		-Added a flag that gets set when oam_index is seen to be 0 in ClearUnusedOAM, so that it'll still clear any old sprites but won't keep redundantly clearing after if nothing is getting drawn
