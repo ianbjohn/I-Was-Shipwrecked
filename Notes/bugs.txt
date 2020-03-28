@@ -23,7 +23,6 @@
 		UNSOLVED
 -[discovered 11/15/17] - Sound effects sometimes play the last note of the last sound effect that played (I think it only happens for a frame though). I have no idea why this happens to be perfectly honest.
 -[Known about for a while, but documented 11/28/2017] - When going to a new screen, any enemies that were left on the previous screen will appear on the new screen for a frame. I think this has something to do with the OAM buffer not being cleared. [Fixed about two minutes later. Added a call to ClearOAM in LoadScreen and it solved that problem, but there's still the issue of ents being invisible for the first frame of a new screen. I feel like it's only noticeable if you already know it's there. See if it's worth trying to fix (It might actually be several frames, so maybe look into it more)]
--[Discovered 6/11/18] - The game will sometimes crash (not go to the break handler, but the screen'll turn black and it'll execute garbage code) at the end of area fadeout transitions. I forgot to save the breakpoint I added, but if it happens again, keep track of where. It's probably just the wrong bank being switched in.
 -[Discovered 7/10/18] - Bats seem to not always go back to perching where they spawned.
 -[Discovered 8/9/18] - Sometimes when going up from the screen with the jar, the crabs will still have the jar palette. Seems to happen after the jar has been collected, but can also happen when going back to a previously visited screen. LOOK INTO THIS.
 -[Discovered 8/9/18] - When going to the screen with the jar on it, and then returning, the jar will sometimes be gone. This seems to suggest that special items aren't saved by the previous screen system, or that the code to load special items isn't executed if the screen's been previously visited.
@@ -33,10 +32,13 @@
 	-[Update 3/26/20] - The jar disappearing and re-appearing seems to be fairly reproducable. Seems to have to do with the previous screen system's collectable item respawn code. I still don't know the culprit of the palettes being wrong yet though.
 -[Discovered 3/25/20] - When leaving a screen of swarming bees and then returning, the bees won't be swarming anymore
 		-Probably need to add a beehive check to the previous screen system, which shouldn't be hard since it's just one variable.
-	-Becoming poisoned by a snake doesn't seem to do anything if you're already infected
 	-Crabs on one of the shore screens below the jungle entrance seem to have bad spawn points, as they seem to clip through the trees sometimes
 		-Seems to sometimes happen with snakes too in the jungle. If witnessed again, find out what screen it was
 	-On screens with beehive and bees, num_active_enemies isn't always 0 when it should be
-[Discovered 3/26/20] - When there are several bats on the screen, sometimes the player still takes a hit after they're flying away from him
+
+
+	POSSIBLY SOLVED, BE ON LOOKOUT FOR
+-[Discovered 3/26/20] - When there are several bats on the screen, sometimes the player still takes a hit after they're flying away from him
 	-Hopefully shouldn't be too hard to debug, break whenever the player damage SFX is playing
-	-MIGHT have been fixed after the player hitbox loading stuff got added, but maybe not
+	-MIGHT have been fixed after the player hitbox loading stuff got added, but if it happens again, debug obviously.
+-[Discovered 6/11/18] - The game will sometimes crash (not go to the break handler, but the screen'll turn black and it'll execute garbage code) at the end of area fadeout transitions. I forgot to save the breakpoint I added, but if it happens again, keep track of where. It's probably just the wrong bank being switched in.

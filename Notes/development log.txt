@@ -1515,3 +1515,4 @@ Day 193 - 3/28/2020
 		-Added a flag that gets set when oam_index is seen to be 0 in ClearUnusedOAM, so that it'll still clear any old sprites but won't keep redundantly clearing after if nothing is getting drawn
 	-Fixed issue with the top-left-most screen not always being defined and drawn. The array of previously-visited screens was getting initialized with all 0s, but since that screen IS ID 0, starting a new game and going to it would try and "reload" it, but there isn't anything to reload since it actually hasn't been visited yet.
 		-Also made a few improvements to the loading screen code, just removing some unnecessary stuff.
+	-Fixed the issue with poisonous snakes not actually poisoning the player when it says they are. Had to actually set the player's status to poisoned, and then fetch the recovery time.

@@ -443,6 +443,9 @@ SnakePlayerCol:
 	jsr RandomLFSR
 	and #%00000111			;1/8 chance
 	bne @nopoison
+	lda #STATUS_POISONED
+	sta status
+	jsr FetchStatusRecoveryTime
 	lda #MSG_POISONED
 	sta message
 	lda #STATE_DRAWINGMBOX
