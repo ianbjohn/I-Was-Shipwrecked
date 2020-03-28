@@ -43,13 +43,12 @@ CheckIfItemObtained:
 	;Clobbers X and Y
 	;Return value is in A
 	;item ID is returned in temp0
-	pha
 	sta temp0
 	lsr
 	lsr
 	lsr
 	tax
-	pla
+	lda temp0
 	and #%00000111
 	tay
 	lda obtained_items,x
@@ -59,13 +58,12 @@ CheckIfItemObtained:
 	
 CheckIfItemCrafted:
 	;same as CheckIfItemObtained
-	pha
 	sta temp0
 	lsr
 	lsr
 	lsr
 	tax
-	pla
+	lda temp0
 	and #%00000111
 	tay
 	lda crafted_items,x
