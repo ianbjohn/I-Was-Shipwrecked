@@ -510,7 +510,8 @@ SetUpDoorsDone:
 	lda #STATE_DRAWINGMBOX
 	sta game_state
 	sta game_state_old		;uncomment this if the uncommented code doesn't work
-	rts
+	;draw the active ents now that they've all been set up, since otherwise they won't get drawn until the next frame
+	jmp DrawEnts
 	
 @notincave:
 	lda area
@@ -518,4 +519,4 @@ SetUpDoorsDone:
 	lda #STATE_PLAY
 	sta game_state
 	sta game_state_old				;The init state for play is only used for redrawing the screen from RAM when returning from the inventory screen
-	rts
+	jmp DrawEnts

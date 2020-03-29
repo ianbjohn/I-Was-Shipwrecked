@@ -5,8 +5,8 @@
 EntMetaSprites:
 	;sorted by ent ID
 	.dw PlayerMetaSprites, PlayerWeapon0MetaSprites, SnakeMetaSprites, JarMetaSprites, HeartMetaSprites, MeatMetaSprites, BeehiveMetaSprites, BeeMetaSprites
-	.dw GunMetaSprites, BulletMetaSprites, DoorMetaSprites, CrabMetaSprites, MacheteColMetaSpites, MacheteMetaSprites, StickColMetaSprites, StickMetaSprites
-	.dw StoneMetaSprites, FlintMetaSprites, SpearMetaSprites, ClothMetaSprites, BatMetaSprites, SnakeMetaSprites, HoneycombMetaSprites
+	.dw BulletMetaSprites, DoorMetaSprites, CrabMetaSprites, MacheteColMetaSpites, MacheteMetaSprites, StickColMetaSprites, StickMetaSprites, StoneMetaSprites
+	.dw FlintMetaSprites, SpearMetaSprites, ClothMetaSprites, BatMetaSprites, SnakeMetaSprites, HoneycombMetaSprites
 
 	
 	;Player
@@ -587,6 +587,7 @@ BulletMetaSpritesNormalR_0:
 	
 	
 	;player weapon 1a - gun
+	;(Not actually in the list since the gun isn't technically an ent, but it'll be convenient to draw it as a metasprite when needed)
 GunMetaSprites:
 	.dw GunMetaSpritesFiring, GunMetaSpritesNormal
 	
@@ -961,8 +962,8 @@ HoneycombMetaSpritesNormalU_0:
 	;Animation Lengths
 EntAnimationLengths:
 	.dw PlayerAnimationLengths, PlayerWeapon0AnimationLengths, SnakeAnimationLengths, JarAnimationLengths, HeartAnimationLengths, MeatAnimationLengths, BeehiveAnimationLengths, BeeAnimationLengths
-	.dw GunAnimationLengths, BulletAnimationLengths, DoorAnimationLengths, CrabAnimationLengths, MacheteColAnimationLengths, MacheteAnimationLengths, StickColAnimationLengths, StickAnimationLengths
-	.dw StoneAnimationLengths, FlintAnimationLengths, SpearAnimationLengths, ClothAnimationLengths, BatAnimationLengths, SnakeAnimationLengths, HoneycombAnimationLengths
+	.dw BulletAnimationLengths, DoorAnimationLengths, CrabAnimationLengths, MacheteColAnimationLengths, MacheteAnimationLengths, StickColAnimationLengths, StickAnimationLengths, StoneAnimationLengths
+	.dw FlintAnimationLengths, SpearAnimationLengths, ClothAnimationLengths, BatAnimationLengths, SnakeAnimationLengths, HoneycombAnimationLengths
 	
 	
 	;Player
@@ -977,7 +978,6 @@ JarAnimationLengths:
 HeartAnimationLengths:
 MeatAnimationLengths:
 BeehiveAnimationLengths:
-GunAnimationLengths:
 BulletAnimationLengths:
 DoorAnimationLengths:
 MacheteColAnimationLengths:
@@ -1005,8 +1005,8 @@ BatAnimationLengths:
 	;Animation Frames
 EntAnimationFrames:
 	.dw PlayerAnimationFrames, PlayerWeapon0AnimationFrames, SnakeAnimationFrames, JarAnimationFrames, HeartAnimationFrames, MeatAnimationFrames, BeehiveAnimationFrames, BeeAnimationFrames
-	.dw GunAnimationFrames, BulletAnimationFrames, DoorAnimationFrames, CrabAnimationFrames, MacheteColAnimationFrames, MacheteAnimationFrames, StickColAnimationFrames, StickAnimationFrames
-	.dw StoneAnimationFrames, FlintAnimationFrames, SpearAnimationFrames, ClothAnimationFrames, BatAnimationFrames, SnakeAnimationFrames, HoneycombAnimationFrames
+	.dw BulletAnimationFrames, DoorAnimationFrames, CrabAnimationFrames, MacheteColAnimationFrames, MacheteAnimationFrames, StickColAnimationFrames, StickAnimationFrames, StoneAnimationFrames
+	.dw FlintAnimationFrames, SpearAnimationFrames, ClothAnimationFrames, BatAnimationFrames, SnakeAnimationFrames, HoneycombAnimationFrames
 	
 
 PlayerAnimationFrames:
@@ -1016,7 +1016,6 @@ PlayerWeapon0AnimationFrames:
 JarAnimationFrames:
 HeartAnimationFrames:
 MeatAnimationFrames:
-GunAnimationFrames:
 BulletAnimationFrames:
 DoorAnimationFrames:
 MacheteColAnimationFrames:
@@ -1044,8 +1043,8 @@ BatAnimationFrames:
 	;As of 6/20/17 I've decided that hitbox sizes will only be dependent upon ent ID, state and direction. Individual animation frames for each state must have the same hitbox sizes
 EntHitboxSizes:
 	.dw PlayerHitboxSizes, PlayerWeapon0HitboxSizes, SnakeHitboxSizes, JarHitboxSizes, HeartHitboxSizes, MeatHitboxSizes, BeehiveHitboxSizes, BeeHitboxSizes
-	.dw GunHitboxSizes, BulletHitboxSizes, DoorHitboxSizes, CrabHitboxSizes, MacheteColHitboxSizes, MacheteHitboxSizes, StickColHitboxSizes, StickHitboxSizes
-	.dw StoneHitboxSizes, FlintHitboxSizes, SpearHitboxSizes, ClothHitboxSizes, BatHitboxSizes, SnakeHitboxSizes, HoneycombHitboxSizes
+	.dw BulletHitboxSizes, DoorHitboxSizes, CrabHitboxSizes, MacheteColHitboxSizes, MacheteHitboxSizes, StickColHitboxSizes, StickHitboxSizes, StoneHitboxSizes
+	.dw FlintHitboxSizes, SpearHitboxSizes, ClothHitboxSizes, BatHitboxSizes, SnakeHitboxSizes, HoneycombHitboxSizes
 	
 	
 ;Lots of ents use 7x7 and 15x15 for all their states, so these are here to avoid a lot of repeated data
@@ -1102,12 +1101,6 @@ BulletHitboxSizes:
 BulletHitboxSizesNormal:
 	.db 2,15, 2,15, 15,2, 15,2
 	
-	
-GunHitboxSizes:
-	.dw GunHitboxSizesFiring, GunHitboxSizesNormal
-GunHitboxSizesFiring:
-GunHitboxSizesNormal:
-	.db 15,23, 15,23, 23,15, 23,15
 	
 MacheteHitboxSizes:
 	.dw MacheteHitboxSizesNormal

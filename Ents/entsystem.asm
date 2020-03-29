@@ -2,8 +2,8 @@
 EntInitRoutines:
 	;sorted by ID
 	.dw RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, BeehiveInit, BeeInit
-	.dw RegularEntInit, RegularEntInit, RegularEntInit, CrabInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit
-	.dw RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit
+	.dw RegularEntInit, RegularEntInit, CrabInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit
+	.dw RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit
 	
 RegularEntInit:
 	;For most ents, nothing unique really needs to be done at spawn time, so we can just go ahead and load the animation data
@@ -197,11 +197,12 @@ CheckPlayerWeaponCollision:
 EntRoutines:
 	;sorted by ID
 	.dw PlayerRoutine, KnifeRoutine, SnakeRoutine, ClothRoutine, HeartRoutine, MeatRoutine, BeehiveRoutine, BeeRoutine
-	.dw GunRoutine, BulletRoutine, DoorRoutine, CrabRoutine, ClothRoutine, KnifeRoutine, ClothRoutine, KnifeRoutine
-	.dw ClothRoutine, ClothRoutine, SpearRoutine, ClothRoutine, BatRoutine, SnakeRoutine, MeatRoutine
+	.dw BulletRoutine, DoorRoutine, CrabRoutine, ClothRoutine, KnifeRoutine, ClothRoutine, KnifeRoutine, ClothRoutine
+	.dw ClothRoutine, SpearRoutine, ClothRoutine, BatRoutine, SnakeRoutine, MeatRoutine
 	
 RunEnt:
-	ldx ent_index
+	;X should be loaded with ent_index
+	;ldx ent_index
 	lda ent_id,x
 	asl
 	tay
@@ -211,6 +212,7 @@ RunEnt:
 	sta jump_ptr+1
 	jmp (jump_ptr)
 	
+
 FindEntAnimLengthsAndFrames:
 	;Metasprite definitions and the animation lengths and frames are stored separately. Only need to fetch these when an ent's state is changed
 	;Despite the routine's name, hitbox data is also fetched here, as it can change when an ent's state changes. 
@@ -297,6 +299,16 @@ EntAdvanceAnimationDone:
 DrawEnts:
 	;Draw the player's weapon first so it'll always be in front of him
 	;Then draw the player
+	;HOWEVER, if the player has the gun out and is firing, we need to draw that too
+	lda ent_state+0
+	cmp #2				;attacking
+	bne @drawGunDone
+	lda weapon
+	cmp #WEAPON_GUN
+	bne @drawGunDone
+	;(TODO: Draw gun metasprites here)
+@drawGunDone
+	;NOW, we can move on to drawing otherstuff
 	lda ent_draw_index
 	pha					;need to save since DrawEnt uses ent_draw_index instead of ent_index, and we need to draw the weapon and player first
 	lda #1
@@ -443,7 +455,6 @@ DrawEnt:
 	.include "ents/beehive.asm"
 	.include "ents/bee.asm"
 	.include "ents/bullet.asm"
-	.include "ents/gun.asm"
 	.include "ents/door.asm"
 	.include "ents/crab.asm"
 	.include "ents/spear.asm"

@@ -166,9 +166,9 @@
 	ent_width			.dsb MAX_ENTS
 	ent_height			.dsb MAX_ENTS
 	ent_dir				.dsb MAX_ENTS	;up, down, left, right
-	ent_anim_frame		.dsb MAX_ENTS	;counts up since animation frames need to happen sequentially
 	ent_anim_timer		.dsb MAX_ENTS	;counts down to 0, then resets to ent_anim_length
 	ent_anim_length		.dsb MAX_ENTS
+	ent_anim_frame		.dsb MAX_ENTS	;counts up since animation frames need to happen sequentially
 	ent_anim_frames		.dsb MAX_ENTS
 	ent_phi_timer		.dsb MAX_ENTS	;if at 0, ent is not in post-hit invincibility
 	ent_timer1			.dsb MAX_ENTS	;Used for various different things depending on the ent
@@ -206,7 +206,7 @@
 	fileselect_cursorpos	.dsb 1	;which position the horizontal cursor in the file select state is
 	palette_buffer		.dsb 32
 	screen_leave_dir	.dsb 1		;0 - up, 1 - down, 2 - left, 3 - right
-	;arrays and other stuff for the "previous screen ent data reloading system" (The ent data is kept track of for the last 4 screens the player's visited)
+	;arrays and other stuff for the "previous screen ent data reloading system" (ata is kept track of for the last 4 screens the player's visited - the actual data itself is in WRAM)
 	enemy_palette_index	.dsb 1
 	prev_enemy_palette_index	.dsb 1
 	previous_screen		.dsb 1
@@ -474,7 +474,7 @@
 	WEAPON_SPEAR		= 2
 	WEAPON_BIGBONE		= 3
 	WEAPON_MACHETE		= 4
-	WEAPON_BULLET		= 5
+	WEAPON_GUN			= 5
 	
 	;ent IDs
 	ENT_PLAYER			= 0
@@ -485,21 +485,20 @@
 	ENT_MEAT			= 5
 	ENT_BEEHIVE			= 6
 	ENT_BEE				= 7
-	ENT_GUN				= 8
-	ENT_BULLET			= 9
-	ENT_DOOR			= 10
-	ENT_CRAB			= 11
-	ENT_MACHETECOL		= 12	;collectable machete
-	ENT_MACHETE			= 13
-	ENT_STICKCOL		= 14
-	ENT_STICK			= 15
-	ENT_STONE			= 16
-	ENT_FLINT			= 17
-	ENT_SPEAR			= 18
-	ENT_CLOTH			= 19
-	ENT_BAT				= 20
-	ENT_POISONSNAKE		= 21
-	ENT_HONEYCOMB		= 22
+	ENT_BULLET			= 8
+	ENT_DOOR			= 9
+	ENT_CRAB			= 10
+	ENT_MACHETECOL		= 11	;collectable machete
+	ENT_MACHETE			= 12
+	ENT_STICKCOL		= 13
+	ENT_STICK			= 14
+	ENT_STONE			= 15
+	ENT_FLINT			= 16
+	ENT_SPEAR			= 17
+	ENT_CLOTH			= 18
+	ENT_BAT				= 19
+	ENT_POISONSNAKE		= 20
+	ENT_HONEYCOMB		= 21
 	
 	;ent tyes
 	ENT_TYPE_PLAYER		= 0

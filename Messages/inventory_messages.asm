@@ -222,10 +222,10 @@ IML_Meat_1:
 	
 IML_Gun_0:
 	lda weapon
-	cmp #WEAPON_BULLET
+	cmp #WEAPON_GUN
 	beq @gunalreadyequipped
 	jsr IncrementStickCount
-	lda #WEAPON_BULLET
+	lda #WEAPON_GUN
 	sta weapon
 	jsr ChangeWeaponPalette
 	lda #MSG_GUNEQUIPPED

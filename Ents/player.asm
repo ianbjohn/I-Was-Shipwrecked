@@ -305,22 +305,15 @@ PlayerReadB:
 	sta ent_state+0
 	ldx #0
 	jsr FindEntAnimLengthsAndFrames
-	;MAP WEAPONS TO ITEMS, CHECK IF THAT ITEM HAS A COUNT
-		;IF SO
-			;IF IT'S 0, AND THE WEAPON'S A GUN, PLAY THE EMPTY CLIP SOUND EFFECT
-			;IF NOT, AND DECREMENT THE COUNT
-	;ALSO ADD A SPECIAL CASE FOR, IF THE WEAPON IS A GUN
-	;The weapon right now is hard-coded to have ent slot 1
 	ldx weapon
-	cpx #WEAPON_BULLET
-	bne @notbullet
+	cpx #WEAPON_GUN
+	bne @notgun
 	lda rounds
-	beq @loadgun
+	beq @skipgun
 @stillhaverounds
 	dec rounds
-	lda #ENT_BULLET
-	bne @continue		;W.A.B
-@notbullet:
+	jmp @continue
+@notgun:
 	lda WeaponItems,x
 	cmp #ITEM_STICK
 	beq @continue			;event though the stick has a count, the player doesn't lose a stick when he uses it
@@ -357,33 +350,6 @@ PlayerReadB:
 	sta rounds_hud_y
 	lda #128
 	sta rounds_hud_timer
-@loadgun:
-	;the gun ent can just be put in slot 15 (for right now at least I guess)
-	lda ent_dir+0
-	asl
-	tax
-	lda #ENT_GUN
-	sta ent_id+15
-	lda ent_x+0
-	clc
-	adc GunSpawnPositionOffsets+0,x
-	sta ent_x+15
-	lda ent_y+0
-	clc
-	adc GunSpawnPositionOffsets+1,x
-	sta ent_y+15
-	lda ent_dir+0
-	sta ent_dir+15
-	lda #0
-	sta ent_state+15
-	ldx #15
-	jsr InitEnt
-	;change the gun's state to normal if no rounds
-	lda rounds
-	bne @skipgun
-	lda #1			;gun's normal state (Don't draw explosion since no bullet was fired)
-	sta ent_state+15
-	;jsr FindEntAnimLengthsAndFrames	;The same as exploding
 @skipgun:
 	;set active timer for the weapon
 	lda #16
@@ -393,7 +359,7 @@ PlayerReadB:
 	sta ent_anim_frame+0
 	;play the appropriate weapon sound effect (See if this can be optimized at all, decrease # of branches)
 	lda weapon
-	cmp #WEAPON_BULLET
+	cmp #WEAPON_GUN
 	bne @stillnogun
 	lda rounds
 	beq @empty

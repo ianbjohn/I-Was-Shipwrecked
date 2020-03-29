@@ -234,10 +234,6 @@ SetUPMMC1:
 	;on the game startup, we go to the title state
 	;since that's already 0, nothing else to do
 	
-	;lda #STATE_TITLE
-	;sta game_state
-	;sta game_state_old
-	
 	;(load the logo CHR data)
 	lda #BANK_GRAPHICS
 	jsr SetPRGBank
@@ -1370,17 +1366,6 @@ FindFreeEntSlot:
 	rts
 	
 	
-DeactivateScreenEnts:
-	ldx #2
-	lda #0
-@loop:
-	sta ent_active,x
-	inx
-	cpx #16
-	bne @loop
-	rts
-	
-	
 FetchStatusRecoveryTime:
 	;whenever a status is changed, this routine should be called to figure out, based on the new status, how long it should take to return to normal, ;I don't think we'll need to check here if a status is recoverable, since usually the status change is hard-coded depending on where in the game we are. Besides, 0 can just be loaded anyway
 	;Accumulator should be loaded with status
@@ -1523,8 +1508,8 @@ EntItems:
 	;obviously only applies to ents that actually represent items
 	;again, not all will be used, but they still need to be defined so might as well define them
 	.db 0, ITEM_KNIFE, 0, ITEM_JAR, 0, ITEM_MEAT, 0, 0
-	.db 0, 0, 0, 0, ITEM_MACHETE, 0, ITEM_STICK, 0
-	.db ITEM_STONE, ITEM_FLINT, 0, ITEM_CLOTH, 0, 0, ITEM_HONEYCOMB
+	.db 0, 0, 0, ITEM_MACHETE, 0, ITEM_STICK, 0, ITEM_STONE
+	.db ITEM_FLINT, 0, ITEM_CLOTH, 0, 0, ITEM_HONEYCOMB
 	
 ItemFoundMsgs:
 	;sorted by item ID
@@ -1572,7 +1557,7 @@ PlayerPalette
 	
 	
 PlayerWeaponPalettes:
-	.dw KnifePalette, StickPalette, SpearPalette, BigBonePalette, MachetePalette, GunPalette, BulletPalette
+	.dw KnifePalette, StickPalette, SpearPalette, BigBonePalette, MachetePalette, GunPalette
 	
 KnifePalette:
 StickPalette:
@@ -1582,7 +1567,6 @@ BigBonePalette:
 StonePalette:			;not a weapon, but it uses the same palette, so we might as well save bytes
 	.db $20,$10,$00
 GunPalette:
-BulletPalette:
 	.db $00,$26,$30
 
 
@@ -1618,14 +1602,15 @@ EnemyTerrains:
 	;sorted by ENT INDEX
 	;There are labels for the types of terrain, but it seems unnecessary here. 0 - water, 1 - land, 2 - trees
 	;Again, I originally planned for events to just have enemies, so don't let the name confuse you
-	.db 0,0,1,0,0,0,2,2,0,0,0,1,1,1,1,1
-	.db 1,1,1,1,2,1
+	.db 0,0,1,0,0,0,2,2,0,0,1,1,1,1,1,1
+	.db 1,1,1,2,1,1
 TerrainSpawnCoordinates:
 	;The addresses of the spawn coordinates for each terrain type
 	.dw ent_spawns+0,ent_spawns+16,ent_spawns+32
 	
 
 ;Eventually move all this stuff to a separate file (itemdata or something), and to a different bank (The same bank where all the message data and code is. Remember to bankswitch)
+;A bit confusing but even though the weapon/item name is gun the actual weapon ent is the bullet
 ItemStrings:
 	.dw KnifeString, JarString, MeatString, FlintString, CoconutString, StickString, AloeString, SpearString
 	.dw BigBoneString, MacheteString, StoneString, TorchString, ClothString, TourniquetString, GunString, HoneycombString

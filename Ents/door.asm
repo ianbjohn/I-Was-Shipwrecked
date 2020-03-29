@@ -17,15 +17,13 @@ DoorCollision:
 	;the player collided with the door, time to do things!!!
 	;clear the previous screen system
 	lda #0
-	ldx #22			;clear 22 bytes
+	ldx #21			;clear 21 bytes (Essentially resets the prev screen system, but doesn't mess with left_first_screen so new enemies can spawn)
 @clearprevloop:
 	sta enemy_palette_index-1,x
 	dex
 	bne @clearprevloop
-	;See if all the screens and whatnot in WRAM need to be cleared as well
-	jsr DeactivateScreenEnts
-	inc door_transition
 	
+	inc door_transition
 	;(use whatever ent variables to set the new screen and in_cave and (cave_level if applicable))
 	ldx ent_index
 	lda ent_timer1,x

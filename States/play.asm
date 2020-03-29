@@ -147,7 +147,7 @@ UpdateHunger:
 	clc
 	adc #7
 	sta vram_buffer_pos
-UpdateThirst
+UpdateThirst:
 	lda thirst
 	cmp thirst_old
 	beq UpdateDay
