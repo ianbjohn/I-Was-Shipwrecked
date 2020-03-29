@@ -30,9 +30,7 @@
 	-Actually, the jar does get spawned when returning normally, so I have no idea what is causing all 
 	-[Update 11/17/18] - Seems to happen for screens with collectibles on them in general. Very hard to replicate it seems.
 	-[Update 3/26/20] - The jar disappearing and re-appearing seems to be fairly reproducable. Seems to have to do with the previous screen system's collectable item respawn code. I still don't know the culprit of the palettes being wrong yet though.
--[Discovered 3/25/20] - When leaving a screen of swarming bees and then returning, the bees won't be swarming anymore
-		-Probably need to add a beehive check to the previous screen system, which shouldn't be hard since it's just one variable.
-	-On screens with beehive and bees, num_active_enemies isn't always 0 when it should be
+-[Discovered 3/25/20] - On screens with beehive and bees, num_active_enemies isn't always 0 when it should be
 
 
 	POSSIBLY SOLVED, BE ON LOOKOUT FOR

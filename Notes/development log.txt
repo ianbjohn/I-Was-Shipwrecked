@@ -1518,3 +1518,9 @@ Day 193 - 3/28/2020
 	-Fixed the issue with poisonous snakes not actually poisoning the player when it says they are. Had to actually set the player's status to poisoned, and then fetch the recovery time.
 	-Fixed some spawn points in the shore and jungle that were actually where solid background objects were, causing ents to Mega Man-style zip out of them if they spawned there
 		-There's probably other issues on differen't screens that I haven't noticed yet, and at some point I need to review the entire map and make sure they're all correct, which isn't going to be fun
+
+Day 194 - 3/29/2020
+	-Started thinking more about how the previous screen system overhaul should be. Made a new note about it, came up with some good ideas
+		-Since only 14 ent slots need to be saved, we can save 18 bytes of data per ent and still be under a page of data per screen. This should make it so that everything important about each ent that needs to be saved across screens can be.
+	-Got rid of the ent_phi_time variable since it's no longer needed, which was able to shorten ent data in ROM a bit.
+		-One of the only things that actually relied on the variable was the gun ent, but the next thing to do is not even have that be an ent, and just have the sprites be drawn if the player is in the attacking state and the bullet is selected as the weapon.

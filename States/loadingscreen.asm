@@ -233,6 +233,7 @@ GetDoorsAddressDone:
 SetUpEnemies:
 	ldx #0
 	stx num_active_enemies		;this needs to be cleared and then re-initialized
+	stx beehive_ent_slot		;if a beehive ent gets loaded/reloaded, this will be set accordingly 
 	;here we'll either reload enemies from another screen, or generate all new enemies
 	jsr CheckIfPreviousScreen
 	stx temp0			;we might need whatever was returned from the above call, so we gotta save it
@@ -442,11 +443,11 @@ SetUpDoors:
 	sta ent_yvel,x
 	iny
 	lda (door_ptr),y	;in cave?
-	sta ent_phi_timer,x
+	sta ent_misc1,x
 	beq @skipcavelevel
 	iny
 	lda (door_ptr),y	;cave level
-	sta ent_phi_time,x
+	sta ent_misc2,x
 @skipcavelevel:
 	iny
 	dec door_count

@@ -9,6 +9,7 @@ BeeInit:
 	jsr RandomLFSR
 	sta ent_misc2,x
 	;(either guard the hive or forage for food)
+		;if the hive doesn't exist, the code will set their state to swarming
 	lda #0				;foraging (for right now)
 	sta ent_state,x
 	jmp FindEntAnimLengthsAndFrames

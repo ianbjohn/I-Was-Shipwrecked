@@ -11,8 +11,8 @@ PlayerData:
 	;After all, it only needs to happen once, as the player will
 		;always be active in the play state
 PlayerWeapon0Data:
-	;Type, damage (health), post-hit invincibility time
-	.db ENT_TYPE_WEAPON, 2, 120
+	;Type, damage (health)
+	.db ENT_TYPE_WEAPON, 2
 JarData:
 HeartData:
 MeatData:
@@ -22,26 +22,26 @@ StoneData:
 FlintData:
 ClothData:
 HoneycombData:
-	.db ENT_TYPE_POWERUP, 0, 0
+	.db ENT_TYPE_POWERUP, 0
 SnakeData:
 PoisonSnakeData:
-	.db ENT_TYPE_ENEMY, 8, 30
+	.db ENT_TYPE_ENEMY, 8
 BeehiveData:
 BeeData:
-	.db ENT_TYPE_ENEMY, 1, 0
+	.db ENT_TYPE_ENEMY, 1
 GunData:
-	.db ENT_TYPE_MISC, 0, 4	;here, the PHI time is used to count down to switch states (i.e when the explosion should disappear)
+	.db ENT_TYPE_MISC, 0
 BulletData:
-	.db ENT_TYPE_WEAPON, 25, 0
+	.db ENT_TYPE_WEAPON, 25
 DoorData:
-	.db ENT_TYPE_DOOR, 0, 0
+	.db ENT_TYPE_DOOR, 0
 CrabData:
-	.db ENT_TYPE_ENEMY, 4, 30
+	.db ENT_TYPE_ENEMY, 4
 MacheteData:
-	.db ENT_TYPE_WEAPON, 4, 120
+	.db ENT_TYPE_WEAPON, 4
 StickData:
-	.db ENT_TYPE_WEAPON, 1, 120
+	.db ENT_TYPE_WEAPON, 1
 SpearData:
-	.db ENT_TYPE_WEAPON, 10, 120
+	.db ENT_TYPE_WEAPON, 10
 BatData:
-	.db ENT_TYPE_ENEMY, 6, 30
+	.db ENT_TYPE_ENEMY, 6

@@ -34,9 +34,9 @@ DoorCollision:
 	sta door_tr_x
 	lda ent_yvel,x
 	sta door_tr_y
-	lda ent_phi_timer,x
+	lda ent_misc1,x
 	sta in_cave_new
-	lda ent_phi_time,x
+	lda ent_misc2,x
 	sta cave_level
 	lda #STATE_FADEOUT
 	sta game_state

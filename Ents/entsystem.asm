@@ -36,9 +36,6 @@ InitEnt:
 	lda (ent_ptr1),y
 	sta ent_health,x
 	iny
-	;PHI
-	lda (ent_ptr1),y
-	sta ent_phi_time,x
 	;anything important that always gets set to 0 when an ent is initialized can go here
 	lda #0
 	sta ent_xsp,x

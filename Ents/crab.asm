@@ -8,6 +8,15 @@ CrabStates:
 	
 	
 CrabInit:
+	;Good to put this here so it can be re-initialized in case the player goes to a new screen and returns while a crab is flying
+	lda #<BASE_FLYING_VELOCITY
+	sta ent_yvel_sp,x
+	;lda #>FLYING_ACCELERATIN
+	sta ent_yacc,x
+	lda #>BASE_FLYING_VELOCITY
+	sta ent_yvel,x
+	lda #<FLYING_ACCELERATION
+	sta ent_yacc_sp,x
 	lda random
 	jsr RandomLFSR
 	and #%00111000

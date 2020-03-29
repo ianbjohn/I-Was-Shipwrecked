@@ -3,6 +3,7 @@ BeehiveStates:
 	
 	
 BeehiveInit:
+	stx beehive_ent_slot
 	lda random
 	jsr RandomLFSR
 	and #%00111111
@@ -48,7 +49,6 @@ BeehiveNormal
 	;When the hive spawns a new bee from the entrance (Which should be on a timer and depend on how many other bees are currently active) the bee should either guard the hive or forage for food
 	dec ent_timer1,x	;foo variable that's set to 1 once a bee is spawned
 	bne @done
-	stx beehive_ent_slot
 	lda random
 	jsr RandomLFSR
 	and #%00111111

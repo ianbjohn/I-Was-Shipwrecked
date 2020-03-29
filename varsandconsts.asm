@@ -171,7 +171,6 @@
 	ent_anim_length		.dsb MAX_ENTS
 	ent_anim_frames		.dsb MAX_ENTS
 	ent_phi_timer		.dsb MAX_ENTS	;if at 0, ent is not in post-hit invincibility
-	ent_phi_time		.dsb MAX_ENTS
 	ent_timer1			.dsb MAX_ENTS	;Used for various different things depending on the ent
 	ent_timer2			.dsb MAX_ENTS	;^
 	ent_misc1			.dsb MAX_ENTS	;Other stuff unique to each ent
