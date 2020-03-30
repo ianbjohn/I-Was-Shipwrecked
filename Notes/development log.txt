@@ -1527,3 +1527,10 @@ Day 194 - 3/29/2020
 	-Got rid of the gun as an ent, still need to have the gun be drawn as a metasprite in DrawEnts
 	-Fixed some issues involving the previous screen system and entering caves
 	-Added a call to DrawEnts at the end of the LoadingScreen State, there's now only one frame of no sprites upon entering a new screen instead of 2. Still trying to find the cause for the one frame, but I will investigate further during the prev screen system overhaul.
+
+Day 195 - 3/30/2020
+	-Fixed a few typos in the bugs file
+	-Started planning for how ROM size expansion should go. The average # of bytes to define everything for a screen is about 185, and if there are going to be about 350 screens (256 for the island, ~100 or so probably for caves and stuff), it comes out to roughly 64K. But since the bank we have screen data in also has metatile data, this complicates things a bit and so we're gonna need more than 4 banks to store everything.
+	-Added some comments to the skeleton file about how data at $F000 can be organized better and put in different banks to make more room. We're gonna need space in the fixed bank for the new tables to keep track of which bank each screen belongs to. Packing 2 screens into a byte will work perfectly since the max # of banks we can have with MMC1 is 16, and so only 128 bytes will be needed to define this data for each part of the island and cave level.
+	-Added some notes for how to approach expanding the ROM size and how to move stuff where.
+	-Don't know when the next time I'll be able to work on this is, since school is starting again this morning, but everything should be well-prepared and documented to jump right back into.

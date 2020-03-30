@@ -98,8 +98,11 @@ Animated_CHR_Waves:
 	
 	;switchable bank 5
 	.base $8000
-	;events (Probably won't be anywhere near 16kb, so feel free to put other stuff in here if needed)
+	;events
 	.include "events.asm"
+
+	.org $9000
+	;other miscellaneous data
 	
 	.org $C000
 	
@@ -1414,7 +1417,8 @@ BREAK:
 	
 	;various random data that still needs to be organized
 	.org $F000
-	;As more and more stuff gets added to the fixed bank, it'll probably be better to just get rid of the above .org directive, and have all the code and data just be one thing	
+	;As more and more stuff gets added to the fixed bank, it'll probably be better to just get rid of the above .org directive, and have all the code and data just be one thing
+	;Global stuff related to screens that need to be in the fixed bank
 IslandAreasDifficulties:
 	;area and difficulty are combined into one byte
 	.rept 8
@@ -1451,6 +1455,12 @@ Cave7AreasDifficulties:
 Cave8AreasDifficulties:
 Cave9AreasDifficulties:
 	.db 0,0,0,(AREA_CAVE | DIFF_EASY)
+
+
+PrevScreenEntDataAddresses:
+	.dw SAVED_ENT_DATA_0, SAVED_ENT_DATA_1, SAVED_ENT_DATA_2, SAVED_ENT_DATA_3
+PrevScreenScreenDataAddresses:
+	.dw SAVED_SCREEN_DATA_0, SAVED_SCREEN_DATA_1, SAVED_SCREEN_DATA_2, SAVED_SCREEN_DATA_3
 	
 	
 PowersOfTwo:
@@ -1461,12 +1471,7 @@ Primes:
 	.db 1,2,3,5,7,11,13,17
 	
 	
-PrevScreenEntDataAddresses:
-	.dw SAVED_ENT_DATA_0, SAVED_ENT_DATA_1, SAVED_ENT_DATA_2, SAVED_ENT_DATA_3
-PrevScreenScreenDataAddresses:
-	.dw SAVED_SCREEN_DATA_0, SAVED_SCREEN_DATA_1, SAVED_SCREEN_DATA_2, SAVED_SCREEN_DATA_3
-	
-	
+	;(Can probably go in the ent bank)
 WeaponEnts:
 	;sorted by weapon
 	;each weapon has an id for its respective ent
@@ -1492,6 +1497,7 @@ SpriteDigits:
 	.db $A0,$A1,$A2,$A3,$A4,$A5,$A6,$A7,$A8,$A9
 	
 	
+	;can probably go in the messages bank
 WeaponItems:
 	;map each weapon to its respective item ID
 	.db ITEM_KNIFE, ITEM_STICK, ITEM_SPEAR, ITEM_BIGBONE, ITEM_MACHETE, ITEM_GUN
@@ -1518,6 +1524,7 @@ ItemFoundMsgs:
 	.db 0, MSG_MACHETEFOUND, MSG_STONEFOUND, 0, MSG_CLOTHFOUND, 0, 0, MSG_HONEYCOMBFOUND
 	
 	
+	;Can probably go in the miscellaneous data bank
 	;palettes
 	;(have an address table for each unique sprite subpalette)
 BG_Palette0:
@@ -1556,6 +1563,7 @@ PlayerPalette
 	;.db $07,$37,$29
 	
 	
+	;Can probably go in the ent bank
 PlayerWeaponPalettes:
 	.dw KnifePalette, StickPalette, SpearPalette, BigBonePalette, MachetePalette, GunPalette
 	
@@ -1595,6 +1603,12 @@ SP_Bat:
 	.db $00,$0F,$26
 SP_PoisonSnake:
 	.db $0F,$24,$13
+
+
+EnemyItemDrops:
+	;what an enemy should randomly drop after being killed
+	;0 = nothing
+	.db 0,ENT_HEART,0,0,ENT_MEAT,0,ENT_HEART,ENT_MEAT
 	
 	
 ;Since the event data and the ent data are in different banks, putting the table here simplifies things and avoids a bunch of back and forth bank switching. This table maps enemies to their terrain (i.e fish -> water, birds -> trees, etc)
@@ -1609,7 +1623,8 @@ TerrainSpawnCoordinates:
 	.dw ent_spawns+0,ent_spawns+16,ent_spawns+32
 	
 
-;Eventually move all this stuff to a separate file (itemdata or something), and to a different bank (The same bank where all the message data and code is. Remember to bankswitch)
+;can probably go in the messages bank
+;Eventually move all this stuff to a separate file (itemdata or something)
 ;A bit confusing but even though the weapon/item name is gun the actual weapon ent is the bullet
 ItemStrings:
 	.dw KnifeString, JarString, MeatString, FlintString, CoconutString, StickString, AloeString, SpearString
@@ -1754,7 +1769,8 @@ StatusBoard:
 	.db W,E,lA,P,O,N,$2F, $FA,$EA,$E9,$E8,$E7,$E6,$E5,$E4,$E3, SPA, D,lA,lY, SPA, $F9,$F7,$F6,$F5,$F4,$F3, $FF
 	
 	
-;Old data from the original temporary title screen, but kept here in case it needs to be used for some reason
+	;Can probably go in the misc data bank
+	;Old data from the original temporary title screen, but kept here in case it needs to be used for some reason
 Title:
 	.db I, SPA, W,lA,S, SPA, S,H,I,P,W,R,E,C,K,E,D
 PressStart:
@@ -1794,13 +1810,8 @@ FileFrame:
 	.db $37,SPA,SPA,SPA,SPA,SPA,SPA,SPA,SPA,$37,$FF
 	.db $34,$36,$36,$36,$36,$36,$36,$36,$36,$35
 	
-	
-EnemyItemDrops:
-	;what an enemy should randomly drop after being killed
-	;0 = nothing
-	.db 0,ENT_HEART,0,0,ENT_MEAT,0,ENT_HEART,ENT_MEAT
-	
-	
+
+	;Global data related to CHR stuff	
 ;addresses for the animation frames of all animated CHR tiles	
 Animated_CHR_Tiles:
 	.dw Animated_CHR_Waves
@@ -1814,7 +1825,8 @@ Animated_CHR_Tiles_Addresses:
 	;(have a table in the fixed bank of which bank to use for each animated tile)
 	
 	
-;which song to play depending on the game area
+	;Global data related to sound engine
+	;which song to play depending on the game area
 GameAreaSongs:
 	.db SONG_SHORE,SONG_JUNGLE,0,0,SONG_CAVES
 	

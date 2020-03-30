@@ -28,10 +28,9 @@
 -[Discovered 8/9/18] - Sometimes when going up from the screen with the jar, the crabs will still have the jar palette. Seems to happen after the jar has been collected, but can also happen when going back to a previously visited screen. LOOK INTO THIS.
 -[Discovered 8/9/18] - When going to the screen with the jar on it, and then returning, the jar will sometimes be gone. This seems to suggest that special items aren't saved by the previous screen system, or that the code to load special items isn't executed if the screen's been previously visited.
 	-Also when returning to the jar screen after leaving a screen with a messed up palette, sprites would then degenerate. I don't know why this happens either.
-	-Actually, the jar does get spawned when returning normally, so I have no idea what is causing all 
+	-Actually, the jar does get spawned when returning normally, so I have no idea what is causing all of the palettes being wrong yet though.
 	-[Update 11/17/18] - Seems to happen for screens with collectibles on them in general. Very hard to replicate it seems.
-	-[Update 3/26/20] - The jar disappearing and re-appearing seems to be fairly reproducable. Seems to have to do with the previous screen system's collectable item respawn code. I still don't know the culprit of the palettes being wrong yet though.
--[Discovered 3/25/20] - On screens with beehive and bees, num_active_enemies isn't always 0 when it should be
+	-[Update 3/26/20] - The jar disappearing and re-appearing seems to be fairly reproducable. Seems to have to do with the previous screen system's collectable item respawn code. I still don't know the culprit.
 
 
 	POSSIBLY SOLVED, BE ON LOOKOUT FOR
@@ -39,3 +38,4 @@
 	-Hopefully shouldn't be too hard to debug, break whenever the player damage SFX is playing
 	-MIGHT have been fixed after the player hitbox loading stuff got added, but if it happens again, debug obviously.
 -[Discovered 6/11/18] - The game will sometimes crash (not go to the break handler, but the screen'll turn black and it'll execute garbage code) at the end of area fadeout transitions. I forgot to save the breakpoint I added, but if it happens again, keep track of where. It's probably just the wrong bank being switched in.
+-[Discovered 3/25/20] - On screens with beehive and bees, num_active_enemies isn't always 0 when it should be. I think this might have been because there was a bee in slot 15, but firing the gun would put the gun ent in that slot, not decrementing num_active_enemies. Now that the gun is no longer an ent, I think this might be solved, but if it still persists look into it more.
