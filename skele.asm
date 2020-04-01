@@ -1532,7 +1532,7 @@ ItemFoundMsgs:
 	
 	;Can probably go in the miscellaneous data bank
 	;palettes
-	;(have an address table for each unique sprite subpalette)
+	;shore
 BG_Palette0:
 	;sand, trees, water
 	.db $38,$27,$17,$30, $38,$1A,$29,$17, $38,$12,$21,$30
@@ -1542,22 +1542,36 @@ BG_Palette1:
 BG_Palette2:
 	;sand, rock, trees
 	.db $38,$27,$17,$30, $38,$00,$10,$30, $38,$1A,$29,$17
+
+	;jungle
 BG_Palette3:
 	;tree trunks, trees/ground, water
 	.db $17,$1A,$27,$07, $17,$1A,$29,$17, $17,$12,$21,$30
 BG_Palette4:
 	;tree trunks, trees/ground, rock
 	.db $17,$1A,$27,$07, $17,$1A,$29,$17, $17,$00,$10,$30
+
+	;caves
 BG_Palette5:
 	;cave walls, cave ground, water
 	.db $0F,$00,$10,$30, $0F,$17,$05,$10, $0F,$12,$21,$30
 BG_Palette6:
 	;cave walls, cave ground, heiroglyphs
 	.db $0F,$00,$10,$30, $0F,$17,$05,$10, $0F,$17,$28,$39
-BG_Palette7:
+
 	;clearing
-	;green as UBC, dirt/rocks, grass/rock/water, thick grass
-	.db $2A,$17,$27,$37, $2A,$19,$10,$21, $2A,$09,$1A,$17
+BG_Palette7:
+	;grass/rock/water, dirt/rocks, thick grass
+	.db $2A,$19,$10,$21, $2A,$17,$27,$37, $2A,$09,$1A,$17
+BG_Palette8:
+	;grass/rock/water, trees/ground, water
+	.db $2A,$19,$10,$21, $2A,$1A,$29,$17, $2A,$12,$21,$30
+BG_Palette9:
+	;grass/rock/water, dirt/rocks, water
+	.db $2A,$19,$10,$21, $2A,$17,$27,$37, $2A,$12,$21,$30
+BG_Palette10:
+	;grass/wrock/water, thick grass, water
+	.db $2A,$19,$10,$21, $2A,$09,$1A,$17, $2A,$12,$21,$30
 	
 	
 LogoPalette:
