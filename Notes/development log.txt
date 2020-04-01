@@ -1533,4 +1533,12 @@ Day 195 - 3/30/2020
 	-Started planning for how ROM size expansion should go. The average # of bytes to define everything for a screen is about 185, and if there are going to be about 350 screens (256 for the island, ~100 or so probably for caves and stuff), it comes out to roughly 64K. But since the bank we have screen data in also has metatile data, this complicates things a bit and so we're gonna need more than 4 banks to store everything.
 	-Added some comments to the skeleton file about how data at $F000 can be organized better and put in different banks to make more room. We're gonna need space in the fixed bank for the new tables to keep track of which bank each screen belongs to. Packing 2 screens into a byte will work perfectly since the max # of banks we can have with MMC1 is 16, and so only 128 bytes will be needed to define this data for each part of the island and cave level.
 	-Added some notes for how to approach expanding the ROM size and how to move stuff where.
+	-Worked some more on the final map mockup, added to the river, which can be crossed in a few spots but only after you have the machete. Also worked a bit more on some screens to transition them into the mountain area better.
+	-Added some more to the ideas file, cleaned up some old stuff, have a better idea on how to keep the gameplay going / a general goal (Find / rescue the rest of your crew), and expanded a bit more on how to end the game.
 	-Don't know when the next time I'll be able to work on this is, since school is starting again this morning, but everything should be well-prepared and documented to jump right back into.
+
+Day 196 - 3/31/2020
+	-Worked more on the island map mockup - the bottom 2-3 rows of screens all have a general layout/design now
+	-Came up with some more ideas for items / the layout of the map
+	-Started adding the mountains song as game data
+		-The vibratos sound a bit off - too fast, even though they seem to match the Famitracker. I'll have to look into it a bit more to confirm and/or try to fix.

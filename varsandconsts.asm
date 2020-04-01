@@ -603,6 +603,7 @@
 	SFX_THROW			= 17
 	SFX_RECOVERY		= 18
 	SFX_OHSHIT			= 19
+	SONG_MOUNTAINS		= 20
 	
 	;note lengths
 	THIRTYSECOND		= $80
@@ -666,6 +667,11 @@
 	VE20				= 20
 	VE21				= 21
 	VE22				= 22
+	VE23				= 23
+	VE24				= 24
+	VE25				= 25
+	VE26				= 26
+	VE27				= 27
 	
 	;Corresponding note names for each frequency
 	;Note: octaves in music traditionally start at C, not A    

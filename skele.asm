@@ -1421,7 +1421,13 @@ BREAK:
 	;Global stuff related to screens that need to be in the fixed bank
 IslandAreasDifficulties:
 	;area and difficulty are combined into one byte
-	.rept 8
+	.rept 2
+		.db (AREA_SHORE | DIFF_EASY)
+	.endr
+	.rept 2
+		.db (AREA_MOUNTAINS | DIFF_EASY)
+	.endr
+	.rept 4
 		.db (AREA_SHORE | DIFF_EASY)
 	.endr
 	.db (AREA_SHORE | DIFF_EASY), (AREA_SHORE | DIFF_EASY), (AREA_JUNGLE | DIFF_EASY), (AREA_JUNGLE | DIFF_EASY), (AREA_SHORE | DIFF_EASY), (AREA_SHORE | DIFF_EASY), (AREA_SHORE | DIFF_EASY), (AREA_SHORE | DIFF_EASY)
@@ -1828,7 +1834,7 @@ Animated_CHR_Tiles_Addresses:
 	;Global data related to sound engine
 	;which song to play depending on the game area
 GameAreaSongs:
-	.db SONG_SHORE,SONG_JUNGLE,0,0,SONG_CAVES
+	.db SONG_SHORE,SONG_JUNGLE,0,SONG_MOUNTAINS,SONG_CAVES
 	
 WeaponSoundEffects:
 	;sorted by weapon

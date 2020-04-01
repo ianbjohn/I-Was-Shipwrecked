@@ -42,7 +42,8 @@ Vibrato:
 VolumeEnvelopes:
 	.dw SoundVE0,SoundVE1,SoundVE2,SoundVE3,SoundVE4,SoundVE5,SoundVE6,SoundVE7
 	.dw SoundVE8,SoundVE9,SoundVE10,SoundVE11,SoundVE12,SoundVE13,SoundVE14,SoundVE15
-	.dw SoundVE16,SoundVE17,SoundVE18,SoundVE19,SoundVE20,SoundVE21,SoundVE22
+	.dw SoundVE16,SoundVE17,SoundVE18,SoundVE19,SoundVE20,SoundVE21,SoundVE22,SoundVE23
+	.dw SoundVE24,SoundVE25,SoundVE26,SoundVE27
 
 SoundVE0:
 	;standard attack
@@ -110,12 +111,28 @@ SoundVE21:
 	.db 0,1,2,2,3,4,6,8,10,10,0,$FF
 SoundVE22:
 	.db 1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,$FF
+SoundVE23:
+	;Used for the funny synths at the beginning of the mountains song
+	.db 5,4,3,$FF
+SoundVE24:
+	;Used for the quick fadey synths in the mountains song
+	.db 3,5,7,6,5,0,$FF
+SoundVE25:
+	;The same thing as ^, but sustained
+	.db 3,5,7,6,5,$FF
+SoundVE26:
+	;Used for the accompanying square synths in the mountains song
+	.db 2,3,2,0,$FF
+SoundVE27:
+	;Used for the OTHER accompanying square synths in the mountains song
+	.db 3,4,3,2,0,$FF
+
 	
 	
 Sounds:
 	.dw SongShore,SFXHeartCollected,SFXPause,SFXStab,SFXSave,SFXFileSelect,SFXSelection,SFXPlayerHurt
 	.dw SFXNewItemAcquisition,SFXPlayerNearDeath,Silence,SFXEnemyHurt,SFXGunshot,SFXEmptyClip,SongTitle,SongJungle
-	.dw SongCaves,SFXThrow,SFXRecovery,SFXOhShit
+	.dw SongCaves,SFXThrow,SFXRecovery,SFXOhShit,SongMountains
 	
 	
 SoundInit:
@@ -763,6 +780,7 @@ SoundOpChangePSpeed:
 	.include "music/bgm/song_shore.asm"
 	.include "music/bgm/song_jungle.asm"
 	.include "music/bgm/song_caves.asm"
+	.include "music/bgm/song_mountains.asm"
 	.include "music/sfx/sfx_heartcollected.asm"
 	.include "music/sfx/sfx_pause.asm"
 	.include "music/sfx/sfx_stab.asm"

@@ -6,8 +6,8 @@ EventCounts:
 	;(must be a power of 2)
 	.db 15,0,0
 	.db 7,7,0
-	.db 0,0,0
-	.db 0,0,0
+	.db 1,0,0
+	.db 1,0,0
 	.db 1,0,0
 	
 

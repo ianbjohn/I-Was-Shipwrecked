@@ -16,7 +16,7 @@ SongShore:
 	.db MUSIC_SQ2
 	.db 1
 	.db SQUARE_2
-	.db #%01110000
+	.db %01110000
 	.db VE1
 	.dw SongShoreSquare2
 	.db 114
@@ -32,7 +32,7 @@ SongShore:
 	.db MUSIC_NOI
 	.db 1
 	.db NOISE
-	.db #%00110000
+	.db %00110000
 	.db VE3
 	.dw SongShoreNoise
 	.db 114
