@@ -1547,3 +1547,37 @@ Day 197 - 4/1/2020
 	-Worked more on final map mockup - New jungle area finished. Just need to change some of the old shore screens (That are no longer on the shore) to clearing screens, and add a few other clearing screens
 		-This'll mean finishing up on the new tiles / metatiles, which I guess will be the next step
 	-Added some more background palette data to the skeleton file
+	-Finally made some alright-looking tall-grass tiles (That'll actually get saved this time)
+		-Still need to add tiles for the top of the grass behind the front grass
+			-I'm thinking it'll be all around easier to manage everything if an entire 1x2 metatile section of grass gets destroyed when the player cuts it
+
+Day 198 - 4/2/2020
+	-Re-discovered the magic formula for converting BPM into approximate sound engine speed, so I changed the speed of the mountains song to 1 less than what it was
+		-Messed around with vibratos some more to make it more accurate to Famitracker
+			-Still a bit off, but it sounds better than it did before.
+	-Did some more research into parts needed for making a cart
+		-I was wrong about the EEPROM chip part, instead it seems regular EPROMs will be much cheaper for 256K DIP with 8-bit data
+		-Found some parts for 8K of RAM DIP-28 chips with 8-bit data as well
+
+Day 199 - 4/3/2020
+	-Made some more adjustments/touchups to the tall grass, and started working on tiles for the top of the grass
+		-Am probably just gonna use NesST to find duplicate tiles, and then re-add them to where they should be
+		-Make sure the tops of the front grass looks consistent when duplicated. (lots of changes have been made to the left side, with the right somewhat neglected)
+
+Day 200 - 4/7/2020
+	-Tall grass mockup tiles are pretty much finished
+	-Noticed that tile 34 seemed weird, check and see if it's in any metatiles
+		-If not, then add it as a new metatile for more variety
+			-Be sure to update mockup metatilemap
+	-I've also been thinking that the perspective on the rocks seems off from everything else, maybe get rid of the back slope tiles, and change the corner tiles so that the back row drops off, implying there's a cliff
+		-Might be hard with the UBC tho, but give it a try.
+	-Did a bit more research on SRAM (Now that I have a slightly better idea of how to search for things thanks to my E314 class)
+		-The chip I had before was 32KB, while the new one I found was just 8KB (what we need), but it's actually a bit more expensive (Especially since we'll need 2 chips per board), so it might be better to go the 32KB route (Which is actually what I've heard from others since RAM is so cheap now)
+	-Got rid of duplicate grass tiles, moved them around so that the tilemap is space efficient. Added new CHR file to the skeleton file.
+
+Day 201 - 4/8/2020
+	-Made a few more notes in todos about how to handle game overs.
+	-Revisited the idea of picking a random index and adding prime numbers when shuffling the ent draw order. Need to check and make sure it works, but 2 as a prime number won't work since it's even. Did some sketches on paper.
+	-Wrote a python script to test each starting index from 2-15 with each prime to see if there are any possible collisions I missed. Collisions only happen when the prime is 7, so this can be ignored as well.
+		-primes 17+ won't work since theyre >16, so the method of MODing by 16 and adding 2 if the index + the prime is >16 will sometimes still be >16, so it'll have to be done again. This is just needlessly complex, and is exactly the same as increasing by 3 either way. Unfortunately, since we can't have 8 primes, we can only have 4, which is just 1,3,5,11. Increasing by 11 is the same as decreasing by 3, so we get a bit of a "back and forth" effect which can sometimes be desirable when shuffling sprites.
+	-I also remembered that when spawning new ents we have the whole range of 0-7 since there can be 8 spawn points for each terrain on each screen. So any prime (besides 2) should work. I added a separate table of primes for this use.

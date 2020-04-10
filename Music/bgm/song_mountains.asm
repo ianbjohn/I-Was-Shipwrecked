@@ -10,7 +10,7 @@ SongMountains:
 	.db %01110000
 	.db VE24
 	.dw SongMountainsSquare1
-	.db 115			;probably not the tempo we want but we can keep messing with it
+	.db 114			;probably not the tempo we want but we can keep messing with it
 
 	.db MUSIC_SQ2
 	.db 1
@@ -18,7 +18,7 @@ SongMountains:
 	.db %01110000
 	.db VE24
 	.dw SongMountainsSquare2
-	.db 115
+	.db 114
 
 	.db MUSIC_TRI
 	.db 1
@@ -26,7 +26,7 @@ SongMountains:
 	.db %10000001
 	.db VE0
 	.dw SongMountainsTri
-	.db 115
+	.db 114
 
 	.db MUSIC_NOI
 	.db 1
@@ -34,7 +34,7 @@ SongMountains:
 	.db %00110000
 	.db VE5
 	.dw SongMountainsNoise
-	.db 115
+	.db 114
 
 	.db MUSIC_DMC
 	.db 0

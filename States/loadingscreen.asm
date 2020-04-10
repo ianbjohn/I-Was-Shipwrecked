@@ -399,7 +399,7 @@ SetUpEnemiesDone:
 ++	;pla
 	;sta temp0			;in case things come afterwords
 	
-	;load doors if there were any
+	;load doors if there were any (Can maybe be saved in prev screen data as well)
 SetUpDoors:
 	lda #BANK_METATILES
 	jsr SetPRGBank

@@ -170,7 +170,8 @@ Title_ReadStart:
 	cmp frame_counter
 	beq @waitframe
 
-	;Might as well do this here, but set the array of visited screens to all $FFs (Until we have 256 screens, in which case a better solution is proposed in loadingscreen.asm)
+	;Might as well do this here, but set the array of visited screens to all $FFs
+	;(Until we have 256 screens, in which case a set to $FF if the player spawns closer to screen 0,0, and 0 if he spawns closer to 16,16)
 	lda #$FF
 	sta prev_screen_ids+0
 	sta prev_screen_ids+1

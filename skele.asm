@@ -63,6 +63,8 @@ CHR_ShoreBG:
 	.incbin "Graphics/CHR/shore_bg.chr"
 CHR_CaveBG:
 	.incbin "Graphics/CHR/cave_bg.chr"
+CHR_ClearingBG:
+	.incbin "Graphics/CHR/clearing_bg.chr"
 	
 	
 	;SRITE CHR DATA
@@ -78,7 +80,7 @@ CHR_Waves:
 	
 CHR_Banks_BG:
 	;sorted by area, where the background CHR data for each area starts (Always starts at $1500 in CHR RAM, and has a length of $B00 bytes)
-	.dw CHR_ShoreBG,CHR_ShoreBG,CHR_ShoreBG,CHR_ShoreBG,CHR_CaveBG
+	.dw CHR_ShoreBG,CHR_ShoreBG,CHR_ClearingBG,CHR_ShoreBG,CHR_CaveBG
 	
 	
 	;Where in the CHR file the animation tiles are (more general stuff is at $F000)
@@ -1472,9 +1474,19 @@ PrevScreenScreenDataAddresses:
 PowersOfTwo:
 	.db %00000001,%00000010,%00000100,%00001000,%00010000,%00100000,%01000000,%10000000
 MultiplesOfThree:
+	;Used mainly by the file system to find the right data associated with each file, and to find the right enemy spawn points for a screen based on terrain
 	.db 0,3,6,9,12,15,18,21
 Primes:
-	.db 1,2,3,5,7,11,13,17
+	;Used for randomly indexing enemy spawn points when loading a new screen
+	;2, despite being a prime number, is even and therefore will cause collisions, so it cannot be used.
+	.db 1,3,5,7,11,13,17,19
+Primes2:
+	;Used for shuffling the order ents are drawn in
+	;Since we are only concerned with the range of 2-15, primes 2 and 7 cause collisions when rolling over from 16->2.
+	;Primes 17+ also require extra logic since rolling over (MODing by 16 and adding 2) can still be >=16, and so it'll have to roll over again
+		;This is just unnecessary complexity, so we'll just stick to 4 primes instead of 8
+		;Adding 11 in this case is the same as subtracting by 3, so we can get a bit of a "back and forth" effect when drawing ents.
+	.db 1,3,5,11
 	
 	
 	;(Can probably go in the ent bank)

@@ -36,8 +36,8 @@ NoteLengthTable:
 	
 	
 Vibrato:
-	.dw 0,3,4,3,0,-3,-4,-3
-	
+	.dw 0,-1,-2,-3,-3,-3,-2,-1,0,1,2,3,3,3,2,1
+
 	
 VolumeEnvelopes:
 	.dw SoundVE0,SoundVE1,SoundVE2,SoundVE3,SoundVE4,SoundVE5,SoundVE6,SoundVE7
@@ -311,7 +311,7 @@ SoundLoad:
 	lda stream_vib_index,x
 	clc
 	adc #1
-	cmp #8
+	cmp #16
 	bne @skipoverflow
 	lda #0
 @skipoverflow:
