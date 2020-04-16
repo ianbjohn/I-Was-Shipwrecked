@@ -300,6 +300,8 @@ DrawEnts:
 	;Draw the player's weapon first so it'll always be in front of him
 	;Then draw the player
 	;HOWEVER, if the player has the gun out and is firing, we need to draw that too
+	lda ent_draw_index
+	pha					;Will need to save what ent slot we're starting with so we can increment it for the next frame after we're done drawing
 	lda ent_state+0
 	cmp #2				;attacking
 	bne @drawGunDone
@@ -309,25 +311,28 @@ DrawEnts:
 	;(TODO: Draw gun metasprites here)
 @drawGunDone
 	;NOW, we can move on to drawing otherstuff
-	lda ent_draw_index
-	pha					;need to save since DrawEnt uses ent_draw_index instead of ent_index, and we need to draw the weapon and player first
-	lda #1
-	sta ent_draw_index
+	ldx #1
+	stx ent_draw_index
 @weapon:
 	lda ent_active+1
 	beq @player
-	lda #1
-	sta ent_draw_index
 	jsr DrawEnt
 @player:
 	dec ent_draw_index
 	jsr DrawEnt
 @others:
 	;Now draw the rest of the ents based on ent_draw_index
-	pla
-	sta ent_draw_index
-	pha					;save again since once everything's drawn, we'll increment for the next frame
+	;Generate a prime number (that'll work) to cycle ent drawing order with
+	lda random
+	jsr RandomLFSR
+	and #%00000011		;we can select one of 4 primes from the following table
 	tax
+	lda Primes2,x
+	sta temp0			;how much to increment after drawing an ent
+	pla					;starting ent slot got clobbered, so we need to restore it
+	sta ent_draw_index
+	tax
+	pha					;and then save it again
 	ldy #2
 	sty ent_index		;use as our actual index counter to loop through the rest of the ents
 @entdrawloop:
@@ -338,10 +343,13 @@ DrawEnts:
 	;increment ent_draw_index, roll over from 16 to 2
 	lda ent_draw_index
 	clc
-	adc #1
+	adc temp0
 	cmp #MAX_ENTS
 	bcc @rolloverdone
-	lda #2
+	;We rolled over, so we have to MOD by 16 and then add 2 to avoid both overwriting the player and weapon and other ent slot collisions while doing so
+	and #%00001111
+	clc
+	adc #2
 @rolloverdone:
 	sta ent_draw_index
 	tax
@@ -350,19 +358,20 @@ DrawEnts:
 	cpy #MAX_ENTS
 	bne @entdrawloop
 @entsdrawdone:
-	pla
+	pla					;Increment the starting slot for the next frame
 	clc
 	adc #1
 	cmp #MAX_ENTS
-	bcc @rolloverdone1
+	bcc @done
 	lda #2
-@rolloverdone1:
+@done:
 	sta ent_draw_index
 	rts
 
 	
 DrawEnt:
 	;The current ent is assumed to be active (checked in the play state when the ent draw loop happens to save an unnecessary call)
+	;Can be optimized with Hi/Lo table unloading if need be, which might speed things up a good amount
 	ldx ent_draw_index
 	lda game_state
 	cmp #STATE_PLAY

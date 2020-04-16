@@ -310,7 +310,11 @@ BeeSwarming:
 
 BeeGuarding:
 	;If guarding, check and see if the timer's up. If so, either enter the hive or start foraging
+
+
 BeeAttacking:
+	;TODO: subtract health from player, potentially poison him
+	;move randomly around player
 @horiz:
 	lda random
 	and #%00000001
