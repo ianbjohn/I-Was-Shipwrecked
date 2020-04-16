@@ -1,4 +1,4 @@
-### I Was Shipwrecked
+### I Was Shipwrecked (Working Title)
 
 This is a work-in-progress homebrew game for the Nintendo Entertainment System.
 https://en.wikipedia.org/wiki/Homebrew_(video_games)
@@ -13,11 +13,9 @@ I started this project in the fall of 2016 to learn more about low-level program
 The game is written in low-level assembly language for the MOS 6502, an 8-bit CPU that was used in many home computers during the 1980s as well as the NES. While programming like this isn't very common nowadays (and for good reason), I've gained a wealth of indispensible knowledge related to computer architecture and what goes on under the hood of a program/system; as well as an appreciation for the numerous high-level languages and tools programmers today have at their disposal to make their job easier. I've definitely come out a more experienced, skilled and competent programmer, and a better critical-thinker.
 
 # About the game
-I Was Shipwrecked is a Survival-Adventure game remniscent of games like The Legend of Zelda, with elements such as random encounters and crafting. You've been shipwrecked on a desert island with nothing but a knife and a pistol with 30 rounds, and you must do whatever it takes to stay alive. Did anyone else survive the catastrophe? Just how big is this island? And will you be able to get off of it?
+I Was Shipwrecked is a Robinsonade Survival-Adventure game remniscent of games like The Legend of Zelda, with elements such as random encounters and crafting. You've been shipwrecked on a desert island with nothing but a knife and a pistol with 30 rounds, and you must do whatever it takes to stay alive. Did anyone else survive the catastrophe? Just how big is this island? And will you be able to find rescue?
 
-Press B to attack things and A to interact with the world around you. Watch your health, hunger and thirst meters. As long as you survive, you can save your progress and continue, but if you can't make it you'll have to start over from the beginning.
-
-Inspiration taken mainly from Cast Away, Lost, and Robinson Crusoe, as well as numerous real-life accounts of actual shipwrecks / maroonings.
+Press B to attack things and A to interact with the world around you. Watch your health, hunger and thirst meters. As long as you survive, you can save your progress and continue, but if you can't make it you'll have to start over from where you last made camp.
 
 This is just a playable demo. The full version will be much bigger and more in-depth (It will also have an ending; for now the main goal is to just explore and survive for as long as possible.)
 
