@@ -151,12 +151,16 @@ SongMountainsTri:
 	.db Eb4,rest,D4,rest,Eb4,rest,D4,rest,Eb4,rest,F4,rest,rest,rest,Eb4,rest
 	.db rest,rest,D4,rest,rest,rest,Bb3,rest,C4,rest,rest,rest,G3,rest,rest,rest
 	.db LOOP0
-	.dw @introLoop
-	.db SETLOOP0COUNT,16
-@silence:
-	.db WHOLE,rest
+	.dw @introLoop 
+	.db QUARTER
+	.db SETLOOP0COUNT,2
+@main1:
+	.db C4,rest,G3,HALF,C4,QUARTER,rest,EIGHTH,G4,F4,Eb4,F4
+	.db C4,G4,rest,G4,rest,F4,G4,rest,Bb3,C4,rest,FIVE_EIGHTH,C4
+	.db HALF,Bb3,EIGHTH,Db4,rest,HALF,Db4,EIGHTH,Ab3,SIXTEENTH,Bb3,rest,QUARTER,Bb3,rest
+	.db DOTTED_QUARTER,Bb3,QUARTER,Db4,EIGHTH,rest,QUARTER,Db4,Ab3,SIXTEENTH,Bb3,rest,DOTTED_QUARTER,Bb3,QUARTER,B3
 	.db LOOP0
-	.dw @silence
+	.dw @main1
 	.db LOOP
 	.dw SongMountainsTri
 

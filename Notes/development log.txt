@@ -1593,3 +1593,7 @@ Day 203 - 4/16/2020
 
 Day 204 - 4/18/2020
 	-Worked more on adding the data for the mountains song to the ROM About 20-25% done now.
+
+Day 205 - 4/19/2020
+	-Discovered a new bug, documented in todos (Don't feel like adding to bugs file right now, will do later) with moving during mountain transitions, only happens sometimes, so going to be difficult to isolate which is awesome
+	-Added a bit more to the mountains song ROM data.
