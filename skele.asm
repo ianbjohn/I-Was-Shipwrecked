@@ -1420,7 +1420,7 @@ BREAK:
 	;various random data that still needs to be organized
 	.org $F000
 	;As more and more stuff gets added to the fixed bank, it'll probably be better to just get rid of the above .org directive, and have all the code and data just be one thing
-	;Global stuff related to screens that need to be in the fixed bank
+	;Global stuff related to island screens that need to be in the fixed bank
 IslandAreasDifficulties:
 	;area and difficulty are combined into one byte
 	.rept 2
@@ -1442,11 +1442,13 @@ IslandAreasDifficulties:
 		.db (AREA_SHORE | DIFF_EASY)
 	.endr
 	
+	;Might be able to get rid of this since this information should be in the same spot for each bank. Can just do CaveAreasDifficulties = $8200, and then lookup in there
 CaveAreasDifficulties:
 	.dw Cave0AreasDifficulties,Cave1AreasDifficulties,Cave2AreasDifficulties,Cave3AreasDifficulties
 	.dw Cave4AreasDifficulties,Cave5AreasDifficulties,Cave6AreasDifficulties,Cave7AreasDifficulties
 	.dw Cave8AreasDifficulties,Cave9AreasDifficulties
 	
+	;Can go in their respective screen data banks
 Cave0AreasDifficulties:
 	.db 0,0,0,(AREA_CAVE | DIFF_EASY)
 Cave1AreasDifficulties:

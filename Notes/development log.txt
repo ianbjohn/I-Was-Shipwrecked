@@ -1588,4 +1588,8 @@ Day 202 - 4/10/2020
 Day 203 - 4/16/2020
 	-Had a good 5am brainstorming session and came up with some new ideas / made some older ideas more cohesive and coherent. Did some sketches of a few very general screen ideas I had in mind on paper.
 	-Also finally tried tackling the sprite flickering issue. The method of randomly selecting a prime, but linearly shifting through the ent slots by 1 each frame seems to produce the most uniform flicker. Generating a random number from 2-15 was more complicated than I thought, but this seems to finally do the job. There's still occasionally one ent that flickers the least, but I think that might just have to do with how ents are ordered and which slot they're in. They spawn in slots 2,3,4,etc (Because again, 2-15 range RNG is hard), but as far as flicker goes it looks good IMO.
+	-Made some revisions to expansion notes, with some better ideas. Apparently I did some sort of calculation error so there was actually one less bank of screens needed than I thought there'd be.
 	-Only a few more weeks of Uni left (Crazy how I originally started this just after I'd started college, huh), so I'll probably be at least trying to focus on school until after finals and will mostly be off this. But I'm still feeling like I'm in a good spot, as todos and ideas are very well documented. Assuming I stay regularly committed to this throughout the summer or until I find an actual job, A demo should hopefully be ready by early november to late december (Just in time for the new year)
+
+Day 204 - 4/18/2020
+	-Worked more on adding the data for the mountains song to the ROM About 20-25% done now.
