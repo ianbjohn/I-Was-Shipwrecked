@@ -354,9 +354,6 @@ PlayerReadB:
 	;set active timer for the weapon
 	lda #16
 	sta player_weapon_active_timer
-	lda #0
-	sta ent_anim_timer+0
-	sta ent_anim_frame+0
 	;play the appropriate weapon sound effect (See if this can be optimized at all, decrease # of branches)
 	lda weapon
 	cmp #WEAPON_GUN

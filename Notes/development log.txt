@@ -1602,3 +1602,8 @@ Day 205 - 4/19/2020
 	-Discovered an issue with portamentos following a rest note. Fixed this issue, updated portamento data in other songs as well.
 	-FINALLY FINISHED MOUNTAINS SONG!!!
 	-63,366 bytes (15,520 of which is CHR data), ~48.3% of (Current) ROM space
+
+Day 206 - 4/20/2020
+	-Removed a few unnecessary lines in the player's code that dealt with animation timing that was already taken care of elsewhere
+	-Fixed an another enemy spawn position error in Screen (5,4)'s data.
+	-Made a tiny bit of progress on the Clearing song in Famitracker.
