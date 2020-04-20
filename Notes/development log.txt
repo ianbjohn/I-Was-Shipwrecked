@@ -1597,3 +1597,8 @@ Day 204 - 4/18/2020
 Day 205 - 4/19/2020
 	-Discovered a new bug, documented in todos (Don't feel like adding to bugs file right now, will do later) with moving during mountain transitions, only happens sometimes, so going to be difficult to isolate which is awesome
 	-Added a bit more to the mountains song ROM data.
+				--- LATER IN THE DAY ---
+	-Worked more on adding the mountains song.
+	-Discovered an issue with portamentos following a rest note. Fixed this issue, updated portamento data in other songs as well.
+	-FINALLY FINISHED MOUNTAINS SONG!!!
+	-63,366 bytes (15,520 of which is CHR data), ~48.3% of (Current) ROM space

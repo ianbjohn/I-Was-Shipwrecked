@@ -627,6 +627,8 @@
 	FOUR_WHOLE			= $91
 	WAVE_FADE_IN1		= $92
 	SEVEN_SIXTEENTH		= $93
+	NINE_SIXTEENTH		= $94
+	SIX_WHOLE			= $95
 	
 	;opcodes
 	ENDSOUND			= $A0

@@ -33,6 +33,8 @@ NoteLengthTable:
 	.db $80				;how long the first fade-in wave should last (4 whole notes)
 	.db $70				;how long the second fade-in wave should last
 	.db $0E				;7/16
+	.db $12				;9/16
+	.db $C0				;six whole notes, used for the very long downward portamento note at the end of the mountains song
 	
 	
 Vibrato:
@@ -739,7 +741,16 @@ SoundOpPortaOn:
 	lda #1
 	sta stream_porta,x		;turn on portamento
 	sty sound_temp0			;save Y, about to get clobbered
-	lda (se_ptr),y			;get destination note
+	iny
+	lda (se_ptr),y			;Peek the next-next byte, which will be the starting note that'll be compared to the byte before it - the destination note
+	asl
+	tay
+	lda NoteTable+1,y
+	sta stream_note_hi,x
+	lda NoteTable+0,y
+	sta stream_note_lo,x
+	ldy sound_temp0			;Now time to get the destination note
+	lda (se_ptr),y
 	sta stream_porta_dest,x
 	asl
 	tay
@@ -759,6 +770,7 @@ SoundOpPortaOn:
 @done:
 	sta stream_porta_type,x
 	ldy sound_temp0
+	;iny 					;Sound engine needs to be ready to read the starting note
 	rts
 	
 	
