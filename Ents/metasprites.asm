@@ -588,72 +588,46 @@ BulletMetaSpritesNormalR_0:
 	
 	;player weapon 1a - gun
 	;(Not actually in the list since the gun isn't technically an ent, but it'll be convenient to draw it as a metasprite when needed)
-GunMetaSprites:
-	.dw GunMetaSpritesFiring, GunMetaSpritesNormal
-	
+	;We don't need quite as much data here as with other metasprites, since the ent drawing routine draws the gun directly since it isn't technically an ent
 GunMetaSpritesFiring:
 	.dw GunMetaSpritesFiringU, GunMetaSpritesFiringD, GunMetaSpritesFiringL, GunMetaSpritesFiringR
 GunMetaSpritesNormal:
 	.dw GunMetaSpritesNormalU, GunMetaSpritesNormalD, GunMetaSpritesNormalL, GunMetaSpritesNormalR
 	
 GunMetaSpritesFiringU:
-	.dw GunMetaSpritesFiringU_0
+	.db -7,$3F,%00000001,-25
+	.db 1,$3F,%01000001,-25
+	.db -7,$3E,%00000001,-17
+	.db 1,$3E,%01000001,-17
+	.db -3,$49,%00000001,-9
+
+	;-3,-9
 GunMetaSpritesFiringD:
-	.dw GunMetaSpritesFiringD_0
+	.db 5,$49,%10000001,16
+	.db 1,$3E,%10000001,24
+	.db 9,$3E,%11000001,24
+	.db 1,$3F,%10000001,32
+	.db 9,$3F,%11000001,32
 GunMetaSpritesFiringL:
-	.dw GunMetaSpritesFiringL_0
+	.db -25,$3D,%01000001,1
+	.db -17,$3C,%01000001,1
+	.db -9,$48,%00000001,7
+	.db -25,$3D,%11000001,9
+	.db -17,$3C,%11000001,9
 GunMetaSpritesFiringR:
-	.dw GunMetaSpritesFiringR_0
-	
+	.db 11,$48,%01000001,7
+	.db 19,$3C,%00000001,1
+	.db 27,$3D,%00000001,1
+	.db 19,$3C,%10000001,9
+	.db 27,$3D,%10000001,9
 GunMetaSpritesNormalU:
-	.dw GunMetaSpritesNormalU_0
+	.db -3,$49,%00000001,-9
 GunMetaSpritesNormalD:
-	.dw GunMetaSpritesNormalD_0
+	.db 5,$49,%10000001,16
 GunMetaSpritesNormalL:
-	.dw GunMetaSpritesNormalL_0
+	.db -9,$48,%00000001,7
 GunMetaSpritesNormalR:
-	.dw GunMetaSpritesNormalR_0
-	
-GunMetaSpritesFiringU_0:
-	.db 20
-	.db 0,$3F,%00000001,-1
-	.db 8,$3F,%01000001,-1
-	.db 0,$3E,%00000001,7
-	.db 8,$3E,%01000001,7
-	.db 4,$49,%00000001,15
-GunMetaSpritesFiringD_0:
-	.db 20
-	.db 4,$49,%10000001,-1
-	.db 0,$3E,%10000001,7
-	.db 8,$3E,%11000001,7
-	.db 0,$3F,%10000001,15
-	.db 8,$3F,%11000001,15
-GunMetaSpritesFiringL_0:
-	.db 20
-	.db 0,$3D,%01000001,-1
-	.db 8,$3C,%01000001,-1
-	.db 16,$48,%00000001,5
-	.db 0,$3D,%11000001,7
-	.db 8,$3C,%11000001,7
-GunMetaSpritesFiringR_0:
-	.db 20
-	.db 0,$48,%01000001,5
-	.db 8,$3C,%00000001,-1
-	.db 16,$3D,%00000001,-1
-	.db 8,$3C,%10000001,7
-	.db 16,$3D,%10000001,7
-GunMetaSpritesNormalU_0:
-	.db 4
-	.db 4,$49,%00000001,15
-GunMetaSpritesNormalD_0:
-	.db 4
-	.db 4,$49,%10000001,-1
-GunMetaSpritesNormalL_0:
-	.db 4
-	.db 16,$48,%00000001,5
-GunMetaSpritesNormalR_0:
-	.db 4
-	.db 0,$48,%01000001,5
+	.db 11,$48,%01000001,7
 	
 	
 	;door

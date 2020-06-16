@@ -217,6 +217,9 @@
 	prev_screen_screendata_ptr_ids	.dsb 4
 	num_previous_screens	.dsb 1	;Number of unique screens that have been visited so far in this particular playing session (stops at 4)
 	left_first_screen	.dsb 1		;initialized to 0, set to 1 only read from once player leaves the first screen
+	;stuff to handle animation / timing / state of the gun when the player is firing a bullet
+	gun_blast_timer		.dsb 1
+	gun_state			.dsb 1
 	;other stuff
 	pause_jingle_timer	.dsb 1
 	paused_stream_statuses	.dsb 5	;save which of the 4 BGM streams were enabled (These will almost always, but not always, be all 1)

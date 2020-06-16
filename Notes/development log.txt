@@ -1607,3 +1607,7 @@ Day 206 - 4/20/2020
 	-Removed a few unnecessary lines in the player's code that dealt with animation timing that was already taken care of elsewhere
 	-Fixed an another enemy spawn position error in Screen (5,4)'s data.
 	-Made a tiny bit of progress on the Clearing song in Famitracker.
+
+Day 207 - 6/16/2020
+	-Been a few months, but made some good progress today.
+	-The gun sprites now get drawn again, but aren't an ent. Ent drawing code is a little more complex, but if I remember it was complex before this rehaul as well. On the plus side a decent amount of data was able to be ridden of.

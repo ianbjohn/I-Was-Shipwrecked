@@ -92,13 +92,12 @@ SpawnWeaponEntBasedOnPlayer:
 @up:
 	lda ent_x+0
 	;adjust as necessary
-	sec
-	sbc WeaponSpawnPositionOffsetsUp+0,y
+	clc
+	adc WeaponSpawnPositionOffsetsUp+0,y
 	sta ent_x+1
 	lda ent_y+0
-	sec
-	sbc #1
-	sbc WeaponSpawnPositionOffsetsUp+1,y
+	clc
+	adc WeaponSpawnPositionOffsetsUp+1,y
 	sta ent_y+1
 	jmp @done
 @down:
@@ -114,7 +113,6 @@ SpawnWeaponEntBasedOnPlayer:
 @left:
 	lda ent_x+0
 	sec
-	sbc #4
 	sbc WeaponSpawnPositionOffsetsLeft+0,y
 	sta ent_x+1
 	lda ent_y+0
@@ -304,11 +302,108 @@ DrawEnts:
 	pha					;Will need to save what ent slot we're starting with so we can increment it for the next frame after we're done drawing
 	lda ent_state+0
 	cmp #2				;attacking
-	bne @drawGunDone
+	beq @checkGun
+	jmp @drawGunDone
+@checkGun:
 	lda weapon
 	cmp #WEAPON_GUN
+	beq @drawGun
+	jmp @drawGunDone
+@drawGun:
+	;When the player attacks, and has bullet selected, he'll determine if the gun should actually fire (and if so set the gun's state to 1 and set the blast timer)
+	;So here, all we have to do is check if the state is 1, and if so decrement a timer, changing the state to 0 to get rid of the blast
+	lda gun_state
+	beq @noblast
+	;The gun fired, so after drawing, decrement the timer, switching the state to 0 when it runs out
+	;Draw gun and blast sprites
+	lda #<GunMetaSpritesFiring
+	sta ent_ptr1+0
+	lda #>GunMetaSpritesFiring
+	sta ent_ptr1+1
+	lda ent_dir+0
+	asl
+	tay
+	lda (ent_ptr1),y
+	sta ent_ptr2+0
+	iny
+	lda (ent_ptr1),y
+	sta ent_ptr2+1
+	ldy #0
+	ldx oam_index
+@gunfiredrawloop:
+	;Commented better in the DrawEnt routine below
+	lda ent_x+0
+	clc
+	adc (ent_ptr2),y
+	sta $0203,x
+	iny
+	lda (ent_ptr2),y
+	sta $0201,x
+	iny
+	lda (ent_ptr2),y
+	sta $0202,x
+	iny
+	lda ent_y+0
+	clc
+	adc (ent_ptr2),y
+	sta $0200,x
+	inx
+	inx
+	inx
+	inx
+	iny
+	cpy #20			;5 sprites
+	bne @gunfiredrawloop
+	stx oam_index
+	lda game_state		;only decrement timer if the game isn't paused
+	cmp #STATE_PAUSED
+	beq @drawGunDone
+	dec gun_blast_timer
 	bne @drawGunDone
-	;(TODO: Draw gun metasprites here)
+	dec gun_state	;The gun should no longer have a blast
+	beq @drawGunDone	;will always branch
+@noblast:
+	;Either the gun is done firing, or it didn't fire. Either way, we draw just the gun and no blast for the rest of the time the player's attacking
+	;Draw gun sprites
+	lda #<GunMetaSpritesNormal
+	sta ent_ptr1+0
+	lda #>GunMetaSpritesNormal
+	sta ent_ptr1+1
+	lda ent_dir+0
+	asl
+	tay
+	lda (ent_ptr1),y
+	sta ent_ptr2+0
+	iny
+	lda (ent_ptr1),y
+	sta ent_ptr2+1
+	ldy #0
+	ldx oam_index
+@gunnormaldrawloop:
+	;Commented better in the DrawEnt routine below
+	lda ent_x+0
+	clc
+	adc (ent_ptr2),y
+	sta $0203,x
+	iny
+	lda (ent_ptr2),y
+	sta $0201,x
+	iny
+	lda (ent_ptr2),y
+	sta $0202,x
+	iny
+	lda ent_y+0
+	clc
+	adc (ent_ptr2),y
+	sta $0200,x
+	inx
+	inx
+	inx
+	inx
+	iny
+	cpy #4			;1 sprite
+	bne @gunfiredrawloop
+	stx oam_index
 @drawGunDone
 	;NOW, we can move on to drawing otherstuff
 	ldx #1

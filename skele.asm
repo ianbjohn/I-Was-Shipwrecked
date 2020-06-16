@@ -1500,17 +1500,13 @@ WeaponEnts:
 	
 WeaponSpawnPositionOffsetsUp:
 	;Sorted by weapon, (x,y) pairs relative from player
-	.db 3,7, 3,31, 3,39, 3,23, 3,15, 0,2
+	.db -3,-8, -3,-32, -3,-40, -3,-24, -3,-16, 0,-2
 WeaponSpawnPositionOffsetsDown:
 	;only need X positions here
-	.db 5, 5, 5, 5, 5, 7
+	.db 5, 5, 5, 5, 5, 8
 WeaponSpawnPositionOffsetsLeft:
-	.db 7,7, 31,7, 39,7, 23,7, 15,7, 2,10	;right spawn positions have the same Y's so we can just read the Y component of these pairs
+	.db 11,7, 35,7, 43,7, 27,7, 19,7, 4,9	;right spawn positions have the same Y's so we can just read the Y component of these pairs
 	
-GunSpawnPositionOffsets:
-	;The gun is the one real exception, so it needs its own special data.
-	;Pairs of coordinates sorted by direction
-	.db -7,-24, 1,16, -25,2, 11,2
 	
 SpriteDigits:
 	;Maybe just add #$A0 to the BCD before drawing it as a sprite

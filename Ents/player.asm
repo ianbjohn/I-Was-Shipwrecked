@@ -309,9 +309,19 @@ PlayerReadB:
 	cpx #WEAPON_GUN
 	bne @notgun
 	lda rounds
-	beq @skipgun
+	bne @stillhaverounds
+	ldy #SFX_EMPTYCLIP
+	jsr PlaySound
+	jmp @skipgun
 @stillhaverounds
+	;Here we'll set up the gun state and blast countdown timer that the end drawing routine can use
+	lda #1
+	sta gun_state		;Should have been set to 0 otherwise
+	lda #8
+	sta gun_blast_timer
 	dec rounds
+	ldy #SFX_GUNSHOT
+	jsr PlaySound
 	jmp @continue
 @notgun:
 	lda WeaponItems,x
@@ -354,22 +364,14 @@ PlayerReadB:
 	;set active timer for the weapon
 	lda #16
 	sta player_weapon_active_timer
-	;play the appropriate weapon sound effect (See if this can be optimized at all, decrease # of branches)
-	lda weapon
-	cmp #WEAPON_GUN
-	bne @stillnogun
-	lda rounds
-	beq @empty
-	ldy #SFX_GUNSHOT
-	bne @playsound		;will always branch
-@empty:
-	ldy #SFX_EMPTYCLIP
-	bne @playsound		;will always branch
-@stillnogun:
-	tax
+	;play the appropriate weapon sound effect (Playing the gun sound effects is already done in the gun logic above)
+	ldx weapon
+	cpx #WEAPON_GUN
+	beq @done
 	ldy WeaponSoundEffects,x
 @playsound:
 	jsr PlaySound
+@done:
 	jmp PlayerDone
 	
 	
