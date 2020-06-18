@@ -1611,3 +1611,7 @@ Day 206 - 4/20/2020
 Day 207 - 6/16/2020
 	-Been a few months, but made some good progress today.
 	-The gun sprites now get drawn again, but aren't an ent. Ent drawing code is a little more complex, but if I remember it was complex before this rehaul as well. On the plus side a decent amount of data was able to be ridden of.
+
+Day 208 - 6/17/2020
+	-Organized todos file a bit better, expanded upon a few things. For each task I put a level for what I imagine the difficulty will be in doing it. I will try and get to work on the simple stuff so that the file will become less cluttered. The prev screen system overhaul just seems daunting and I'm lazy at working on graphics, and I think those are the main bottlenecks of progress. Working on simpler fixes I imagine will help get my workflow back, but I should keep working on graphics too.
+	-Improved the way messages are drawn on the status board. When a new message needs to be drawn, the whole board gets cleared in one frame, which speeds up the text a lot, and feels way cleaner and less awkward. While doing this, I also made some improvements to the way states are handled by the overall system. By asserting that init code isn't allowed to change the game state, it can then flow right into the main code. Besides changing a few JMPs to JSRs, I was able to remove quite a few RTSs. Skeleton file is now a bit smaller too, as I got rid of some of those empty init labels (By moving them to their respective files) and making a dedicated file for the fade out state.

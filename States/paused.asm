@@ -1,3 +1,16 @@
+PausedInit:
+	lda #0
+	sta stream_status+0
+	sta stream_status+1
+	sta stream_status+2
+	sta stream_status+3	;silence all the BGM channels
+	sta stream_status+4
+	lda #59				;this is the count down for the pause jingle. Once this gets to 0, the sound will be silenced, and the user will be allowed to unpause
+	sta pause_jingle_timer
+	ldy #SFX_PAUSE
+	jsr PlaySound
+
+
 PausedMain:
 	jsr DrawEnts
 	

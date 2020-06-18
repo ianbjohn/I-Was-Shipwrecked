@@ -27,7 +27,6 @@ PlayInit:
 	sta soft_2001
 	lda #1
 	sta nmi_enabled
-	rts
 	
 
 PlayMain:

@@ -1,3 +1,4 @@
+MBoxResponseInit:
 MBoxResponseMain:
 	;draw (but not process) each active ent (But don't do this if we're in the inventory state)
 	lda in_inventory_state

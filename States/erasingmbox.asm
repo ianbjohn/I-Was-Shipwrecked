@@ -5,6 +5,15 @@ StatusBoardRoutines2:
 	.dw EMB_bcdones, EMB_bcdtens, EMB_bcdhundreds, EMB_bcdthousands, EMB_bcdtenthousands, EMB_status, EMB_day, EMB_weapon
 	.dw EMB_thirst, EMB_hunger, EMB_health, EMB_newline
 
+
+ErasingMBoxInit:
+	lda #0
+	sta mbox_screen_pos
+	sta mbox_pos
+	sta mbox_responses
+	sta message_response
+
+
 ErasingMBoxMain:
 	;only draw ents if we're in the play state
 	lda in_inventory_state

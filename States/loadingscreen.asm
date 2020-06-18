@@ -1,3 +1,4 @@
+LoadingScreenInit:
 LoadingScreenMain:
 	;wait 60 frames in-between screens (Helpful for debugging purposes)
 ;	ldx #60
@@ -509,7 +510,6 @@ SetUpDoorsDone:
 	sta message
 	lda #STATE_DRAWINGMBOX
 	sta game_state
-	sta game_state_old		;uncomment this if the uncommented code doesn't work
 	;draw the active ents now that they've all been set up, since otherwise they won't get drawn until the next frame
 	jmp DrawEnts
 	

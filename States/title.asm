@@ -118,7 +118,7 @@ LoadTitleSprites:
 	sta area_old
 	
 	ldy #SONG_TITLE
-	jmp PlaySound
+	jsr PlaySound
 	
 	
 TitleMain:

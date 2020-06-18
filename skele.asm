@@ -287,13 +287,11 @@ MainLoop:
 	beq @noinit
 	sta game_state_old
 	jsr SelectStateToInit
-	lda game_state			;if the state was changed in a state's init code, don't run the main code
-	cmp game_state_old
-	bne @mainstatedone
-	sta game_state_old
+	;Init routines shouldn't modify the game state, and the code itself will immediately follow into the main code. So when we return, we can skip over going to the main code again
+	jmp @stateselectdone
 @noinit:
 	jsr SelectMainState		;otherwise, go to whatever state we're currently in and run it like normal
-@mainstatedone
+@stateselectdone:
 	
 	;If something is in the VRAM buffer, that means an update needs to happen next NMI.
 	;The flag should only be set here, once everything else in the frame is done, in case not everything can be
@@ -304,7 +302,7 @@ MainLoop:
 	lda game_state
 	;cmp game_state_old						;originally only actually performed VRAM updates if the game state had remained unchanged, but ran into problems when changing screens
 	;beq @continue
-	cmp #STATE_GAMEOVER
+	cmp #STATE_GAMEOVER						;VRAM updates don't matter (For right now at least) If we went to or are in the game over state
 	bne @continue
 	ldx #0
 	stx vram_buffer_pos
@@ -396,6 +394,7 @@ SelectMainState:
 	.include "States/title.asm"
 	.include "States/play.asm"
 	.include "States/paused.asm"
+	.include "States/fadeout.asm"
 	.include "States/gameover.asm"
 	.include "States/drawingmbox.asm"
 	.include "States/writingmsg.asm"
@@ -405,114 +404,10 @@ SelectMainState:
 	.include "States/fileselect.asm"
 	.include "States/loadingscreen.asm"
 	.include "States/recipelist.asm"
-	
-	
+
+
 IntroInit:
-	rts
-PausedInit:
-	lda #0
-	sta stream_status+0
-	sta stream_status+1
-	sta stream_status+2
-	sta stream_status+3	;silence all the BGM channels
-	sta stream_status+4
-	lda #59				;this is the count down for the pause jingle. Once this gets to 0, the sound will be silenced, and the user will be allowed to unpause
-	sta pause_jingle_timer
-	ldy #SFX_PAUSE
-	jmp PlaySound
-FadeOutInit:
-	lda in_cave_new
-	cmp #1
-	bne @silence
-	lda in_cave
-	cmp #1
-	bne @silence
-	rts
-@silence
-	ldy #SILENCE
-	jmp PlaySound
-MBoxResponseInit:
-LoadingScreenInit:
 IntroMain:
-	rts
-FadeOutMain:
-	;Standard "Naive" way of fading out - every 15 frames decrease the brightness of the colors, until they're black
-	;if (++fadeout_timer >= 15)
-		;if (++fadeout_state < 8)
-			;for each palette byte
-				;if (palette byte & 0xF0 >= (0x30 - (fadeout_state << 4)))
-					;palette_byte -= fadeout_state << 4;
-				;else
-					;palette_byte = 0x0F;
-		;else
-			;game_state = STATE_LOADINGSCREEN;
-	jsr DrawEnts
-	lda fadeout_timer
-	clc
-	adc #1
-	cmp #15
-	bcs @continue
-	jmp @done
-@continue:
-	lda fadeout_state
-	clc
-	adc #1
-	cmp #8
-	bcc @fade
-	jmp @loadscreen
-@fade:
-	sta fadeout_state
-	asl
-	asl
-	asl
-	asl
-	sta temp0
-	lda #$30
-	sec
-	sbc temp0
-	sta temp1
-	ldx vram_buffer_pos
-	lda #$3F
-	sta vram_buffer+0,x
-	lda #$00
-	sta vram_buffer+1,x
-	lda #<(Copy32Bytes-1)
-	sta vram_buffer+2,x
-	lda #>(Copy32Bytes-1)
-	sta vram_buffer+3,x
-	ldy #0
-@fadeloop:
-	lda palette_buffer,y
-	and #%11110000
-	cmp temp0
-	bcs @continue1
-	lda #$0F				;palette_buffer,y
-	jmp @store
-@continue1:
-	lda palette_buffer,y
-	sec
-	sbc temp0
-	sta palette_buffer,y
-@store:
-	sta vram_buffer+4,x
-	inx
-	iny
-	cpy #32
-	bne @fadeloop
-	txa
-	clc
-	adc #4
-	sta vram_buffer_pos
-	lda #0
-	beq @done
-@loadscreen:
-	lda #STATE_LOADINGSCREEN
-	sta game_state
-@done2:
-	lda #0
-	sta fadeout_state
-@done:
-	sta fadeout_timer
 	rts
 	
 	

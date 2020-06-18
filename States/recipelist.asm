@@ -127,7 +127,6 @@ RecipeListInit:
 	sta soft_2001
 	lda #1
 	sta nmi_enabled
-	rts
 	
 
 RecipeListMain:

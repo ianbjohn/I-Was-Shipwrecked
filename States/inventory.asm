@@ -35,6 +35,16 @@ CraftMessages:
 ReverseCraftItemsMap:
 	;maps items to their craftable item counterpart
 	.db 0,0,0,0,0,0,0,CR_ITEM_SPEAR,0,0,0,CR_ITEM_TORCH,0,CR_ITEM_TOURNIQUET,0,0
+
+
+InventoryCursorXs:
+	.db $1A, $5A, $9A, $DA
+InventoryCursorYs:
+	.db $58, $78, $98, $B8
+	
+InventoryAButtonActions:
+	;sorted by inventory_status
+	.dw InventoryA_Normal, InventoryA_Save, Inventory_ReadB, InventoryA_ItemAction, InventoryA_CraftItem, InventoryA_ClearCraftQueue, InventoryA_ViewList
 	
 	
 ChangeWeaponPalette:
@@ -486,18 +496,7 @@ DrawPageNumber:
 	sta soft_2001
 	lda #1
 	sta nmi_enabled
-	rts
-	
-	
-InventoryCursorXs:
-	.db $1A, $5A, $9A, $DA
-InventoryCursorYs:
-	.db $58, $78, $98, $B8
-	
-InventoryAButtonActions:
-	;sorted by inventory_status
-	.dw InventoryA_Normal, InventoryA_Save, Inventory_ReadB, InventoryA_ItemAction, InventoryA_CraftItem, InventoryA_ClearCraftQueue, InventoryA_ViewList
-	
+
 
 InventoryMain:
 	lda prg_bank

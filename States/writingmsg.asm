@@ -18,7 +18,7 @@ WritingMSGInit:
 	sta message_ptr+1
 	pla
 	sta prg_bank
-	jmp SetPRGBank
+	jsr SetPRGBank
 
 
 WritingMsgMain:
