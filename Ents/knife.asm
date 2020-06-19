@@ -1,3 +1,4 @@
+;Used for several other weapons, such as sticks and machetes
 KnifeRoutine:
 	;check if timer has run out, and deactivate if it has
 @checktimerzero:

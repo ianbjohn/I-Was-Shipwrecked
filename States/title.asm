@@ -101,6 +101,8 @@ LoadTitleScreen:
 	bne @loop
 	
 LoadTitleSprites:
+	lda #1
+	sta nothing_to_clear		;We draw hard-coded sprites here and don't use oam_index, so we need to tell the main loop not to erase these
 	ldx #TITLESPRITELENGTH
 @loop:
 	lda TitleScreenSprites-1,x

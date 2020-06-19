@@ -2,8 +2,8 @@
 EntInitRoutines:
 	;sorted by ID
 	.dw RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, BeehiveInit, BeeInit
-	.dw RegularEntInit, RegularEntInit, CrabInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit
-	.dw RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit
+	.dw BulletInit, RegularEntInit, CrabInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit
+	.dw RegularEntInit, SpearInit, RegularEntInit, RegularEntInit, RegularEntInit, RegularEntInit
 	
 RegularEntInit:
 	;For most ents, nothing unique really needs to be done at spawn time, so we can just go ahead and load the animation data

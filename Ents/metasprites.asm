@@ -558,8 +558,9 @@ BeeMetaSpritesFlyingR_1:
 	
 	;player weapon 1 - bullets
 BulletMetaSprites:
-	.dw BulletMetaSpritesNormal
+	.dw BulletMetaSpritesFirstFrame,BulletMetaSpritesNormal
 	
+BulletMetaSpritesFirstFrame:
 BulletMetaSpritesNormal:
 	.dw BulletMetaSpritesNormalU, BulletMetaSpritesNormalD, BulletMetaSpritesNormalL, BulletMetaSpritesNormalR
 	
@@ -813,8 +814,9 @@ FlintMetaSpritesNormalU_0:
 	
 	;spear
 SpearMetaSprites:
-	.dw SpearMetaSpritesNormal
+	.dw SpearMetaSpritesFirstFrame,SpearMetaSpritesNormal
 	
+SpearMetaSpritesFirstFrame:
 SpearMetaSpritesNormal:
 	.dw SpearMetaSpritesNormalU,SpearMetaSpritesNormalD,SpearMetaSpritesNormalL,SpearMetaSpritesNormalR
 	
@@ -1071,7 +1073,7 @@ BatHitboxSizes:
 	
 	
 BulletHitboxSizes:
-	.dw BulletHitboxSizesNormal
+	.dw BulletHitboxSizesNormal,BulletHitboxSizesNormal
 BulletHitboxSizesNormal:
 	.db 2,15, 2,15, 15,2, 15,2
 	
@@ -1087,7 +1089,7 @@ StickHitboxSizesNormal:
 	.db 7,31, 7,31, 31,7, 31,7
 	
 SpearHitboxSizes:
-	.dw SpearHitboxSizesNormal
+	.dw SpearHitboxSizesNormal,SpearHitboxSizesNormal
 SpearHitboxSizesNormal:
 	.db 7,39, 7,39, 39,7, 39,7
 	

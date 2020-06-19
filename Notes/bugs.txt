@@ -31,6 +31,7 @@
 	-Actually, the jar does get spawned when returning normally, so I have no idea what is causing all of the palettes being wrong yet though.
 	-[Update 11/17/18] - Seems to happen for screens with collectibles on them in general. Very hard to replicate it seems.
 	-[Update 3/26/20] - The jar disappearing and re-appearing seems to be fairly reproducable. Seems to have to do with the previous screen system's collectable item respawn code. I still don't know the culprit.
+	-[Update 6/18/20] - On the jar screen, the jar is still collectable even if it's disappeared. This specific sub-problem should be debuggable.
 
 
 	POSSIBLY SOLVED, BE ON LOOKOUT FOR

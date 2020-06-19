@@ -287,7 +287,7 @@ MainLoop:
 	beq @noinit
 	sta game_state_old
 	jsr SelectStateToInit
-	;Init routines shouldn't modify the game state, and the code itself will immediately follow into the main code. So when we return, we can skip over going to the main code again
+	;Init routines shouldn't modify the game state, and the code itself will (Except for a few respectively documented cases) immediately follow into the main code. So when we return, we can skip over going to the main code again
 	jmp @stateselectdone
 @noinit:
 	jsr SelectMainState		;otherwise, go to whatever state we're currently in and run it like normal
@@ -323,11 +323,8 @@ MainLoop:
 
 	;After all sprites have been drawn we should clear the parts of the OAM buffer that weren't used for the current frame
 	;Some states such as Title and GameOver don't use oam_index and either have hard-coded sprites or no sprites,
-		;but oam_index should be 0 in these situations and so the loop will be ignored
+		;but oam_index should be 0 in these situations, and the states themselves should tell the game not to erase anything
 ClearUnusedOAM:
-	;I believe the title is the only place that has hard-coded sprites drawn in the init state. So we can just skip over this if we're in there
-	lda game_state
-	beq ClearUnusedOAMDone		;title state is 0 conveniently
 	ldx oam_index
 	beq @checkNothingToClear
 	;stuff was drawn, so other stuff needs to be cleared. Make sure our flag is 0 then

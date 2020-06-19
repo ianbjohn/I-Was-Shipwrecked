@@ -149,7 +149,7 @@ EntBGColResponses:
 	;sorted by ent ID
 	.dw PlayerBGColResponses,KnifeBGColResponses,SnakeBGColResponses,BREAK,BREAK,BREAK,BREAK,BREAK
 	.dw BREAK,BREAK,CrabBGColResponses,BREAK,MacheteBGColResponses,BREAK,StickBGColResponses,BREAK
-	.dw BREAK,BREAK,BREAK,BREAK,SnakeBGColResponses,BREAK
+	.dw BREAK,SpearBGColResponses,BREAK,BREAK,SnakeBGColResponses,BREAK
 
 PlayerBGColResponses:
 	;sorted by collision type (consult metatiles.asm for more info)
@@ -163,6 +163,8 @@ MacheteBGColResponses:
 	.dw DoNothing,DoNothing,DoNothing,DoNothing,KnifeCutBrush,KnifeCutBrush,KnifeCutBrush
 StickBGColResponses:
 	.dw DoNothing,DoNothing,DoNothing,DoNothing,DoNothing,DoNothing,DoNothing
+SpearBGColResponses:
+	.dw DoNothing,DoNothing,SpearReturn,DoNothing,DoNothing,DoNothing,DoNothing
 	
 	
 HandleBGCol:
@@ -377,3 +379,12 @@ HandlePlayerInteraction:
 @done:
 	pla
 	jmp SetPRGBank
+
+
+SpearReturn:
+	;If the spear hit something, it should return to the player. (It's only "gone" if it goes off-screen)
+	ldx #1					;X got clobbered right before this, but luckily the ent index here will always be 1 (The player's weapon)
+	DeactivateEnt			;We don't need to do anything else besides update the item count, which is unrelated to the spear as an ent, so we can put this here
+	ldy #1
+	lda #ITEM_SPEAR
+	jmp AddToItemCount		;The spear's count was decremented when the player used it, so we need to add it back
